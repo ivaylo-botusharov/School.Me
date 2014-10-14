@@ -11,24 +11,24 @@ Details: The school should contain 'Students' and 'Courses'. Each student could 
 ---
 ### Administration section: 
 
-Views:
+*Views:*
 
 * Before log-in administrators should see a list of all available courses.
 * After log-in administrators should see a list of all students.
 
-Actions:
+*Actions:*
 
 Administrators are able to create, edit and delete students and courses.
 
 ---
 ### Users (students) section: 
 
-Views:
+*Views:*
 
 *  Before log-in students should see a list of all available courses.
 *  After log-in students should see the courses that they are enrolled in.
 
-Actions:
+*Actions:*
 
 * Students should be able to enroll in any available course.
 
