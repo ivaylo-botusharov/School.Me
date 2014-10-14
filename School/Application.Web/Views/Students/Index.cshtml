@@ -4,13 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h3>Students list</h3>
 
 @Html.Partial("_StudentSearchForm")
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div class="btn btn-toolbar">
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
+</div>
 
 <table class="table" id="students-list">
     <tr>
