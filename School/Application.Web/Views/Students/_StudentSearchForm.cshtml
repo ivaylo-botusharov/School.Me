@@ -1,15 +1,12 @@
-﻿@{
-    ViewBag.Title = "Search students";
+﻿@using (Html.BeginForm("Search", "Students", FormMethod.Get))
+{
+    <div class="input-group">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search"></span>
+        </span>
+        @Html.TextBox("search", null, new { @class = "form-control", name = "filter-search", value = "" })
+        <span class="input-group-btn pull-left">
+            <button class="btn btn-default" type="submit">Search</button>
+        </span>
+    </div>
 }
-
-<h2>Search for student</h2>
-
-<div class="row-fluid">
-
-    @using (Html.BeginForm("Search", "Students", FormMethod.Get))
-    {
-        @Html.Label("Search")
-        @Html.TextBox("search")
-        <input type="submit" value="Search" class="btn span4" />
-    }
-</div>
