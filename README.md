@@ -18,8 +18,9 @@ Details: The school should contain 'Students' and 'Courses'. Each student could 
 
 *Actions:*
 
-* Administrators are able to **create**, **edit** and **delete** Students and Courses.
-* They are also able to search Students and Courses.
+* Administrators are able to create, edit and delete Students and Courses.
+
+They are also able to search Students and Courses.
 ---
 ### Users (students) section: 
 
