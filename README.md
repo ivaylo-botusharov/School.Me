@@ -36,7 +36,7 @@ Administrators are able to create, edit and delete students and courses.
 
 ### Architecture:
 
-The web application should be developed into layers: 
+The web application must be developed into layers: 
 
 * Data layer (Repository, Unit of Work patterns)
 * Application (Services) layer - using Unit of Work (from the Data layer) and Dependency Injection Container (Unity, Ninject, etc).
