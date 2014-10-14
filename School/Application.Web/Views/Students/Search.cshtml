@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Application.Web.Models.StudentViewModel>
+@{
+    ViewBag.Title = "Students list";
+}
+
+<h2>ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(studentModel => studentModel.Name)
+        </th>
+    </tr>
+    @foreach (var student in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(studentModel => student.Name)
+            </td>
+        </tr>
+    }
+</table>

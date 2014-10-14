@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Search students";
+}
+
+<h2>Search for student</h2>
+
+<div class="row-fluid">
+
+    @using (Html.BeginForm("Search", "Students", FormMethod.Get))
+    {
+        @Html.Label("Search")
+        @Html.TextBox("search")
+        <input type="submit" value="Search" class="btn span4" />
+    }
+</div>
