@@ -1,15 +1,14 @@
 ﻿namespace Application.Web.Controllers
 {
     using System;
-    using System.Data;
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
     using Application.Models;
     using Application.Services;
     using Application.Web.Models;
-    using AutoMapper.QueryableExtensions;
     using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     public class StudentsController : Controller
     {
@@ -94,8 +93,6 @@
         }
 
         // POST: Students/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentDetailsEditModel model)

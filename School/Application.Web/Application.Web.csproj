@@ -243,6 +243,7 @@
     <Compile Include="Models\SearchSubmitModel.cs" />
     <Compile Include="Models\StudentBasicViewModel.cs" />
     <Compile Include="Models\StudentDetailsEditModel.cs" />
+    <Compile Include="Models\StudentRegisterSubmitModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

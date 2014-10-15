@@ -13,6 +13,7 @@
             Mapper.CreateMap<Student, StudentBasicViewModel>();
             Mapper.CreateMap<Student, StudentDetailsEditModel>();
             Mapper.CreateMap<StudentDetailsEditModel, Student>();
+            Mapper.CreateMap<StudentRegisterSubmitModel, Student>();
         }
 
         public override string ProfileName
