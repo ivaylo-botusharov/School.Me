@@ -7,6 +7,8 @@
     using Application.Models;
     using Application.Services;
     using Application.Web.Models;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     public class StudentsController : Controller
     {
@@ -20,8 +22,8 @@
         // GET: Students
         public ActionResult Index()
         {
-            var allStudents = this.service.All().Select(StudentViewModel.FromStudent).AsEnumerable();
-            return View(allStudents);
+            var allStudents = this.service.All().Project().To<StudentBasicViewModel>();
+            return View(allStudents.AsEnumerable());
         }
 
         // GET: Students/Details/5
@@ -36,18 +38,19 @@
             {
                 return HttpNotFound();
             }
-            return View(student);
+            StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+            return View(model);
         }
 
         [HttpGet]
         public ActionResult Search(string search)
         {
-            var query = this.service
+            var foundStudents = this.service
                 .SearchByName(search)
-                .Select(StudentViewModel.FromStudent)
-                .AsEnumerable();
+                .Project()
+                .To<StudentBasicViewModel>();
 
-            return View(query);
+            return View(foundStudents.AsEnumerable());
         }
 
         // GET: Students/Create
@@ -57,19 +60,18 @@
         }
 
         // POST: Students/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Age")] Student student)
+        public ActionResult Create(StudentDetailsEditModel model)
         {
             if (ModelState.IsValid)
             {
+                var student = Mapper.Map<StudentDetailsEditModel, Student>(model);
                 this.service.Add(student);
                 return RedirectToAction("Index");
             }
 
-            return View(student);
+            return View(model);
         }
 
         // GET: Students/Edit/5
@@ -84,22 +86,26 @@
             {
                 return HttpNotFound();
             }
-            return View(student);
+
+            StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+
+            return View(model);
         }
 
         // POST: Students/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Age")] Student student)
+        public ActionResult Edit(StudentDetailsEditModel model)
         {
             if (ModelState.IsValid)
             {
+                //TODO: Perform validation if the currently logged on user has rights to modify the entry
+                Student student = this.service.GetById(model.Id);
+                Mapper.Map<StudentDetailsEditModel, Student>(model, student);
                 this.service.Update(student);
                 return RedirectToAction("Index");
             }
-            return View(student);
+            return View(model);
         }
 
         // GET: Students/Delete/5

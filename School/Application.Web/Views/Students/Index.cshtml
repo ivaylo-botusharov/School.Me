@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Application.Web.Models.StudentViewModel>
+﻿@model IEnumerable<Application.Web.Models.StudentBasicViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -7,10 +7,6 @@
 <h3>Students list</h3>
 
 @Html.Partial("_StudentSearchForm")
-
-<div class="btn btn-toolbar">
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })
-</div>
 
 <table class="table" id="students-list">
     <tr>

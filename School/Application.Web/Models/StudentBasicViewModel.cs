@@ -8,20 +8,8 @@ using System.Web;
 
 namespace Application.Web.Models
 {
-    public class StudentViewModel
+    public class StudentBasicViewModel
     {
-        public static Expression<Func<Student, StudentViewModel>> FromStudent
-        {
-            get
-            {
-                return student => new StudentViewModel
-                {
-                    Id = student.Id,
-                    Name = student.Name
-                };
-            }
-        }
-
         public int Id { get; set; }
 
         [Display(Name = "Име на студент")]
