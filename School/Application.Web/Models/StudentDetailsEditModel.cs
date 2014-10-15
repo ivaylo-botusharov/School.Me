@@ -9,7 +9,7 @@
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The name must be not more than 100 characters.")]
+        [StringLength(100, ErrorMessage = "The name must not be more than 100 characters.")]
         public string Name { get; set; }
 
         [Range(5, 100)]
