@@ -13,6 +13,6 @@
         public string Name { get; set; }
 
         [Range(5, 100)]
-        public int Age { get; set; }
+        public int? Age { get; set; }
     }
 }
