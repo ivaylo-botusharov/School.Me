@@ -19,7 +19,7 @@
         [Required]
         public string Name { get; set; }
 
-        public int Age { get; set; }
+        public int? Age { get; set; }
         
         public virtual ICollection<Course> Courses
         {
