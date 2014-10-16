@@ -53,27 +53,6 @@
             return View(foundStudents.AsEnumerable());
         }
 
-        // GET: Students/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Students/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(StudentDetailsEditModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var student = Mapper.Map<StudentDetailsEditModel, Student>(model);
-                this.service.Add(student);
-                return RedirectToAction("Index");
-            }
-
-            return View(model);
-        }
-
         // GET: Students/Edit/5
         public ActionResult Edit(int? id)
         {
