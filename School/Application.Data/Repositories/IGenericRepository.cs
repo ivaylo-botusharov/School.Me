@@ -9,7 +9,7 @@
     {
         IQueryable<T> All();
 
-        T GetById(int? id);
+        T GetById(Guid id);
 
         IQueryable<T> Get(
             Expression<Func<T, bool>> filter = null,

@@ -6,7 +6,7 @@
 
     public class StudentRegisterSubmitModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [StringLength(100, ErrorMessage = "The {0} must not be longer than {1} symbols.")]
         [Display(Name = "Name")]

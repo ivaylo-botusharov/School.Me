@@ -10,7 +10,7 @@ namespace Application.Web.Models
 {
     public class StudentBasicViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Display(Name = "Име на студент")]
         public string Name { get; set; }
