@@ -15,7 +15,7 @@
             return unitOfWork.Students.All();
         }
 
-        public Student GetById(int? id)
+        public Student GetById(Guid id)
         {
             return unitOfWork.Students.GetById(id);
         }

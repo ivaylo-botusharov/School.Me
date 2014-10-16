@@ -10,7 +10,7 @@
     {
         IQueryable<T> All();
 
-        T GetById(int? id);
+        T GetById(Guid id);
 
         void Add(T entity);
 

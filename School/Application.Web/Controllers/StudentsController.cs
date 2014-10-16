@@ -27,7 +27,7 @@
         }
 
         // GET: Students/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(Guid id)
         {
             if (id == null)
             {
@@ -54,7 +54,7 @@
         }
 
         // GET: Students/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(Guid id)
         {
             if (id == null)
             {
@@ -88,7 +88,7 @@
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(Guid id)
         {
             if (id == null)
             {
@@ -105,7 +105,7 @@
         // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
             Student student = this.service.GetById(id);
             this.service.Delete(student);

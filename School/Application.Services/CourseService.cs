@@ -15,7 +15,7 @@
             return unitOfWork.Courses.All();
         }
 
-        public Course GetById(int? id)
+        public Course GetById(Guid id)
         {
             return unitOfWork.Courses.GetById(id);
         }
