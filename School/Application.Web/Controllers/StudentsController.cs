@@ -5,16 +5,16 @@
     using System.Net;
     using System.Web.Mvc;
     using Application.Models;
-    using Application.Services;
+    using Application.Services.Interfaces;
     using Application.Web.Models;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
 
     public class StudentsController : Controller
     {
-        private readonly IStudentService service;
+        private readonly IService service;
 
-        public StudentsController(IStudentService service)
+        public StudentsController(IService service)
         {
             this.service = service;
         }
@@ -22,66 +22,63 @@
         // GET: Students
         public ActionResult Index()
         {
-            var allStudents = this.service.All().Project().To<StudentBasicViewModel>();
+            var allStudents = this.service.Students.All().Project().To<StudentBasicViewModel>();
             return View(allStudents.AsEnumerable());
         }
 
-        // GET: Students/Details/5
-        public ActionResult Details(int? id)
+        
+        public ActionResult Details(string username)
         {
-            if (id == null)
+            if (username == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = this.service.GetById(id);
+
+            Student student = this.service.Students.GetByUserName(username);
+
             if (student == null)
             {
                 return HttpNotFound();
             }
+
             StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
             return View(model);
         }
 
+        //public ActionResult Details(Guid id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Student student = this.service.Students.GetById(id);
+        //    if (student == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+        //    return View(model);
+        //}
+
         [HttpGet]
-        public ActionResult Search(string search)
+        public ActionResult Search(string name)
         {
-            var foundStudents = this.service
-                .SearchByName(search)
+            var foundStudents = this.service.Students
+                .SearchByName(name)
                 .Project()
                 .To<StudentBasicViewModel>();
 
             return View(foundStudents.AsEnumerable());
         }
 
-        // GET: Students/Create
-        public ActionResult Create()
+        public ActionResult Edit(string username)
         {
-            return View();
-        }
-
-        // POST: Students/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(StudentDetailsEditModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var student = Mapper.Map<StudentDetailsEditModel, Student>(model);
-                this.service.Add(student);
-                return RedirectToAction("Index");
-            }
-
-            return View(model);
-        }
-
-        // GET: Students/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
+            if (username == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = this.service.GetById(id);
+
+            Student student = this.service.Students.GetByUserName(username);
             if (student == null)
             {
                 return HttpNotFound();
@@ -92,30 +89,61 @@
             return View(model);
         }
 
-        // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentDetailsEditModel model)
         {
             if (ModelState.IsValid)
             {
-                //TODO: Perform validation if the currently logged on user has rights to modify the entry
-                Student student = this.service.GetById(model.Id);
+                //TODO: Perform validation if the currently logged on user has rights to modify the entry.
+
+                Student student = this.service.Students.GetById(model.Id);
                 Mapper.Map<StudentDetailsEditModel, Student>(model, student);
-                this.service.Update(student);
+                this.service.Students.Update(student);
                 return RedirectToAction("Index");
             }
             return View(model);
         }
 
-        // GET: Students/Delete/5
-        public ActionResult Delete(int? id)
+        //public ActionResult Edit(Guid id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Student student = this.service.Students.GetById(id);
+        //    if (student == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+
+        //    return View(model);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(StudentDetailsEditModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //TODO: Perform validation if the currently logged on user has rights to modify the entry
+        //        Student student = this.service.Students.GetById(model.Id);
+        //        Mapper.Map<StudentDetailsEditModel, Student>(model, student);
+        //        this.service.Students.Update(student);
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(model);
+        //}
+
+        public ActionResult Delete(Guid id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = this.service.GetById(id);
+            Student student = this.service.Students.GetById(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -123,19 +151,18 @@
             return View(student);
         }
 
-        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
-            Student student = this.service.GetById(id);
-            this.service.Delete(student);
+            Student student = this.service.Students.GetById(id);
+            this.service.Students.Delete(student);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            this.service.Dispose();
+            this.service.Students.Dispose();
             base.Dispose(disposing);
         }
     }

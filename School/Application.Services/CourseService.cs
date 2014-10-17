@@ -1,46 +1,51 @@
 ﻿namespace Application.Services
 {
+    using System;
+    using System.Linq;
     using Application.Data;
     using Application.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Application.Services.Interfaces;
 
     public class CourseService : ICourseService
     {
-        private readonly UnitOfWork unitOfWork = new UnitOfWork();
+        private readonly UnitOfWork unitOfWork;
+
+        public CourseService(UnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         public IQueryable<Course> All()
         {
-            return unitOfWork.Courses.All();
+            return this.unitOfWork.Courses.All();
         }
 
-        public Course GetById(int? id)
+        public Course GetById(Guid id)
         {
-            return unitOfWork.Courses.GetById(id);
+            return this.unitOfWork.Courses.GetById(id);
         }
 
         public void Add(Course course)
         {
-            unitOfWork.Courses.Add(course);
-            unitOfWork.Save();
+            this.unitOfWork.Courses.Add(course);
+            this.unitOfWork.Save();
         }
 
         public void Update(Course course)
         {
-            unitOfWork.Courses.Update(course);
-            unitOfWork.Save();
+            this.unitOfWork.Courses.Update(course);
+            this.unitOfWork.Save();
         }
 
         public void Delete(Course course)
         {
-            unitOfWork.Courses.Delete(course);
-            unitOfWork.Save();
+            this.unitOfWork.Courses.Delete(course);
+            this.unitOfWork.Save();
         }
 
         public void Dispose()
         {
-            unitOfWork.Dispose();
+            this.unitOfWork.Dispose();
         }
     }
 }

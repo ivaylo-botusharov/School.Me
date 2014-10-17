@@ -1,7 +1,6 @@
 ﻿namespace Application.Data.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -9,7 +8,7 @@
     {
         IQueryable<T> All();
 
-        T GetById(int? id);
+        T GetById(Guid id);
 
         IQueryable<T> Get(
             Expression<Func<T, bool>> filter = null,

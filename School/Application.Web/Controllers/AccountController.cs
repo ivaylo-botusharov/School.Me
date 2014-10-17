@@ -6,7 +6,7 @@
     using System.Web;
     using System.Web.Mvc;
     using Application.Models;
-    using Application.Services;
+    using Application.Services.Interfaces;
     using Application.Web.Models;
     using AutoMapper;
     using Microsoft.AspNet.Identity;
@@ -18,9 +18,9 @@
     {
         private ApplicationUserManager _userManager;
 
-        private readonly IStudentService service;
+        private readonly IService service;
 
-        public AccountController(ApplicationUserManager userManager, IStudentService service)
+        public AccountController(ApplicationUserManager userManager, IService service)
         {
             UserManager = userManager;
             this.service = service;
@@ -122,7 +122,7 @@
                     Student student = new Student();
                     student.ApplicationUserId = user.Id;
                     Mapper.Map<StudentRegisterSubmitModel, Student>(model, student);
-                    this.service.Add(student);
+                    this.service.Students.Add(student);
 
                     return RedirectToAction("Index", "Home");
                 }

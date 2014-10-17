@@ -10,8 +10,14 @@
     {
         protected override void Configure()
         {
-            Mapper.CreateMap<Student, StudentBasicViewModel>();
-            Mapper.CreateMap<Student, StudentDetailsEditModel>();
+            //Mapper.CreateMap<Student, StudentBasicViewModel>();
+            Mapper.CreateMap<Student, StudentBasicViewModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
+
+            //Mapper.CreateMap<Student, StudentDetailsEditModel>();
+            Mapper.CreateMap<Student, StudentDetailsEditModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
+            
             Mapper.CreateMap<StudentDetailsEditModel, Student>();
             Mapper.CreateMap<StudentRegisterSubmitModel, Student>();
         }

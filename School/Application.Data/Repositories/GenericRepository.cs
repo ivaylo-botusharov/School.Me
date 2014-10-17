@@ -31,7 +31,7 @@
             return this.dbSet;
         }
 
-        public virtual T GetById(int? id)
+        public virtual T GetById(Guid id)
         {
             return this.dbSet.Find(id);
         }
