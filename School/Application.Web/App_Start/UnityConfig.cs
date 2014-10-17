@@ -1,15 +1,14 @@
-using System;
-using System.Data.Entity;
-using Application.Data;
-using Application.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Practices.Unity;
-using Application.Services;
-using Application.Web.Controllers;
-
 namespace Application.Web.App_Start
 {
+    using System;
+    using Application.Data;
+    using Application.Models;
+    using Application.Services;
+    using Application.Services.Interfaces;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.Practices.Unity;
+
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
@@ -47,9 +46,7 @@ namespace Application.Web.App_Start
             container.RegisterType<IUserStore<ApplicationUser>, 
                 UserStore<ApplicationUser>>(new InjectionConstructor(new ApplicationDbContext()));
 
-            container.RegisterType<IStudentService, StudentService>();
-
-            container.RegisterType<ICourseService, CourseService>();
+            container.RegisterType<IService, Service>();
         }
     }
 }
