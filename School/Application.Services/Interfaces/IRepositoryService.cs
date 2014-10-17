@@ -1,12 +1,9 @@
-﻿namespace Application.Services
+﻿namespace Application.Services.Interfaces
 {
-    using Application.Models;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
 
-    public interface IGenericService<T> : IDisposable where T : class
+    public interface IRepositoryService<T> : IDisposable where T : class
     {
         IQueryable<T> All();
 

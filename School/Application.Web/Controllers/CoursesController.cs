@@ -5,13 +5,13 @@
     using System.Net;
     using System.Web.Mvc;
     using Application.Models;
-    using Application.Services;
+    using Application.Services.Interfaces;
 
     public class CoursesController : Controller
     {
-        private readonly ICourseService service;
+        private readonly IService service;
 
-        public CoursesController(ICourseService service)
+        public CoursesController(IService service)
         {
             this.service = service;
         }
@@ -19,7 +19,7 @@
         // GET: Courses
         public ActionResult Index()
         {
-            return View(this.service.All());
+            return View(this.service.Courses.All());
         }
 
         // GET: Courses/Details/5
@@ -29,7 +29,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = this.service.GetById(id);
+            Course course = this.service.Courses.GetById(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -52,7 +52,7 @@
         {
             if (ModelState.IsValid)
             {
-                this.service.Add(course);
+                this.service.Courses.Add(course);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +66,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = this.service.GetById(id);
+            Course course = this.service.Courses.GetById(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -83,7 +83,7 @@
         {
             if (ModelState.IsValid)
             {
-                this.service.Update(course);
+                this.service.Courses.Update(course);
                 return RedirectToAction("Index");
             }
             return View(course);
@@ -96,7 +96,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = this.service.GetById(id);
+            Course course = this.service.Courses.GetById(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -109,14 +109,14 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Course course = this.service.GetById(id);
-            this.service.Delete(course);
+            Course course = this.service.Courses.GetById(id);
+            this.service.Courses.Delete(course);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            this.service.Dispose();
+            this.service.Courses.Dispose();
             base.Dispose(disposing);
         }
     }
