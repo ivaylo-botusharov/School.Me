@@ -239,6 +239,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountDetailsEditModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\SearchSubmitModel.cs" />
     <Compile Include="Models\StudentBasicViewModel.cs" />

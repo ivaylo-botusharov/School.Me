@@ -66,6 +66,15 @@
             return query;
         }
 
+        public bool IsUserNameUnique(Student student, string username)
+        {
+            bool isUserNameUnique = ! this.unitOfWork.Students.All()
+                .Any(s => (s.ApplicationUser.UserName == username) &&
+                    (s.ApplicationUserId != student.ApplicationUserId));
+
+            return isUserNameUnique;
+        }
+
         public void Dispose()
         {
             this.unitOfWork.Dispose();

@@ -42,6 +42,8 @@
             }
 
             StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+            model.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(student.ApplicationUser);
+
             return View(model);
         }
 
@@ -85,6 +87,7 @@
             }
 
             StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+            model.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(student.ApplicationUser);
 
             return View(model);
         }
@@ -93,12 +96,21 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentDetailsEditModel model)
         {
+            Student student = this.service.Students.GetById(model.Id);
+
+            bool isUserNameUnique = this.service.Students.IsUserNameUnique(student, model.AccountDetailsEditModel.UserName);
+
+            if (!isUserNameUnique)
+            {
+                this.ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
+            }
+
             if (ModelState.IsValid)
             {
                 //TODO: Perform validation if the currently logged on user has rights to modify the entry.
 
-                Student student = this.service.Students.GetById(model.Id);
                 Mapper.Map<StudentDetailsEditModel, Student>(model, student);
+                Mapper.Map<AccountDetailsEditModel, ApplicationUser>(model.AccountDetailsEditModel, student.ApplicationUser);
                 this.service.Students.Update(student);
                 return RedirectToAction("Index");
             }

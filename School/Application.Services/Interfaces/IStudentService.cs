@@ -9,5 +9,7 @@
         IQueryable<Student> SearchByName(string searchString);
 
         Student GetByUserName(string username);
+
+        bool IsUserNameUnique(Student student, string username);
     }
 }

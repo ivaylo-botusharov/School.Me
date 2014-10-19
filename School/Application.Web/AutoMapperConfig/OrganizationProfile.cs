@@ -13,13 +13,16 @@
             //Mapper.CreateMap<Student, StudentBasicViewModel>();
             Mapper.CreateMap<Student, StudentBasicViewModel>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
-
-            //Mapper.CreateMap<Student, StudentDetailsEditModel>();
-            Mapper.CreateMap<Student, StudentDetailsEditModel>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
+           
+            Mapper.CreateMap<Student, StudentDetailsEditModel>();
             
             Mapper.CreateMap<StudentDetailsEditModel, Student>();
+
             Mapper.CreateMap<StudentRegisterSubmitModel, Student>();
+
+            Mapper.CreateMap<AccountDetailsEditModel, ApplicationUser>();
+
+            Mapper.CreateMap<ApplicationUser, AccountDetailsEditModel>();
         }
 
         public override string ProfileName
