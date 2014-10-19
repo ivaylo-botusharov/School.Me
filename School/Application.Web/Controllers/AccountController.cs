@@ -16,25 +16,25 @@
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationUserManager _userManager;
+        private ApplicationUserManager userManager;
 
-        private readonly IService service;
+        private readonly IStudentService studentService;
 
-        public AccountController(ApplicationUserManager userManager, IService service)
+        public AccountController(ApplicationUserManager currentUserManager, IStudentService studentService)
         {
-            UserManager = userManager;
-            this.service = service;
+            UserManager = currentUserManager;
+            this.studentService = studentService;
         }
 
         public ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                userManager = value;
             }
         }
 
@@ -122,7 +122,7 @@
                     Student student = new Student();
                     student.ApplicationUserId = user.Id;
                     Mapper.Map<StudentRegisterSubmitModel, Student>(model, student);
-                    this.service.Students.Add(student);
+                    this.studentService.Add(student);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -181,7 +181,6 @@
                     ModelState.AddModelError("", "The user either does not exist or is not confirmed.");
                     return View();
                 }
-
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
@@ -279,11 +278,11 @@
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
+                                   message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                                   : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                                     : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+                                       : message == ManageMessageId.Error ? "An error has occurred."
+                                         : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
@@ -489,9 +488,10 @@
         }
 
         #region Helpers
+        
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
-
+        
         private IAuthenticationManager AuthenticationManager
         {
             get
@@ -499,13 +499,13 @@
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
-
+        
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, await user.GenerateUserIdentityAsync(UserManager));
         }
-
+        
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -513,7 +513,7 @@
                 ModelState.AddModelError("", error);
             }
         }
-
+        
         private bool HasPassword()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
@@ -523,12 +523,12 @@
             }
             return false;
         }
-
+        
         private void SendEmail(string email, string callbackUrl, string subject, string message)
         {
             // For information on sending mail, please visit http://go.microsoft.com/fwlink/?LinkID=320771
         }
-
+        
         public enum ManageMessageId
         {
             ChangePasswordSuccess,
@@ -536,7 +536,7 @@
             RemoveLoginSuccess,
             Error
         }
-
+        
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -548,25 +548,26 @@
                 return RedirectToAction("Index", "Home");
             }
         }
-
+        
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
             {
             }
-
+            
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
                 LoginProvider = provider;
                 RedirectUri = redirectUri;
                 UserId = userId;
             }
-
+            
             public string LoginProvider { get; set; }
+            
             public string RedirectUri { get; set; }
+            
             public string UserId { get; set; }
-
+            
             public override void ExecuteResult(ControllerContext context)
             {
                 var properties = new AuthenticationProperties() { RedirectUri = RedirectUri };
@@ -577,6 +578,7 @@
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+        
         #endregion
     }
 }
