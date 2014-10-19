@@ -46,7 +46,11 @@ namespace Application.Web.App_Start
             container.RegisterType<IUserStore<ApplicationUser>, 
                 UserStore<ApplicationUser>>(new InjectionConstructor(new ApplicationDbContext()));
 
-            container.RegisterType<IService, Service>();
+            container.RegisterType<IStudentService, StudentService>();
+
+            container.RegisterType<ICourseService, CourseService>();
+
+            container.RegisterType<IApplicationDbContext, ApplicationDbContext>();
         }
     }
 }

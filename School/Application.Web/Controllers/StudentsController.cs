@@ -5,24 +5,24 @@
     using System.Net;
     using System.Web.Mvc;
     using Application.Models;
-    using Application.Services.Interfaces;
     using Application.Web.Models;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Application.Services.Interfaces;
 
     public class StudentsController : Controller
     {
-        private readonly IService service;
+        private readonly IStudentService studentService;
 
-        public StudentsController(IService service)
+        public StudentsController(IStudentService studentService)
         {
-            this.service = service;
+            this.studentService = studentService;
         }
 
         // GET: Students
         public ActionResult Index()
         {
-            var allStudents = this.service.Students.All().Project().To<StudentBasicViewModel>();
+            var allStudents = this.studentService.All().Project().To<StudentBasicViewModel>();
             return View(allStudents.AsEnumerable());
         }
 
@@ -34,7 +34,7 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Student student = this.service.Students.GetByUserName(username);
+            Student student = this.studentService.GetByUserName(username);
 
             if (student == null)
             {
@@ -65,7 +65,7 @@
         [HttpGet]
         public ActionResult Search(string name)
         {
-            var foundStudents = this.service.Students
+            var foundStudents = this.studentService
                 .SearchByName(name)
                 .Project()
                 .To<StudentBasicViewModel>();
@@ -80,7 +80,7 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Student student = this.service.Students.GetByUserName(username);
+            Student student = this.studentService.GetByUserName(username);
             if (student == null)
             {
                 return HttpNotFound();
@@ -96,9 +96,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentDetailsEditModel model)
         {
-            Student student = this.service.Students.GetById(model.Id);
+            Student student = this.studentService.GetById(model.Id);
 
-            bool isUserNameUnique = this.service.Students.IsUserNameUnique(student, model.AccountDetailsEditModel.UserName);
+            bool isUserNameUnique = this.studentService.IsUserNameUnique(student, model.AccountDetailsEditModel.UserName);
 
             if (!isUserNameUnique)
             {
@@ -111,7 +111,7 @@
 
                 Mapper.Map<StudentDetailsEditModel, Student>(model, student);
                 Mapper.Map<AccountDetailsEditModel, ApplicationUser>(model.AccountDetailsEditModel, student.ApplicationUser);
-                this.service.Students.Update(student);
+                this.studentService.Update(student);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -155,7 +155,7 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = this.service.Students.GetById(id);
+            Student student = this.studentService.GetById(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -167,14 +167,14 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Student student = this.service.Students.GetById(id);
-            this.service.Students.Delete(student);
+            Student student = this.studentService.GetById(id);
+            this.studentService.Delete(student);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            this.service.Students.Dispose();
+            this.studentService.Dispose();
             base.Dispose(disposing);
         }
     }
