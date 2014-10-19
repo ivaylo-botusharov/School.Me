@@ -11,25 +11,39 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.AccountDetailsEditModel.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountDetailsEditModel.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountDetailsEditModel.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountDetailsEditModel.Email)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Age)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Age)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountDetailsEditModel.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountDetailsEditModel.PhoneNumber)
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { username = Model.UserName }) |
+    @Html.ActionLink("Edit", "Edit", new { username = Model.AccountDetailsEditModel.UserName }) |
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
