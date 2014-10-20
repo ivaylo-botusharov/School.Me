@@ -10,6 +10,6 @@
 
         Student GetByUserName(string username);
 
-        bool IsUserNameUnique(Student student, string username);
+        bool IsUserNameUniqueOnEdit(Student student, string username);
     }
 }

@@ -73,6 +73,7 @@
             return View(foundStudents.AsEnumerable());
         }
 
+        [Authorize]
         public ActionResult Edit(string username)
         {
             if (username == null)
@@ -92,13 +93,14 @@
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentDetailsEditModel model)
         {
             Student student = this.studentService.GetById(model.Id);
 
-            bool isUserNameUnique = this.studentService.IsUserNameUnique(student, model.AccountDetailsEditModel.UserName);
+            bool isUserNameUnique = this.studentService.IsUserNameUniqueOnEdit(student, model.AccountDetailsEditModel.UserName);
 
             if (!isUserNameUnique)
             {
@@ -149,6 +151,7 @@
         //    return View(model);
         //}
 
+        [Authorize]
         public ActionResult Delete(Guid id)
         {
             if (id == null)
@@ -163,6 +166,7 @@
             return View(student);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)

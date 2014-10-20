@@ -54,6 +54,7 @@
 
         public void Delete(Student student)
         {
+            this.unitOfWork.Users.Delete(student.ApplicationUser);
             this.unitOfWork.Students.Delete(student);
             this.unitOfWork.Save();
         }
@@ -66,7 +67,7 @@
             return query;
         }
 
-        public bool IsUserNameUnique(Student student, string username)
+        public bool IsUserNameUniqueOnEdit(Student student, string username)
         {
             bool isUserNameUnique = ! this.unitOfWork.Students.All()
                 .Any(s => (s.ApplicationUser.UserName == username) &&
