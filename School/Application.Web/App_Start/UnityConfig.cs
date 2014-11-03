@@ -8,6 +8,7 @@ namespace Application.Web.App_Start
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Practices.Unity;
+    using Application.Data.Repositories;
 
     /// <summary>
     /// Specifies the Unity configuration for the main container.

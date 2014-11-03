@@ -5,10 +5,11 @@
     using System.Net;
     using System.Web.Mvc;
     using Application.Models;
+    using Application.Services.Interfaces;
     using Application.Web.Models;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Application.Services.Interfaces;
+    using Microsoft.AspNet.Identity;
 
     public class StudentsController : Controller
     {
@@ -158,7 +159,9 @@
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            
             Student student = this.studentService.GetById(id);
+
             if (student == null)
             {
                 return HttpNotFound();
@@ -172,6 +175,20 @@
         public ActionResult DeleteConfirmed(Guid id)
         {
             Student student = this.studentService.GetById(id);
+
+            if (student.ApplicationUserId == User.Identity.GetUserId())
+            {
+                student.DeletedBy = User.Identity.GetUserId();
+                this.studentService.Delete(student);
+                
+                var accountController = new AccountController(this.studentService);
+                accountController.ControllerContext = this.ControllerContext;
+                accountController.LogOff();
+                
+                return RedirectToAction("Index", "Home");
+            }
+
+            student.DeletedBy = User.Identity.GetUserId();
             this.studentService.Delete(student);
             return RedirectToAction("Index");
         }
