@@ -23,19 +23,37 @@
             this.repositories = new Dictionary<Type, object>();
         }
 
-        public IGenericRepository<ApplicationUser> Users
+        public ApplicationDbContext Context
         {
             get
             {
-                return this.GetRepository<ApplicationUser>();
+                return (ApplicationDbContext)this.context;
             }
         }
 
-        public IGenericRepository<Student> Students
+        public IApplicationUserRepository Users
         {
             get
             {
-                return this.GetRepository<Student>();
+                var typeOfModel = typeof(ApplicationUser);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new ApplicationUserRepository(this.context));
+                }
+                return (IApplicationUserRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public IStudentRepository Students
+        {
+            get
+            {
+                var typeOfModel = typeof(Student);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new StudentRepository(this.context));
+                }
+                return (IStudentRepository)this.repositories[typeOfModel];
             }
         }
 

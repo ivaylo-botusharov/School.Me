@@ -17,6 +17,11 @@
             this.unitOfWork = unitOfWork;
         }
 
+        public UnitOfWork UnitOfWork
+        {
+            get { return this.unitOfWork; }
+        }
+
         public IQueryable<Student> All()
         {
             return this.unitOfWork.Students.All();
@@ -54,8 +59,14 @@
 
         public void Delete(Student student)
         {
+            string applicationUserId = student.ApplicationUserId;
+            student.ApplicationUser.DeletedBy = student.DeletedBy;
+
             this.unitOfWork.Users.Delete(student.ApplicationUser);
             this.unitOfWork.Students.Delete(student);
+
+            // Needed because the "Delete" methods above set ApplicationUserId to null
+            student.ApplicationUserId = applicationUserId;
             this.unitOfWork.Save();
         }
 

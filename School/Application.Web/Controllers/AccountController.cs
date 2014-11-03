@@ -12,6 +12,7 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     [Authorize]
     public class AccountController : Controller
@@ -20,9 +21,10 @@
 
         private readonly IStudentService studentService;
 
-        public AccountController(ApplicationUserManager currentUserManager, IStudentService studentService)
+        public AccountController(IStudentService studentService)
         {
-            UserManager = currentUserManager;
+            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(studentService.UnitOfWork.Context);
+            this.userManager = new ApplicationUserManager(store);
             this.studentService = studentService;
         }
 
@@ -70,7 +72,8 @@
                 }
 
                 var user = await UserManager.FindAsync(username, model.Password);
-                if (user != null)
+
+                if (user != null && user.IsDeleted == false)
                 {
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
