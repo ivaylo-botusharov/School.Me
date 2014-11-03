@@ -15,6 +15,6 @@
         [Range(5, 100)]
         public int? Age { get; set; }
 
-        public string UserName { get; set; }
+        public AccountDetailsEditModel AccountDetailsEditModel { get; set; }
     }
 }

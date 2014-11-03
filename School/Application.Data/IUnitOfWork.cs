@@ -7,11 +7,13 @@
 
     public interface IUnitOfWork
     {
-        IGenericRepository<ApplicationUser> Users { get; }
+        IApplicationUserRepository Users { get; }
 
-        IGenericRepository<Student> Students { get; }
+        IStudentRepository Students { get; }
 
         IGenericRepository<Course> Courses { get; }
+
+        ApplicationDbContext Context { get; }
 
         void Save();
     }

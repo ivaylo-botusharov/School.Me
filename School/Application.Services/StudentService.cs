@@ -17,6 +17,11 @@
             this.unitOfWork = unitOfWork;
         }
 
+        public UnitOfWork UnitOfWork
+        {
+            get { return this.unitOfWork; }
+        }
+
         public IQueryable<Student> All()
         {
             return this.unitOfWork.Students.All();
@@ -54,7 +59,14 @@
 
         public void Delete(Student student)
         {
+            string applicationUserId = student.ApplicationUserId;
+            student.ApplicationUser.DeletedBy = student.DeletedBy;
+
+            this.unitOfWork.Users.Delete(student.ApplicationUser);
             this.unitOfWork.Students.Delete(student);
+
+            // Needed because the "Delete" methods above set ApplicationUserId to null
+            student.ApplicationUserId = applicationUserId;
             this.unitOfWork.Save();
         }
 
@@ -64,6 +76,15 @@
             var query = this.unitOfWork.Students.All().Where(student => student.Name.Contains(searchString));
             //var query = unitOfWork.Students.Get(filter: student => student.Name.Contains(searchString));
             return query;
+        }
+
+        public bool IsUserNameUniqueOnEdit(Student student, string username)
+        {
+            bool isUserNameUnique = ! this.unitOfWork.Students.All()
+                .Any(s => (s.ApplicationUser.UserName == username) &&
+                    (s.ApplicationUserId != student.ApplicationUserId));
+
+            return isUserNameUnique;
         }
 
         public void Dispose()

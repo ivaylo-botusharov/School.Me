@@ -1,22 +1,21 @@
 ﻿namespace Application.Data.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
 
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly ApplicationDbContext context;
-        private readonly IDbSet<T> dbSet;
+        private readonly IApplicationDbContext context;
+        protected readonly IDbSet<T> dbSet;
 
         public GenericRepository()
             : this(new ApplicationDbContext())
         {
         }
 
-        public GenericRepository(ApplicationDbContext context)
+        public GenericRepository(IApplicationDbContext context)
         {
             if (context == null)
             {
@@ -26,7 +25,7 @@
             this.dbSet = context.Set<T>();
         }
 
-        public IQueryable<T> All()
+        public virtual IQueryable<T> All()
         {
             return this.dbSet;
         }
@@ -75,7 +74,7 @@
             this.ChangeEntityState(entity, EntityState.Modified);
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             this.ChangeEntityState(entity, EntityState.Deleted);
         }

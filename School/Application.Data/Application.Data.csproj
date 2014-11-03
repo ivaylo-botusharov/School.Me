@@ -57,6 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Repositories\ApplicationUserRepository.cs" />
+    <Compile Include="Repositories\DeletableEntityRepository.cs" />
+    <Compile Include="Repositories\IApplicationUserRepository.cs" />
+    <Compile Include="Repositories\IDeletableEntityRepository.cs" />
+    <Compile Include="Repositories\IStudentRepository.cs" />
+    <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="IUnitOfWork.cs" />

@@ -9,20 +9,21 @@
     using Application.Web.Models;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Microsoft.AspNet.Identity;
 
     public class StudentsController : Controller
     {
-        private readonly IService service;
+        private readonly IStudentService studentService;
 
-        public StudentsController(IService service)
+        public StudentsController(IStudentService studentService)
         {
-            this.service = service;
+            this.studentService = studentService;
         }
 
         // GET: Students
         public ActionResult Index()
         {
-            var allStudents = this.service.Students.All().Project().To<StudentBasicViewModel>();
+            var allStudents = this.studentService.All().Project().To<StudentBasicViewModel>();
             return View(allStudents.AsEnumerable());
         }
 
@@ -34,7 +35,7 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Student student = this.service.Students.GetByUserName(username);
+            Student student = this.studentService.GetByUserName(username);
 
             if (student == null)
             {
@@ -42,6 +43,8 @@
             }
 
             StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+            model.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(student.ApplicationUser);
+
             return View(model);
         }
 
@@ -63,7 +66,7 @@
         [HttpGet]
         public ActionResult Search(string name)
         {
-            var foundStudents = this.service.Students
+            var foundStudents = this.studentService
                 .SearchByName(name)
                 .Project()
                 .To<StudentBasicViewModel>();
@@ -71,6 +74,7 @@
             return View(foundStudents.AsEnumerable());
         }
 
+        [Authorize]
         public ActionResult Edit(string username)
         {
             if (username == null)
@@ -78,28 +82,39 @@
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Student student = this.service.Students.GetByUserName(username);
+            Student student = this.studentService.GetByUserName(username);
             if (student == null)
             {
                 return HttpNotFound();
             }
 
             StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
+            model.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(student.ApplicationUser);
 
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentDetailsEditModel model)
         {
+            Student student = this.studentService.GetById(model.Id);
+
+            bool isUserNameUnique = this.studentService.IsUserNameUniqueOnEdit(student, model.AccountDetailsEditModel.UserName);
+
+            if (!isUserNameUnique)
+            {
+                this.ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
+            }
+
             if (ModelState.IsValid)
             {
                 //TODO: Perform validation if the currently logged on user has rights to modify the entry.
 
-                Student student = this.service.Students.GetById(model.Id);
                 Mapper.Map<StudentDetailsEditModel, Student>(model, student);
-                this.service.Students.Update(student);
+                Mapper.Map<AccountDetailsEditModel, ApplicationUser>(model.AccountDetailsEditModel, student.ApplicationUser);
+                this.studentService.Update(student);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -137,13 +152,16 @@
         //    return View(model);
         //}
 
+        [Authorize]
         public ActionResult Delete(Guid id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = this.service.Students.GetById(id);
+            
+            Student student = this.studentService.GetById(id);
+
             if (student == null)
             {
                 return HttpNotFound();
@@ -151,18 +169,33 @@
             return View(student);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Student student = this.service.Students.GetById(id);
-            this.service.Students.Delete(student);
+            Student student = this.studentService.GetById(id);
+
+            if (student.ApplicationUserId == User.Identity.GetUserId())
+            {
+                student.DeletedBy = User.Identity.GetUserId();
+                this.studentService.Delete(student);
+                
+                var accountController = new AccountController(this.studentService);
+                accountController.ControllerContext = this.ControllerContext;
+                accountController.LogOff();
+                
+                return RedirectToAction("Index", "Home");
+            }
+
+            student.DeletedBy = User.Identity.GetUserId();
+            this.studentService.Delete(student);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            this.service.Students.Dispose();
+            this.studentService.Dispose();
             base.Dispose(disposing);
         }
     }

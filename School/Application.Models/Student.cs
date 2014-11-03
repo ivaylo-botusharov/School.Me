@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public class Student
+    public class Student : DeletableEntity
     {
         private ICollection<Course> courses;
 

@@ -58,10 +58,8 @@
     <Compile Include="CourseService.cs" />
     <Compile Include="Interfaces\ICourseService.cs" />
     <Compile Include="Interfaces\IRepositoryService.cs" />
-    <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\IStudentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service.cs" />
     <Compile Include="StudentService.cs" />
   </ItemGroup>
   <ItemGroup>
