@@ -9,6 +9,7 @@ namespace Application.Web.App_Start
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Practices.Unity;
     using Application.Data.Repositories;
+    using Application.Web.Controllers;
 
     /// <summary>
     /// Specifies the Unity configuration for the main container.
@@ -43,7 +44,7 @@ namespace Application.Web.App_Start
 
             // TODO: Register your types here
             // container.RegisterType<IProductRepository, ProductRepository>();
-          
+
             container.RegisterType<IUserStore<ApplicationUser>, 
                 UserStore<ApplicationUser>>(new InjectionConstructor(new ApplicationDbContext()));
 

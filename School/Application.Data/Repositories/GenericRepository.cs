@@ -84,7 +84,7 @@
             this.context.SaveChanges();
         }
 
-        private void ChangeEntityState(T entity, EntityState state)
+        public void ChangeEntityState(T entity, EntityState state)
         {
             var entry = this.context.Entry(entity);
             if (entry.State == EntityState.Detached)
