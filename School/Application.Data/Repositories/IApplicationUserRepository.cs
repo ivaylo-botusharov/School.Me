@@ -4,7 +4,7 @@
     using System;
     using System.Linq;
 
-    public interface IApplicationUserRepository : IGenericRepository<ApplicationUser>
+    public interface IApplicationUserRepository : IDeletableEntityRepository<ApplicationUser>
     {
     }
 }
