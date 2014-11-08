@@ -25,7 +25,5 @@
         void Detach(T entity);
 
         void SaveChanges();
-
-        void Dispose();
     }
 }
