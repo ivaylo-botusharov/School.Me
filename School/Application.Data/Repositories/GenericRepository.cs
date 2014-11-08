@@ -9,11 +9,7 @@
     {
         private readonly IApplicationDbContext context;
         protected readonly IDbSet<T> dbSet;
-
-        public GenericRepository()
-            : this(new ApplicationDbContext())
-        {
-        }
+        private bool disposed = false;
 
         public GenericRepository(IApplicationDbContext context)
         {
@@ -87,6 +83,24 @@
         public void SaveChanges()
         {
             this.context.SaveChanges();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private void ChangeEntityState(T entity, EntityState state)

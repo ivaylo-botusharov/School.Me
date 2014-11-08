@@ -12,11 +12,6 @@
         private readonly IDictionary<Type, object> repositories;
         private bool disposed = false;
 
-        public UnitOfWork()
-            : this(new ApplicationDbContext())
-        {
-        }
-
         public UnitOfWork(IApplicationDbContext context)
         {
             this.context = context;
