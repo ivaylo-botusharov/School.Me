@@ -34,12 +34,13 @@ namespace Application.Web.Infrastructure
 
         private void AddBindings()
         {
-            kernel.Bind<IApplicationDbContext>().To<ApplicationDbContext>();
+            kernel.Bind<IApplicationDbContext>().To<ApplicationDbContext>().InRequestScope();
 
             //kernel.Bind<IUserStore<ApplicationUser>>()
             //  .To<UserStore<ApplicationUser>>()
             //  .WithConstructorArgument("applicationDbContext", new ApplicationDbContext());
 
+            kernel.Bind<ITeacherService>().To<TeacherService>();
             kernel.Bind<IStudentService>().To<StudentService>();
             kernel.Bind<ICourseService>().To<CourseService>();
         }

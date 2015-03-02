@@ -62,7 +62,9 @@
     <Compile Include="Repositories\IApplicationUserRepository.cs" />
     <Compile Include="Repositories\IDeletableEntityRepository.cs" />
     <Compile Include="Repositories\IStudentRepository.cs" />
+    <Compile Include="Repositories\ITeacherRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
+    <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="IUnitOfWork.cs" />
@@ -72,6 +74,10 @@
     <Compile Include="Repositories\IGenericRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application.Common\Application.Common.csproj">
+      <Project>{874cde81-ae4d-44e4-860d-728e53cb7e38}</Project>
+      <Name>Application.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Application.Models\Application.Models.csproj">
       <Project>{49c59340-50f5-40ab-8eba-b357ac648a7a}</Project>
       <Name>Application.Models</Name>

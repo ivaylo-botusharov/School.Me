@@ -13,19 +13,15 @@
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using Application.Common;
 
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationUserManager userManager;
 
-        private readonly IStudentService studentService;
-
-        public AccountController(IStudentService studentService)
+        public AccountController()
         {
-            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(studentService.UnitOfWork.Context);
-            this.userManager = new ApplicationUserManager(store);
-            this.studentService = studentService;
         }
 
         public ApplicationUserManager UserManager
@@ -76,6 +72,19 @@
                 if (user != null && user.IsDeleted == false)
                 {
                     await SignInAsync(user, model.RememberMe);
+
+                    if (string.IsNullOrEmpty(returnUrl))
+                    {
+                        if (UserManager.IsInRole(userForEmail.Id, GlobalConstants.AdministratorRoleName))
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "Administration" });
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home", new { area = "" });
+                        }
+                    }
+
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -94,49 +103,6 @@
         public ActionResult Register()
         {
             return View();
-        }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(StudentRegisterSubmitModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser()
-                {
-                    UserName = model.RegisterViewModel.UserName,
-                    Email = model.RegisterViewModel.Email
-                };
-
-                IdentityResult result = await UserManager.CreateAsync(user, model.RegisterViewModel.Password);
-                if (result.Succeeded)
-                {
-                    await SignInAsync(user, isPersistent: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    Student student = new Student();
-                    student.ApplicationUserId = user.Id;
-                    Mapper.Map<StudentRegisterSubmitModel, Student>(model, student);
-                    this.studentService.Add(student);
-
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    AddErrors(result);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
         //

@@ -52,6 +52,19 @@
             }
         }
 
+        public ITeacherRepository Teachers
+        {
+            get
+            {
+                var typeOfModel = typeof(Teacher);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new TeacherRepository(this.context));
+                }
+                return (ITeacherRepository)this.repositories[typeOfModel];
+            }
+        }
+
         public IGenericRepository<Course> Courses
         {
             get

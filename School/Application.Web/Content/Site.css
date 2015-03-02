@@ -15,3 +15,8 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.input-group 
+{
+    margin: 15px 0;
+}

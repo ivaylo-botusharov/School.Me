@@ -134,6 +134,12 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -221,6 +227,23 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Administration\Controllers\StudentsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\TeachersController.cs" />
+    <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
+    <Compile Include="Areas\Administration\Models\StudentListViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\StudentDetailsEditModel.cs" />
+    <Compile Include="Areas\Administration\Models\TeacherDetailsEditModel.cs" />
+    <Compile Include="Areas\Administration\Models\TeacherListViewModel.cs" />
+    <Compile Include="Areas\Students\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Students\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\Students\Models\StudentRegisterSubmitModel.cs" />
+    <Compile Include="Areas\Students\StudentsAreaRegistration.cs" />
+    <Compile Include="Areas\Teachers\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Teachers\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\Teachers\Models\TeacherRegisterSubmitModel.cs" />
+    <Compile Include="Areas\Teachers\TeachersAreaRegistration.cs" />
     <Compile Include="AutoMapperConfig\AutoMapperWebConfiguration.cs" />
     <Compile Include="AutoMapperConfig\OrganizationProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -235,7 +258,7 @@
     <Compile Include="Models\AccountDetailsEditModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\SearchSubmitModel.cs" />
-    <Compile Include="Models\StudentBasicViewModel.cs" />
+    <Compile Include="Models\StudentListViewModel.cs" />
     <Compile Include="Models\StudentDetailsEditModel.cs" />
     <Compile Include="Models\StudentRegisterSubmitModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -246,6 +269,11 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Admin_Panel\students-icon-01.png" />
+    <Content Include="Content\Images\Admin_Panel\students-icon-02.png" />
+    <Content Include="Content\Images\Admin_Panel\teachers-icon-01.png" />
+    <Content Include="Content\Images\Admin_Panel\teachers-icon-02.png" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -255,6 +283,25 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Areas\Administration\Views\web.config" />
+    <Content Include="Areas\Administration\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Areas\Administration\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Students\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Students\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Students\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\Students\Delete.cshtml" />
+    <Content Include="Areas\Students\Views\web.config" />
+    <Content Include="Areas\Teachers\Views\web.config" />
+    <Content Include="Areas\Teachers\Views\Account\Register.cshtml" />
+    <Content Include="Areas\Students\Views\Account\Register.cshtml" />
+    <Content Include="Areas\Students\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Teachers\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Administration\Views\Teachers\Delete.cshtml" />
+    <Content Include="Areas\Administration\Views\Teachers\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\Teachers\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Teachers\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -317,12 +364,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Students\Views\Shared\" />
+    <Folder Include="Areas\Teachers\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application.Common\Application.Common.csproj">
+      <Project>{874cde81-ae4d-44e4-860d-728e53cb7e38}</Project>
+      <Name>Application.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Application.Data\Application.Data.csproj">
       <Project>{9e3aac21-9ba1-4a9b-a905-f68b9e59254c}</Project>
       <Name>Application.Data</Name>
