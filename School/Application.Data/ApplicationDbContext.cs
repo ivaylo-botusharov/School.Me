@@ -18,6 +18,10 @@
 
         public IDbSet<Student> Students { get; set; }
 
+        public IDbSet<Teacher> Teachers { get; set; }
+
+        public IDbSet<Administrator> Administrators { get; set; }
+
         public IDbSet<Course> Courses { get; set; }
 
         public static ApplicationDbContext Create()
@@ -29,7 +33,6 @@
         {
             try
             {
-                this.ApplyDeletableEntityRules();
                 base.SaveChanges();
             }
             catch (DbEntityValidationException ex)
@@ -53,21 +56,6 @@
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class
         {
             return base.Set<TEntity>();
-        }
-
-        private void ApplyDeletableEntityRules()
-        {
-            // Introduced in Julie Lerman's video: http://bit.ly/123661P
-            foreach (
-                var entry in
-                this.ChangeTracker.Entries()
-                .Where(e => e.Entity is IDeletableEntity && (e.State == EntityState.Deleted)))
-                {
-                    var entity = (IDeletableEntity)entry.Entity;
-                    entity.DeletedOn = DateTime.Now;
-                    entity.IsDeleted = true;
-                    entry.State = EntityState.Modified;
-                }
         }
     }
 }

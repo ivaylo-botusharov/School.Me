@@ -59,14 +59,11 @@
 
         public void Delete(Student student)
         {
-            string applicationUserId = student.ApplicationUserId;
             student.ApplicationUser.DeletedBy = student.DeletedBy;
 
             this.unitOfWork.Users.Delete(student.ApplicationUser);
             this.unitOfWork.Students.Delete(student);
 
-            // Needed because the "Delete" methods above set ApplicationUserId to null
-            student.ApplicationUserId = applicationUserId;
             this.unitOfWork.Save();
         }
 
@@ -80,7 +77,7 @@
 
         public bool IsUserNameUniqueOnEdit(Student student, string username)
         {
-            bool isUserNameUnique = ! this.unitOfWork.Students.All()
+            bool isUserNameUnique = ! this.unitOfWork.Students.AllWithDeleted()
                 .Any(s => (s.ApplicationUser.UserName == username) &&
                     (s.ApplicationUserId != student.ApplicationUserId));
 

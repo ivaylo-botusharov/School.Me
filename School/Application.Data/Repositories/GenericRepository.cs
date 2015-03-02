@@ -10,11 +10,6 @@
         private readonly IApplicationDbContext context;
         protected readonly IDbSet<T> dbSet;
 
-        public GenericRepository()
-            : this(new ApplicationDbContext())
-        {
-        }
-
         public GenericRepository(IApplicationDbContext context)
         {
             if (context == null)
@@ -89,7 +84,7 @@
             this.context.SaveChanges();
         }
 
-        private void ChangeEntityState(T entity, EntityState state)
+        public void ChangeEntityState(T entity, EntityState state)
         {
             var entry = this.context.Entry(entity);
             if (entry.State == EntityState.Detached)

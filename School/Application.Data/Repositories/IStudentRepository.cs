@@ -4,7 +4,7 @@
     using System.Linq;
     using Application.Models;
 
-    public interface IStudentRepository : IGenericRepository<Student>
+    public interface IStudentRepository : IDeletableEntityRepository<Student>
     {
     }
 }

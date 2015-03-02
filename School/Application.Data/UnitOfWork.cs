@@ -12,11 +12,6 @@
         private readonly IDictionary<Type, object> repositories;
         private bool disposed = false;
 
-        public UnitOfWork()
-            : this(new ApplicationDbContext())
-        {
-        }
-
         public UnitOfWork(IApplicationDbContext context)
         {
             this.context = context;
@@ -54,6 +49,19 @@
                     this.repositories.Add(typeOfModel, new StudentRepository(this.context));
                 }
                 return (IStudentRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public ITeacherRepository Teachers
+        {
+            get
+            {
+                var typeOfModel = typeof(Teacher);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new TeacherRepository(this.context));
+                }
+                return (ITeacherRepository)this.repositories[typeOfModel];
             }
         }
 
