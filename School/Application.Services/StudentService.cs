@@ -77,7 +77,7 @@
 
         public bool IsUserNameUniqueOnEdit(Student student, string username)
         {
-            bool isUserNameUnique = ! this.unitOfWork.Students.All()
+            bool isUserNameUnique = ! this.unitOfWork.Students.AllWithDeleted()
                 .Any(s => (s.ApplicationUser.UserName == username) &&
                     (s.ApplicationUserId != student.ApplicationUserId));
 

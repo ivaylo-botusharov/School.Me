@@ -23,7 +23,7 @@
         // GET: Students
         public ActionResult Index()
         {
-            var allStudents = this.studentService.All().Project().To<StudentBasicViewModel>();
+            var allStudents = this.studentService.All().Project().To<StudentListViewModel>();
             return View(allStudents.AsEnumerable());
         }
 
@@ -69,7 +69,7 @@
             var foundStudents = this.studentService
                 .SearchByName(name)
                 .Project()
-                .To<StudentBasicViewModel>();
+                .To<StudentListViewModel>();
 
             return View(foundStudents.AsEnumerable());
         }
@@ -151,47 +151,6 @@
         //    }
         //    return View(model);
         //}
-
-        [Authorize]
-        public ActionResult Delete(Guid id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            
-            Student student = this.studentService.GetById(id);
-
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            return View(student);
-        }
-
-        [Authorize]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            Student student = this.studentService.GetById(id);
-
-            if (student.ApplicationUserId == User.Identity.GetUserId())
-            {
-                student.DeletedBy = User.Identity.GetUserId();
-                this.studentService.Delete(student);
-                
-                var accountController = new AccountController(this.studentService);
-                accountController.ControllerContext = this.ControllerContext;
-                accountController.LogOff();
-                
-                return RedirectToAction("Index", "Home");
-            }
-
-            student.DeletedBy = User.Identity.GetUserId();
-            this.studentService.Delete(student);
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

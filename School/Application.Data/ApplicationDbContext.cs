@@ -18,6 +18,10 @@
 
         public IDbSet<Student> Students { get; set; }
 
+        public IDbSet<Teacher> Teachers { get; set; }
+
+        public IDbSet<Administrator> Administrators { get; set; }
+
         public IDbSet<Course> Courses { get; set; }
 
         public static ApplicationDbContext Create()

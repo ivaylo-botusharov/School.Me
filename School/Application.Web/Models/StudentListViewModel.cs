@@ -4,13 +4,13 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
-    public class StudentBasicViewModel
+    public class StudentListViewModel
     {
         public Guid Id { get; set; }
 
-        [Display(Name = "Име на студент")]
-        public string Name { get; set; }
-
+        [Display(Name = "Username")]
         public string UserName { get; set; }
+
+        public string Name { get; set; }
     }
 }
