@@ -22,7 +22,23 @@
 
         public IDbSet<Administrator> Administrators { get; set; }
 
-        public IDbSet<Course> Courses { get; set; }
+        public IDbSet<Subject> Subjects { get; set; }
+
+        public IDbSet<SchoolClass> SchoolClasses { get; set; }
+
+        public IDbSet<Lesson> Lessons { get; set; }
+
+        public IDbSet<Attachment> Attachments { get; set; }
+
+        public IDbSet<Homework> Homeworks { get; set; }
+
+        public IDbSet<MasterSchedule> MasterSchedules { get; set; }
+
+        public IDbSet<AcademicYear> AcademicYears { get; set; }
+
+        public IDbSet<HomeworkSolution> HomeworkSolutions { get; set; }
+
+        public IDbSet<TotalGrade> TotalGrades { get; set; }
 
         public static ApplicationDbContext Create()
         {
