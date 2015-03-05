@@ -65,11 +65,11 @@
             }
         }
 
-        public IGenericRepository<Course> Courses
+        public IGenericRepository<SchoolClass> SchoolClasses
         {
             get
             {
-                return this.GetRepository<Course>();
+                return this.GetRepository<SchoolClass>();
             }
         }
         
