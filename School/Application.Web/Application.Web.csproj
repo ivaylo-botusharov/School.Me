@@ -247,7 +247,6 @@
     <Compile Include="AutoMapperConfig\AutoMapperWebConfiguration.cs" />
     <Compile Include="AutoMapperConfig\OrganizationProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -354,11 +353,6 @@
     <Content Include="Views\Students\Details.cshtml" />
     <Content Include="Views\Students\Edit.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
-    <Content Include="Views\Courses\Create.cshtml" />
-    <Content Include="Views\Courses\Delete.cshtml" />
-    <Content Include="Views\Courses\Details.cshtml" />
-    <Content Include="Views\Courses\Edit.cshtml" />
-    <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Students\_StudentSearchForm.cshtml" />
     <Content Include="Views\Students\Search.cshtml" />
   </ItemGroup>

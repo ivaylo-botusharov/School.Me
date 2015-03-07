@@ -8,11 +8,11 @@
 
     public class Student : DeletableEntity
     {
-        private ICollection<Course> courses;
+        private ICollection<SchoolClass> schoolClasses;
 
         public Student()
         {
-            this.courses = new HashSet<Course>();
+            this.schoolClasses = new HashSet<SchoolClass>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,10 +23,10 @@
 
         public int? Age { get; set; }
         
-        public virtual ICollection<Course> Courses
+        public virtual ICollection<SchoolClass> SchoolClasses
         {
-            get { return this.courses; }
-            set { this.courses = value; }
+            get { return this.schoolClasses; }
+            set { this.schoolClasses = value; }
         }
 
         public string ApplicationUserId { get; set; }

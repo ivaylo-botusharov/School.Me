@@ -42,7 +42,6 @@ namespace Application.Web.Infrastructure
 
             kernel.Bind<ITeacherService>().To<TeacherService>();
             kernel.Bind<IStudentService>().To<StudentService>();
-            kernel.Bind<ICourseService>().To<CourseService>();
         }
     }
 }

@@ -56,14 +56,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcademicYear.cs" />
     <Compile Include="Administrator.cs" />
     <Compile Include="ApplicationUser.cs" />
-    <Compile Include="Course.cs" />
+    <Compile Include="Attachment.cs" />
     <Compile Include="DeletableEntity.cs" />
+    <Compile Include="Homework.cs" />
+    <Compile Include="HomeworkAttachment.cs" />
+    <Compile Include="HomeworkSolution.cs" />
     <Compile Include="IDeletableEntity.cs" />
+    <Compile Include="Lesson.cs" />
+    <Compile Include="LessonAttachment.cs" />
+    <Compile Include="MasterSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchoolClass.cs" />
     <Compile Include="Student.cs" />
+    <Compile Include="Subject.cs" />
     <Compile Include="Teacher.cs" />
+    <Compile Include="TotalGrade.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

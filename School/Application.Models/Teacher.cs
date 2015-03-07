@@ -10,6 +10,13 @@ namespace Application.Models
 {
     public class Teacher : DeletableEntity
     {
+        private ICollection<Subject> subjects;
+
+        public Teacher()
+        {
+            this.subjects = new HashSet<Subject>();
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
@@ -21,5 +28,11 @@ namespace Application.Models
         public string ApplicationUserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
+
+        public ICollection<Subject> Subjects
+        {
+            get { return this.subjects; }
+            set { this.subjects = value; }
+        }
     }
 }
