@@ -22,9 +22,6 @@ namespace Application.Data.Migrations
         private const int firstAcademicYear = 1995;
         private const int academicYearsCount = 3;
 
-        private const int classStudentsNumber = 20;
-        private const int gradeClassesNumber = 5;
-
         private readonly List<string> personNames = new List<string>()
         {
             "Teddy Ferrara",
@@ -183,18 +180,20 @@ namespace Application.Data.Migrations
                 return schoolClasses;
             }
 
-            int charANumber = (int)'A';
+            int maxGrades; 
 
             for (int currentYear = 1; currentYear <= academicYearsCount; currentYear++)
             {
-                for (int currentGrade = 1; currentGrade <= lastSchoolYear; currentGrade++)
+                maxGrades = currentYear > lastSchoolYear ? lastSchoolYear : currentYear;
+
+                for (int currentGrade = 1; currentGrade <= maxGrades; currentGrade++)
                 {
 
-                    for (int i = charANumber; i < charANumber + gradeClassesNumber; i++)
+                    for (char letter = 'A'; letter <= 'E'; letter++)
                     {
                         SchoolClass schoolClass = new SchoolClass();
                         schoolClass.Grade = currentGrade;
-                        schoolClass.ClassLetter = ((char)i).ToString();
+                        schoolClass.ClassLetter = letter.ToString();
                         schoolClass.AcademicYear = academicYears[currentYear - 1];
                         context.SchoolClasses.AddOrUpdate(schoolClass);
                         schoolClasses.Add(schoolClass);
@@ -269,7 +268,7 @@ namespace Application.Data.Migrations
                 return students;
             }
 
-            for (int i = 1; i <= classStudentsNumber; i++)
+            for (int i = 1; i <= 20; i++)
             {
                 var studentProfile = new Student();
                 studentProfile.Name = this.personNames[i - 1];
