@@ -12,18 +12,16 @@ namespace Application.Data.Migrations
     internal sealed class Configuration : DbMigrationsConfiguration<Application.Data.ApplicationDbContext>
     {
         private const int lastSchoolYear = 12;
-        
-        private const int academicYearStartDate = 15;
-        private const int academicYearStartMonth = 9;
 
-        private const int academicYearEndDate = 31;
-        private const int academicYearEndMonth = 5;
-        
-        private const int firstAcademicYear = 1995;
         private const int academicYearsCount = 3;
+
+        private  DateTime startDate = new DateTime(1995, 9, 15);
+        private  DateTime endDate = new DateTime(1996, 5, 31);
 
         private const int classStudentsNumber = 20;
         private const int gradeClassesNumber = 5;
+
+        private int studentCounter = 1;
 
         private readonly List<string> personNames = new List<string>()
         {
@@ -55,32 +53,24 @@ namespace Application.Data.Migrations
             this.AutomaticMigrationDataLossAllowed = true;
         }
 
+        private UserManager<ApplicationUser> userManager;
+
+        private RoleManager<IdentityRole> roleManager;
+
+        //private ApplicationDbContext context;
+
         protected override void Seed(Application.Data.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
-
-            var userManager = this.CreateUserManager(context);
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            userManager = this.CreateUserManager(context);
+            roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
             context.Configuration.AutoDetectChangesEnabled = false;
 
             this.SeedRoles(context);
-            this.SeedAdminUser(context, userManager, roleManager);
-            var academicYears = this.SeedAcademicYears(context);
-            var schoolClasses = this.SeedSchoolClasses(context, academicYears);
-            var teachers = this.SeedTeachers(context, userManager, roleManager);
-            var students = this.SeedStudents(context, userManager, roleManager);
+            this.SeedAdminUser(context);
+            this.SeedAcademicYears(context, academicYearsCount);
+
+            //var teachers = this.SeedTeachers(context);
 
             context.Configuration.AutoDetectChangesEnabled = true;
         }
@@ -99,10 +89,7 @@ namespace Application.Data.Migrations
             context.SaveChanges();
         }
 
-        private void SeedAdminUser(
-            ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+        private void SeedAdminUser(ApplicationDbContext context)
         {
             if (context.Administrators.Any())
             {
@@ -142,75 +129,228 @@ namespace Application.Data.Migrations
             context.SaveChanges();
         }
 
-        private List<AcademicYear> SeedAcademicYears(ApplicationDbContext context)
+        private void SeedAcademicYears(ApplicationDbContext context, int academicYearsCount)
         {
             var academicYears = new List<AcademicYear>();
 
             if (context.AcademicYears.Any())
             {
-                return academicYears;
+                return;
             }
+
+            var previousAcademicYear = new AcademicYear();
+
+            previousAcademicYear.StartDate = startDate;
+            previousAcademicYear.EndDate = endDate;
 
             for (int i = 0; i < academicYearsCount; i++)
             {
-                var academicYear = new AcademicYear();
-                academicYear.StartDate = new DateTime(firstAcademicYear + i, academicYearStartMonth, academicYearStartDate);
-                academicYear.EndDate = new DateTime(firstAcademicYear + i + 1, academicYearEndMonth, academicYearEndDate);
-                academicYear.IsActive = false;
-
-                if (i == academicYearsCount - 1)
+                if (academicYears.Count() > 0)
                 {
-                    academicYear.IsActive = true;
+                    previousAcademicYear = academicYears.Last();
                 }
 
-                context.AcademicYears.AddOrUpdate(academicYear);
+                var academicYear = SeedSingleAcademicYear(context, previousAcademicYear, lastSchoolYear, gradeClassesNumber);
                 academicYears.Add(academicYear);
             }
-
-            context.SaveChanges();
-
-            return academicYears;
         }
 
-        private List<SchoolClass> SeedSchoolClasses(ApplicationDbContext context, List<AcademicYear> academicYears)
+        private AcademicYear SeedSingleAcademicYear(
+            ApplicationDbContext context,
+            AcademicYear previousAcademicYear,
+            int lastSchoolYear, 
+            int gradeClassesNumber)
         {
-            List<SchoolClass> schoolClasses = new List<SchoolClass>();
-            int academicYearsCount = academicYears.Count();
-            
+            var academicYear = new AcademicYear();
 
-            if (context.SchoolClasses.Any())
+            if (previousAcademicYear.Grades.Count() > 0)
             {
-                return schoolClasses;
+                academicYear.StartDate = previousAcademicYear.StartDate.AddYears(1);
+                academicYear.EndDate = previousAcademicYear.EndDate.AddYears(1);
+            }
+            else
+            {
+                academicYear.StartDate = previousAcademicYear.StartDate;
+                academicYear.EndDate = previousAcademicYear.EndDate;
+            }
+           
+            academicYear.IsActive = true;
+            previousAcademicYear.IsActive = false;
+            
+            IList<Grade> previousAcademicYearGrades = new List<Grade>();
+
+            if (previousAcademicYear.Grades.Count() > 0)
+            {
+                previousAcademicYearGrades = previousAcademicYear.Grades;
             }
 
-            int charANumber = (int)'A';
-
-            for (int currentYear = 1; currentYear <= academicYearsCount; currentYear++)
+            academicYear.Grades = SeedGrades(context, previousAcademicYearGrades, lastSchoolYear);
+           
+            foreach (var grade in academicYear.Grades)
             {
-                for (int currentGrade = 1; currentGrade <= lastSchoolYear; currentGrade++)
+                if (previousAcademicYear.Grades.Count() > 0 && grade.GradeYear > 1)
                 {
+                    gradeClassesNumber = previousAcademicYear
+                        .Grades
+                        .First(g => g.GradeYear == grade.GradeYear - 1)
+                        .SchoolClasses
+                        .Count();
+                }
 
-                    for (int i = charANumber; i < charANumber + gradeClassesNumber; i++)
+                grade.SchoolClasses = SeedSchoolClasses(context, gradeClassesNumber);
+
+                foreach (var schoolClass in grade.SchoolClasses)
+                {
+                    SchoolClass oldSchoolClass = new SchoolClass();
+
+                    if (previousAcademicYear.Grades.Count() > 0 && grade.GradeYear > 1)
                     {
-                        SchoolClass schoolClass = new SchoolClass();
-                        schoolClass.Grade = currentGrade;
-                        schoolClass.ClassLetter = ((char)i).ToString();
-                        schoolClass.AcademicYear = academicYears[currentYear - 1];
-                        context.SchoolClasses.AddOrUpdate(schoolClass);
-                        schoolClasses.Add(schoolClass);
+                        oldSchoolClass = previousAcademicYear
+                           .Grades
+                           .FirstOrDefault(g => g.GradeYear == grade.GradeYear - 1)
+                           .SchoolClasses
+                           .FirstOrDefault(sc => sc.ClassLetter == schoolClass.ClassLetter);
+                    }
+
+                    schoolClass.Students = SeedStudents(context, oldSchoolClass, classStudentsNumber);
+                }
+            }
+
+            context.AcademicYears.AddOrUpdate(academicYear);
+            context.SaveChanges();
+
+            return academicYear;
+        }
+
+        private List<Grade> SeedGrades(
+            ApplicationDbContext context,
+            IList<Grade> previousAcademicYearGrades,
+            int lastSchoolYear)
+        {
+            var grades = new List<Grade>();
+
+            if (previousAcademicYearGrades == null || previousAcademicYearGrades.Count() == 0)
+            {
+                for (int gradeIndex = 0; gradeIndex < lastSchoolYear; gradeIndex++)
+                {
+                    Grade grade = new Grade();
+                    grade.GradeYear = gradeIndex + 1;
+
+                    context.Grades.AddOrUpdate(grade);
+                    grades.Add(grade);
+                }
+            }
+            else
+            {
+                Grade grade = new Grade();
+                grade.GradeYear = 1;
+
+                context.Grades.AddOrUpdate(grade);
+                grades.Add(grade);
+
+                foreach (var previousAcademicYearGrade in previousAcademicYearGrades)
+                {
+                    if (previousAcademicYearGrade.GradeYear < lastSchoolYear)
+                    {
+                        grade = new Grade();
+                        grade.GradeYear = previousAcademicYearGrade.GradeYear + 1;
+
+                        context.Grades.AddOrUpdate(grade);
+                        grades.Add(grade);
                     }
                 }
             }
 
-            context.SaveChanges();
+            return grades;
+        }
+
+        private List<SchoolClass> SeedSchoolClasses(ApplicationDbContext context, int gradeClassesNumber)
+        {
+            List<SchoolClass> schoolClasses = new List<SchoolClass>();
+            int charANumber = (int)'A';
+
+            for (int currentChar = charANumber; currentChar < charANumber + gradeClassesNumber; currentChar++)
+            {
+                SchoolClass schoolClass = new SchoolClass();
+                schoolClass.ClassLetter = ((char)currentChar).ToString();
+
+                context.SchoolClasses.AddOrUpdate(schoolClass);
+                schoolClasses.Add(schoolClass);
+            }
 
             return schoolClasses;
         }
 
-        private List<Teacher> SeedTeachers(
+        private List<Student> SeedStudents(
+            ApplicationDbContext context, 
+            SchoolClass oldSchoolClass, 
+            int classStudentsNumber)
+        {
+            var students = new List<Student>();
+
+            if (oldSchoolClass != null && oldSchoolClass.Students.Count() > 0)
+            {
+                students = oldSchoolClass.Students;
+            }
+            else
+            {
+                students = CreateClassOfStudents(context, classStudentsNumber);
+            }
+
+            return students;
+        }
+
+        private Student CreateSingleStudent()
+        {
+            var studentProfile = new Student();
+            Random rand = new Random();
+            studentProfile.Name = this.personNames[rand.Next(0, this.personNames.Count() - 1)];
+
+            // Create Student Role if it does not exist
+            if (!roleManager.RoleExists(GlobalConstants.StudentRoleName))
+            {
+                roleManager.Create(new IdentityRole(GlobalConstants.StudentRoleName));
+            }
+
+            // Create Student User with password
+            var studentUser = new ApplicationUser();
+
+            studentUser.UserName = "student" + studentCounter.ToString("D4");
+            studentUser.Email = "s" + studentCounter.ToString("D4") + "@s.com";
+            studentCounter++;
+
+            string password = "111";
+
+            var result = userManager.Create(studentUser, password);
+
+            // Add Student User to Student Role
+            if (result.Succeeded)
+            {
+                userManager.AddToRole(studentUser.Id, GlobalConstants.StudentRoleName);
+            }
+
+            // Add Student User to Student Profile
+            studentProfile.ApplicationUser = studentUser;
+
+            return studentProfile;
+            
+        }
+
+        private List<Student> CreateClassOfStudents(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            int classStudentsNumber)
+        {
+            var students = new List<Student>();
+            for (int i = 0; i < classStudentsNumber; i++)
+            {
+                var student = CreateSingleStudent();
+                context.Students.Add(student);
+                students.Add(student);
+            }
+            return students;
+        }
+
+        private List<Teacher> SeedTeachers(ApplicationDbContext context)
         {
             var teachers = new List<Teacher>();
 
@@ -255,56 +395,6 @@ namespace Application.Data.Migrations
             context.SaveChanges();
 
             return teachers;
-        }
-
-        private List<Student> SeedStudents(
-            ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
-        {
-            var students = new List<Student>();
-
-            if (context.Students.Any())
-            {
-                return students;
-            }
-
-            for (int i = 1; i <= classStudentsNumber; i++)
-            {
-                var studentProfile = new Student();
-                studentProfile.Name = this.personNames[i - 1];
-
-                // Create Student Role if it does not exist
-                if (!roleManager.RoleExists(GlobalConstants.StudentRoleName))
-                {
-                    roleManager.Create(new IdentityRole(GlobalConstants.StudentRoleName));
-                }
-
-                // Create Student User with password
-                var studentUser = new ApplicationUser();
-                string counter = i < 10 ? ("0" + i) : i.ToString();
-                studentUser.UserName = "student" + counter;
-                studentUser.Email = "s" + counter + "@s.com";
-                string password = "111";
-
-                var result = userManager.Create(studentUser, password);
-
-                // Add Student User to Student Role
-                if (result.Succeeded)
-                {
-                    userManager.AddToRole(studentUser.Id, GlobalConstants.StudentRoleName);
-                }
-
-                // Add Student User to Student Profile
-                studentProfile.ApplicationUser = studentUser;
-                context.Students.Add(studentProfile);
-
-                students.Add(studentProfile);
-            }
-
-            context.SaveChanges();
-
-            return students;
         }
 
         private UserManager<ApplicationUser> CreateUserManager(ApplicationDbContext context)

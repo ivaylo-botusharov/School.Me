@@ -38,7 +38,9 @@
 
         public IDbSet<HomeworkSolution> HomeworkSolutions { get; set; }
 
-        public IDbSet<TotalGrade> TotalGrades { get; set; }
+        public IDbSet<TotalScore> TotalScores { get; set; }
+
+        public IDbSet<Grade> Grades { get; set; }
 
         public static ApplicationDbContext Create()
         {

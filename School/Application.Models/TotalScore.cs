@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Models
 {
-    public class TotalGrade
+    public class TotalScore
     {
         public int Id { get; set; }
 
