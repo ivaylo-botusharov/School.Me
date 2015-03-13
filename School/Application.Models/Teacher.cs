@@ -29,7 +29,7 @@ namespace Application.Models
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        public ICollection<Subject> Subjects
+        public virtual ICollection<Subject> Subjects
         {
             get { return this.subjects; }
             set { this.subjects = value; }
