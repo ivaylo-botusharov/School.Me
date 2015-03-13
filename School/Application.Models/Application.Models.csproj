@@ -61,6 +61,7 @@
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="Attachment.cs" />
     <Compile Include="DeletableEntity.cs" />
+    <Compile Include="Grade.cs" />
     <Compile Include="Homework.cs" />
     <Compile Include="HomeworkAttachment.cs" />
     <Compile Include="HomeworkSolution.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Student.cs" />
     <Compile Include="Subject.cs" />
     <Compile Include="Teacher.cs" />
-    <Compile Include="TotalGrade.cs" />
+    <Compile Include="TotalScore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
