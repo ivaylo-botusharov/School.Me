@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,12 @@ namespace Application.Models
     {
         private List<SchoolClass> schoolClasses;
 
+        private List<Subject> subjects;
+
         public Grade()
         {
             this.schoolClasses = new List<SchoolClass>();
+            this.subjects = new List<Subject>();
         }
 
         public int Id { get; set; }
@@ -23,12 +27,16 @@ namespace Application.Models
             set { this.schoolClasses = value; }
         }
 
+        public virtual List<Subject> Subjects
+        {
+            get { return this.subjects; }
+            set { this.subjects = value; }
+        }
+
         public virtual AcademicYear AcademicYear { get; set; }
 
         public Guid? AcademicYearId { get; set; }
 
         public int GradeYear { get; set; }
-
-
     }
 }

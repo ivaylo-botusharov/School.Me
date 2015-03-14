@@ -15,8 +15,8 @@ namespace Application.Data.Migrations
 
         private const int academicYearsCount = 3;
 
-        private  DateTime startDate = new DateTime(1995, 9, 15);
-        private  DateTime endDate = new DateTime(1996, 5, 31);
+        private DateTime startDate = new DateTime(1995, 9, 15);
+        private DateTime endDate = new DateTime(1996, 5, 31);
 
         private const int classStudentsNumber = 20;
         private const int gradeClassesNumber = 5;
@@ -46,6 +46,37 @@ namespace Application.Data.Migrations
             "Ivy Kearney",
             "Sammy Keen",
         };
+        
+        private readonly List<string> primaryEducationSubjectNames = new List<string>()
+        {
+            "Literature",
+            "Languages",
+            "Mathematics",
+            "Computer Science",
+            "Arts",
+            "Music",
+            "Physical education"
+        };
+
+        private readonly List<string> secondaryEducationSubjectNames = new List<string>()
+        {
+            "Literature",
+            "Languages",
+            "Mathematics",
+            "Computer Science",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "History",
+            "Geography",
+            "Psychology",
+            "Philosophy",
+            "Logic",
+            "Arts",
+            "Music",
+            "Physical education",
+            "Industrial arts"
+        };
 
         public Configuration()
         {
@@ -56,8 +87,6 @@ namespace Application.Data.Migrations
         private UserManager<ApplicationUser> userManager;
 
         private RoleManager<IdentityRole> roleManager;
-
-        //private ApplicationDbContext context;
 
         protected override void Seed(Application.Data.ApplicationDbContext context)
         {
@@ -99,7 +128,7 @@ namespace Application.Data.Migrations
             var administratorProfile = new Administrator();
             administratorProfile.FirstName = "Admin";
             administratorProfile.LastName = "Admin";
-            
+
 
             // Create Admin Role if it does not exist
             if (!roleManager.RoleExists(GlobalConstants.AdministratorRoleName))
@@ -158,7 +187,7 @@ namespace Application.Data.Migrations
         private AcademicYear SeedSingleAcademicYear(
             ApplicationDbContext context,
             AcademicYear previousAcademicYear,
-            int lastSchoolYear, 
+            int lastSchoolYear,
             int gradeClassesNumber)
         {
             var academicYear = new AcademicYear();
@@ -173,10 +202,10 @@ namespace Application.Data.Migrations
                 academicYear.StartDate = previousAcademicYear.StartDate;
                 academicYear.EndDate = previousAcademicYear.EndDate;
             }
-           
+
             academicYear.IsActive = true;
             previousAcademicYear.IsActive = false;
-            
+
             IList<Grade> previousAcademicYearGrades = new List<Grade>();
 
             if (previousAcademicYear.Grades.Count() > 0)
@@ -185,7 +214,7 @@ namespace Application.Data.Migrations
             }
 
             academicYear.Grades = SeedGrades(context, previousAcademicYearGrades, lastSchoolYear);
-           
+
             foreach (var grade in academicYear.Grades)
             {
                 if (previousAcademicYear.Grades.Count() > 0 && grade.GradeYear > 1)
@@ -197,7 +226,9 @@ namespace Application.Data.Migrations
                         .Count();
                 }
 
-                grade.SchoolClasses = SeedSchoolClasses(context, gradeClassesNumber);
+                SeedSchoolClasses(context, grade, gradeClassesNumber);
+
+                SeedSubjects(context, grade);
 
                 foreach (var schoolClass in grade.SchoolClasses)
                 {
@@ -264,7 +295,7 @@ namespace Application.Data.Migrations
             return grades;
         }
 
-        private List<SchoolClass> SeedSchoolClasses(ApplicationDbContext context, int gradeClassesNumber)
+        private List<SchoolClass> SeedSchoolClasses(ApplicationDbContext context, Grade grade, int gradeClassesNumber)
         {
             List<SchoolClass> schoolClasses = new List<SchoolClass>();
             int charANumber = (int)'A';
@@ -272,6 +303,7 @@ namespace Application.Data.Migrations
             for (int currentChar = charANumber; currentChar < charANumber + gradeClassesNumber; currentChar++)
             {
                 SchoolClass schoolClass = new SchoolClass();
+                schoolClass.Grade = grade;
                 schoolClass.ClassLetter = ((char)currentChar).ToString();
 
                 context.SchoolClasses.AddOrUpdate(schoolClass);
@@ -282,8 +314,8 @@ namespace Application.Data.Migrations
         }
 
         private List<Student> SeedStudents(
-            ApplicationDbContext context, 
-            SchoolClass oldSchoolClass, 
+            ApplicationDbContext context,
+            SchoolClass oldSchoolClass,
             int classStudentsNumber)
         {
             var students = new List<Student>();
@@ -333,7 +365,7 @@ namespace Application.Data.Migrations
             studentProfile.ApplicationUser = studentUser;
 
             return studentProfile;
-            
+
         }
 
         private List<Student> CreateClassOfStudents(
@@ -348,6 +380,33 @@ namespace Application.Data.Migrations
                 students.Add(student);
             }
             return students;
+        }
+
+        private List<Subject> SeedSubjects(ApplicationDbContext context, Grade grade)
+        {
+            List<Subject> subjects = new List<Subject>();
+
+            List<string> currentSubjectNames = new List<string>();
+
+            if (grade.GradeYear < 8)
+            {
+                currentSubjectNames = primaryEducationSubjectNames;
+            }
+            else
+            {
+                currentSubjectNames = secondaryEducationSubjectNames;
+            }
+
+            foreach (var subjectName in currentSubjectNames)
+            {
+                Subject subject = new Subject();
+                subject.Name = subjectName;
+                subject.Grade = grade;
+                context.Subjects.AddOrUpdate(subject);
+                subjects.Add(subject);
+            }
+
+            return subjects;
         }
 
         private List<Teacher> SeedTeachers(ApplicationDbContext context)
