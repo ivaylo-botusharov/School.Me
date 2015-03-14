@@ -22,11 +22,9 @@ namespace Application.Models
 
         public string Name { get; set; }
 
-        public int Grade { get; set; }
+        public virtual Grade Grade { get; set; }
 
-        public AcademicYear AcademicYear { get; set; }
-
-        public Guid AcademicYearId { get; set; }
+        public int? GradeId { get; set; }
 
         public string Description { get; set; }
 

@@ -46,6 +46,37 @@ namespace Application.Data.Migrations
             "Ivy Kearney",
             "Sammy Keen",
         };
+        
+        private readonly List<string> primaryEducationSubjectNames = new List<string>()
+        {
+            "Literature",
+            "Languages",
+            "Mathematics",
+            "Computer Science",
+            "Arts",
+            "Music",
+            "Physical education"
+        };
+
+        private readonly List<string> secondaryEducationSubjectNames = new List<string>()
+        {
+            "Literature",
+            "Languages",
+            "Mathematics",
+            "Computer Science",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "History",
+            "Geography",
+            "Psychology",
+            "Philosophy",
+            "Logic",
+            "Arts",
+            "Music",
+            "Physical education",
+            "Industrial arts"
+        };
 
         public Configuration()
         {
@@ -56,8 +87,6 @@ namespace Application.Data.Migrations
         private UserManager<ApplicationUser> userManager;
 
         private RoleManager<IdentityRole> roleManager;
-
-        //private ApplicationDbContext context;
 
         protected override void Seed(Application.Data.ApplicationDbContext context)
         {
@@ -198,6 +227,8 @@ namespace Application.Data.Migrations
                 }
 
                 SeedSchoolClasses(context, grade, gradeClassesNumber);
+
+                SeedSubjects(context, grade);
 
                 foreach (var schoolClass in grade.SchoolClasses)
                 {
@@ -349,6 +380,33 @@ namespace Application.Data.Migrations
                 students.Add(student);
             }
             return students;
+        }
+
+        private List<Subject> SeedSubjects(ApplicationDbContext context, Grade grade)
+        {
+            List<Subject> subjects = new List<Subject>();
+
+            List<string> currentSubjectNames = new List<string>();
+
+            if (grade.GradeYear < 8)
+            {
+                currentSubjectNames = primaryEducationSubjectNames;
+            }
+            else
+            {
+                currentSubjectNames = secondaryEducationSubjectNames;
+            }
+
+            foreach (var subjectName in currentSubjectNames)
+            {
+                Subject subject = new Subject();
+                subject.Name = subjectName;
+                subject.Grade = grade;
+                context.Subjects.AddOrUpdate(subject);
+                subjects.Add(subject);
+            }
+
+            return subjects;
         }
 
         private List<Teacher> SeedTeachers(ApplicationDbContext context)
