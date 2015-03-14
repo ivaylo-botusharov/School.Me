@@ -28,10 +28,9 @@ namespace Application.Models
 
         public string ClassLetter { get; set; }
 
-        //public virtual Grade Grade { get; set; }
+        public virtual Grade Grade { get; set; }
 
-        
-        //public int GradeId { get; set; }
+        public int GradeId { get; set; }
 
         public virtual List<Student> Students
         {
