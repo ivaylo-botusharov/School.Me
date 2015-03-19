@@ -12,15 +12,9 @@ namespace Application.Models
     {
         private List<Student> students;
 
-        private ICollection<Subject> subjects;
-
-        private ICollection<Homework> homeworks;
-
         public SchoolClass()
         {
             this.students = new List<Student>();
-            this.subjects = new HashSet<Subject>();
-            this.homeworks = new HashSet<Homework>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -32,22 +26,14 @@ namespace Application.Models
 
         public int GradeId { get; set; }
 
+        public virtual SchoolTheme SchoolTheme { get; set; }
+
+        public int SchoolThemeId { get; set; }
+
         public virtual List<Student> Students
         {
             get { return this.students; }
             set { this.students = value; }
-        }
-
-        public virtual ICollection<Subject> Subjects
-        {
-            get { return this.subjects; }
-            set { this.subjects = value; }
-        }
-
-        public virtual ICollection<Homework> Homeworks
-        {
-            get { return this.homeworks; }
-            set { this.homeworks = value; }
         }
     }
 }

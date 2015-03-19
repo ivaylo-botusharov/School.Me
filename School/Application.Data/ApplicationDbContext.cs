@@ -42,6 +42,8 @@
 
         public IDbSet<Grade> Grades { get; set; }
 
+        public IDbSet<SchoolTheme> SchoolThemes { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
