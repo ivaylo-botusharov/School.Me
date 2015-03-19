@@ -11,7 +11,7 @@ namespace Application.Models
     {
         private List<SchoolClass> schoolClasses;
 
-        private List<Subject> subjects;
+        private IList<Subject> subjects;
 
         public Grade()
         {
@@ -27,7 +27,7 @@ namespace Application.Models
             set { this.schoolClasses = value; }
         }
 
-        public virtual List<Subject> Subjects
+        public virtual IList<Subject> Subjects
         {
             get { return this.subjects; }
             set { this.subjects = value; }
