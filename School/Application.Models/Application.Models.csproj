@@ -71,6 +71,7 @@
     <Compile Include="MasterSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchoolClass.cs" />
+    <Compile Include="SchoolTheme.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="Subject.cs" />
     <Compile Include="Teacher.cs" />

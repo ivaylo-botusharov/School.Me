@@ -8,13 +8,11 @@ namespace Application.Models
     public class Subject
     {
         private ICollection<Lesson> lessons;
-        private ICollection<SchoolClass> schoolClasses;
         private ICollection<Teacher> teachers;
 
         public Subject()
         {
             this.lessons = new HashSet<Lesson>();
-            this.schoolClasses = new HashSet<SchoolClass>();
             this.teachers = new HashSet<Teacher>();
         }
 
@@ -22,13 +20,17 @@ namespace Application.Models
 
         public string Name { get; set; }
 
-        public virtual Grade Grade { get; set; }
-
-        public int? GradeId { get; set; }
-
         public string Description { get; set; }
 
         public int TotalHours { get; set; }
+
+        public virtual SchoolTheme SchoolTheme { get; set; }
+
+        public int SchoolThemeId { get; set; }
+
+        public virtual Grade Grade { get; set; }
+
+        public int GradeId { get; set; }
 
         public virtual ICollection<Lesson> Lessons
         {
@@ -36,12 +38,6 @@ namespace Application.Models
             set { this.lessons = value; }
         }
 
-        public virtual ICollection<SchoolClass> SchoolClasses
-        {
-            get { return this.schoolClasses; }
-            set { this.schoolClasses = value; }
-        }
-        
         public virtual ICollection<Teacher> Teachers
         {
             get { return this.teachers; }

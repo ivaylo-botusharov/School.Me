@@ -11,9 +11,12 @@ namespace Application.Models
     {
         private IList<Grade> grades;
 
+        private IList<SchoolTheme> schoolThemes;
+
         public AcademicYear()
         {
             this.grades = new List<Grade>();
+            this.schoolThemes = new List<SchoolTheme>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -29,6 +32,12 @@ namespace Application.Models
         {
             get { return this.grades; }
             set { this.grades = value; }
+        }
+
+        public virtual IList<SchoolTheme> SchoolThemes
+        {
+            get { return this.schoolThemes; }
+            set { this.schoolThemes = value; }
         }
     }
 }
