@@ -1,13 +1,9 @@
 ﻿@using Application.Web.Areas.Administration.Models
-@using PagedList;
-@using PagedList.Mvc;
-
 
 @model IEnumerable<AcademicYearListViewModel>
 
 @{
     ViewBag.Title = "School - Academic Years List";
-    var pagedList = (IPagedList)Model;
 }
 
 <h2>Academic Years List</h2>
@@ -46,17 +42,11 @@
                     @Html.DisplayFor(modelItem => academicYear.IsActive)
                 </td>
                 <td>
-                    <button type="button" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-info-sign" aria-hidden="true"></span> Details
-                    </button>
+                    <a href="@Url.Action("Details", "AcademicYears", new { startYear = academicYear.StartYear })" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span> Details
+                    </a>
                 </td>
             </tr>
         }
     </table>
 </div>
-
-<br />
-Page @(pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber) of @pagedList.PageCount
-
-@Html.PagedListPager((IPagedList)Model,
-    page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

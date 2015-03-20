@@ -232,8 +232,10 @@
     <Compile Include="Areas\Administration\Controllers\HomeController.cs" />
     <Compile Include="Areas\Administration\Controllers\StudentsController.cs" />
     <Compile Include="Areas\Administration\Controllers\TeachersController.cs" />
+    <Compile Include="Areas\Administration\Models\AcademicYearDetailsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AcademicYearListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
+    <Compile Include="Areas\Administration\Models\GradeListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\StudentListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\StudentDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\TeacherDetailsEditModel.cs" />
@@ -304,6 +306,7 @@
     <Content Include="Areas\Administration\Views\Teachers\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Teachers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\AcademicYears\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\AcademicYears\Details.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

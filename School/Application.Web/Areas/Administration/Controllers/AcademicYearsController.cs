@@ -21,16 +21,22 @@ namespace Application.Web.Areas.Administration.Controllers
             this.academicYearService = academicYearService;
         }
 
-        public ActionResult Index(int? page)
+        public ActionResult Index()
         {
             IQueryable<AcademicYear> academicYears = this.academicYearService.All().OrderBy(y => y.StartDate);
 
             IQueryable<AcademicYearListViewModel> sortedAcademicYears = academicYears.Project().To<AcademicYearListViewModel>();
 
-            int pageSize = 10;
-            int pageIndex = (page ?? 1);
+            return View(sortedAcademicYears);
+        }
 
-            return View(sortedAcademicYears.ToPagedList(pageIndex, pageSize));
+        public ActionResult Details(int startYear)
+        {
+            AcademicYear academicYear = this.academicYearService.All().FirstOrDefault(y => y.StartDate.Year == startYear);
+
+            AcademicYearDetailsViewModel academicYearViewModel = Mapper.Map<AcademicYear, AcademicYearDetailsViewModel>(academicYear);
+
+            return View(academicYearViewModel);
         }
     }
 }
