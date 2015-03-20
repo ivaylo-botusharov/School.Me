@@ -34,6 +34,8 @@
             Mapper.CreateMap<ApplicationUser, Application.Web.Areas.Administration.Models.AccountDetailsEditModel>();
 
             Mapper.CreateMap<Application.Web.Areas.Administration.Models.AccountDetailsEditModel, ApplicationUser>();
+
+            Mapper.CreateMap<AcademicYear, Application.Web.Areas.Administration.Models.AcademicYearListViewModel>();
         }
 
         public override string ProfileName

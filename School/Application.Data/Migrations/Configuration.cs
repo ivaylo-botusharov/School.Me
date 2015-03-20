@@ -660,7 +660,6 @@ namespace Application.Data.Migrations
 
         private List<Teacher> SeedTeachers(ApplicationDbContext context, IList<Grade> currentAcademicYearGrades, IList<Grade> previousAcademicYearGrades)
         {
-            int teacherCounter = 1;
             var teachers = new List<Teacher>();
 
             foreach (var grade in currentAcademicYearGrades)
