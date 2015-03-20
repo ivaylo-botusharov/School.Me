@@ -72,6 +72,14 @@
                 return this.GetRepository<SchoolClass>();
             }
         }
+
+        public IGenericRepository<AcademicYear> AcademicYears
+        {
+            get
+            {
+                return this.GetRepository<AcademicYear>();
+            }
+        }
         
         public void Save()
         {

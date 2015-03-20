@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Models
 {
-    public class AcademicYear
+    public class AcademicYear : DeletableEntity
     {
         private IList<Grade> grades;
 
