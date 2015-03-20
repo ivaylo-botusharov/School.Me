@@ -36,6 +36,11 @@
             Mapper.CreateMap<Application.Web.Areas.Administration.Models.AccountDetailsEditModel, ApplicationUser>();
 
             Mapper.CreateMap<AcademicYear, Application.Web.Areas.Administration.Models.AcademicYearListViewModel>();
+
+            Mapper.CreateMap<AcademicYear, Application.Web.Areas.Administration.Models.AcademicYearDetailsViewModel>();
+
+            Mapper.CreateMap<Grade, Application.Web.Areas.Administration.Models.GradeListViewModel>()
+                .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count));
         }
 
         public override string ProfileName

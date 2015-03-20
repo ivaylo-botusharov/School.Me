@@ -6,14 +6,19 @@ using System.Web;
 
 namespace Application.Web.Areas.Administration.Models
 {
-    public class AcademicYearListViewModel
+    public class AcademicYearDetailsViewModel
     {
-        public Guid Id { get; set; }
+        private IList<GradeListViewModel> grades;
+
+        public AcademicYearDetailsViewModel()
+        {
+            this.grades = new List<GradeListViewModel>();
+        }
 
         [Display(Name = "Academic Year")]
-        public int StartYear 
+        public int StartYear
         {
-            get { return this.StartDate.Year; } 
+            get { return this.StartDate.Year; }
         }
 
         [Display(Name = "Start date")]
@@ -26,5 +31,11 @@ namespace Application.Web.Areas.Administration.Models
 
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
+
+        public IList<GradeListViewModel> Grades 
+        {
+            get { return this.grades; }
+            set { this.grades = value; }
+        }
     }
 }
