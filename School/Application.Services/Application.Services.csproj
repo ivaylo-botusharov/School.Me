@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcademicYearService.cs" />
+    <Compile Include="Interfaces\IAcademicYearService.cs" />
     <Compile Include="Interfaces\IRepositoryService.cs" />
     <Compile Include="Interfaces\IStudentService.cs" />
     <Compile Include="Interfaces\ITeacherService.cs" />

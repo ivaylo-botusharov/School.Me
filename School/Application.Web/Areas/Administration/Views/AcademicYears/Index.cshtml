@@ -1,0 +1,62 @@
+﻿@using Application.Web.Areas.Administration.Models
+@using PagedList;
+@using PagedList.Mvc;
+
+
+@model IEnumerable<AcademicYearListViewModel>
+
+@{
+    ViewBag.Title = "School - Academic Years List";
+    var pagedList = (IPagedList)Model;
+}
+
+<h2>Academic Years List</h2>
+
+<div class="table-list">
+    <table class="table table-striped" id="donors-list">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().StartYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().IsActive)
+            </th>
+           <th></th>
+        </tr>
+
+        @foreach (var academicYear in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.StartYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.IsActive)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-info-sign" aria-hidden="true"></span> Details
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<br />
+Page @(pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber) of @pagedList.PageCount
+
+@Html.PagedListPager((IPagedList)Model,
+    page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
