@@ -41,6 +41,9 @@
 
             Mapper.CreateMap<Grade, Application.Web.Areas.Administration.Models.GradeListViewModel>()
                 .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count));
+                //.ForMember(dest => dest.SchoolClasses, opt => opt.MapFrom(src => src.SchoolClasses));
+
+            Mapper.CreateMap<SchoolClass, Application.Web.Areas.Administration.Models.SchoolClassListViewModel>();
         }
 
         public override string ProfileName

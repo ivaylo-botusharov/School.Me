@@ -34,9 +34,26 @@
 </dl>
 
 <h3>Grades:</h3>
-<ul class="list-group">
+
+<div class="list-group panel" id="main-menu">
+    @{
+        int submenuCounter = 1;
+    }
+
     @foreach (var grade in Model.Grades)
     {
-        <li class="list-group-item"><span class="badge">@grade.SchoolClassesCount</span>@grade.GradeYear</li>
+        <a href="#submenu-@submenuCounter" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#main-menu">
+            @grade.GradeYear
+            <span class="badge">@grade.SchoolClassesCount</span>
+        </a>
+
+        <div class="collapse" id="submenu-@submenuCounter">
+            @foreach (var schoolClass in grade.SchoolClasses)
+            {
+                <a href="#" class="list-group-item">@schoolClass.ClassLetter</a>
+            }
+        </div>
+        
+        submenuCounter++;
     }
-</ul>
+</div>

@@ -236,6 +236,7 @@
     <Compile Include="Areas\Administration\Models\AcademicYearListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\GradeListViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\SchoolClassListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\StudentListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\StudentDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\TeacherDetailsEditModel.cs" />
