@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Models
 {
-    public class SchoolClass
+    public class SchoolClass : DeletableEntity
     {
         private List<Student> students;
 

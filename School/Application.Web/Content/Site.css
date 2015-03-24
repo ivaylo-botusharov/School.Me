@@ -23,3 +23,8 @@ textarea {
 .list-inline li {
     margin-right: 40px;
 }
+
+.glyphicon {
+    display: inline-block;
+    margin: 0 2px;
+}

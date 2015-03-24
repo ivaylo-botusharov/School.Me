@@ -58,9 +58,11 @@
     <Compile Include="AcademicYearService.cs" />
     <Compile Include="Interfaces\IAcademicYearService.cs" />
     <Compile Include="Interfaces\IRepositoryService.cs" />
+    <Compile Include="Interfaces\ISchoolClassService.cs" />
     <Compile Include="Interfaces\IStudentService.cs" />
     <Compile Include="Interfaces\ITeacherService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchoolClassService.cs" />
     <Compile Include="StudentService.cs" />
     <Compile Include="TeacherService.cs" />
   </ItemGroup>
