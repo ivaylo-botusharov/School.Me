@@ -3,6 +3,7 @@ using Application.Models;
 using Application.Services.Interfaces;
 using Application.Web.Areas.Administration.Models;
 using Application.Web.Areas.Students.Controllers;
+using Application.Web.Infrastructure;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNet.Identity;
@@ -70,6 +71,10 @@ namespace Application.Web.Areas.Administration.Controllers
 
             int pageSize = 10;
             int pageIndex = (page ?? 1);
+
+            RedirectUrl redirectUrl = new RedirectUrl(this.ControllerContext, null);
+
+            Session["redirectUrl"] = redirectUrl;
 
             return View(sortedStudents.ToPagedList(pageIndex, pageSize));
         }
@@ -148,6 +153,13 @@ namespace Application.Web.Areas.Administration.Controllers
             Mapper.Map<AccountDetailsEditModel, ApplicationUser>(studentModel.AccountDetailsEditModel, student.ApplicationUser);
             this.studentService.Update(student);
 
+            RedirectUrl redirectUrl = Session["redirectUrl"] as RedirectUrl;
+
+            if (!string.IsNullOrEmpty(redirectUrl.RedirectControllerName))
+            {
+                return RedirectToAction(redirectUrl.RedirectActionName, redirectUrl.RedirectControllerName, redirectUrl.RedirectParameters);
+            }
+
             return RedirectToAction("Index", "Students");
         }
 
@@ -187,6 +199,14 @@ namespace Application.Web.Areas.Administration.Controllers
 
             student.DeletedBy = User.Identity.GetUserId();
             this.studentService.Delete(student);
+
+            RedirectUrl redirectUrl = Session["redirectUrl"] as RedirectUrl;
+
+            if (!string.IsNullOrEmpty(redirectUrl.RedirectControllerName))
+            {
+                return RedirectToAction(redirectUrl.RedirectActionName, redirectUrl.RedirectControllerName, redirectUrl.RedirectParameters);
+            }
+
             return RedirectToAction("Index");
         }
 

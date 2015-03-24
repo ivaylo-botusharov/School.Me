@@ -65,11 +65,16 @@
             }
         }
 
-        public IGenericRepository<SchoolClass> SchoolClasses
+        public ISchoolClassRepository SchoolClasses
         {
             get
             {
-                return this.GetRepository<SchoolClass>();
+                var typeOfModel = typeof(SchoolClass);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new SchoolClassRepository(this.context));
+                }
+                return (ISchoolClassRepository)this.repositories[typeOfModel];
             }
         }
 

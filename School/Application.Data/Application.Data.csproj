@@ -63,8 +63,10 @@
     <Compile Include="Repositories\IAcademicYearRepository.cs" />
     <Compile Include="Repositories\IApplicationUserRepository.cs" />
     <Compile Include="Repositories\IDeletableEntityRepository.cs" />
+    <Compile Include="Repositories\ISchoolClassRepository.cs" />
     <Compile Include="Repositories\IStudentRepository.cs" />
     <Compile Include="Repositories\ITeacherRepository.cs" />
+    <Compile Include="Repositories\SchoolClassRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="UnitOfWork.cs" />

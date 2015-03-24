@@ -33,8 +33,10 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <button type="submit" class="btn btn-danger btn-sm">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            @Html.ActionLinkWithSpanUsingSession("Index", "Students", "redirectUrl", new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-arrow-left" })
         </div>
     }
 </div>

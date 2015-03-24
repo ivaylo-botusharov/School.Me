@@ -16,6 +16,11 @@ namespace Application.Web.Areas.Administration.Models
             get { return this.StartDate.Year; } 
         }
 
+        public int EndYear
+        {
+            get { return this.EndDate.Year; }
+        }
+
         [Display(Name = "Start date")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }

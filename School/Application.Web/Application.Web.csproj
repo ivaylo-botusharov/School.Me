@@ -140,6 +140,9 @@
     <Reference Include="PagedList.Mvc">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="RouteDebugger">
+      <HintPath>..\packages\routedebugger.2.1.4.0\lib\net40\RouteDebugger.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -230,12 +233,14 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AcademicYearsController.cs" />
     <Compile Include="Areas\Administration\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Administration\Controllers\SchoolClassesController.cs" />
     <Compile Include="Areas\Administration\Controllers\StudentsController.cs" />
     <Compile Include="Areas\Administration\Controllers\TeachersController.cs" />
     <Compile Include="Areas\Administration\Models\AcademicYearDetailsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AcademicYearListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\GradeListViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\SchoolClassDetailsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\SchoolClassListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\StudentListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\StudentDetailsEditModel.cs" />
@@ -254,11 +259,13 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Extensions\ActionLinkExtensions.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\RedirectUrl.cs" />
     <Compile Include="Models\AccountDetailsEditModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\SearchSubmitModel.cs" />
@@ -287,7 +294,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Areas\Administration\Views\web.config" />
+    <Content Include="Areas\Administration\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Administration\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_LoginPartial.cshtml" />
@@ -308,6 +317,7 @@
     <Content Include="Areas\Administration\Views\Teachers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\AcademicYears\Index.cshtml" />
     <Content Include="Areas\Administration\Views\AcademicYears\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\SchoolClasses\Details.cshtml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -327,7 +337,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
