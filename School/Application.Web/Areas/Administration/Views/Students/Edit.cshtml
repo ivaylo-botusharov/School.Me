@@ -66,8 +66,9 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLinkWithSpanUsingSession("Index", "Students", "redirectUrl", new { @class = "btn btn-default btn-sm", title = "Back to List" }, new { @class = "glyphicon glyphicon-arrow-left" })
 </div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -41,9 +41,17 @@
 
             Mapper.CreateMap<Grade, Application.Web.Areas.Administration.Models.GradeListViewModel>()
                 .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count));
-                //.ForMember(dest => dest.SchoolClasses, opt => opt.MapFrom(src => src.SchoolClasses));
 
-            Mapper.CreateMap<SchoolClass, Application.Web.Areas.Administration.Models.SchoolClassListViewModel>();
+            Mapper.CreateMap<SchoolClass, Application.Web.Areas.Administration.Models.SchoolClassListViewModel>()
+                .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear));
+                //.ForMember(dest => dest.SchoolThemeName, opt => opt.MapFrom(src => src.SchoolTheme.Name));
+
+            Mapper.CreateMap<SchoolClass, Application.Web.Areas.Administration.Models.SchoolClassDetailsViewModel>()
+                .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))
+                .ForMember(dest => dest.StudentsNumber, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false).Count()))
+                .ForMember(dest => dest.Students, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false)))
+                .ForMember(dest => dest.AcademicYear, opt => opt.MapFrom(src => src.Grade.AcademicYear));
+                //.ForMember(dest => dest.SchoolThemeName, opt => opt.MapFrom(src => src.SchoolTheme.Name));
         }
 
         public override string ProfileName

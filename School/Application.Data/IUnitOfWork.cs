@@ -11,7 +11,7 @@
 
         IStudentRepository Students { get; }
 
-        IGenericRepository<SchoolClass> SchoolClasses { get; }
+        ISchoolClassRepository SchoolClasses { get; }
 
         ApplicationDbContext Context { get; }
 
