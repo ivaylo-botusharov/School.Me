@@ -29,6 +29,17 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="DefaultConnection-Deployment" Order="1">
+          <Destination Path="" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=%28localdb%29\v11.0%3bInitial Catalog=Application%3bIntegrated Security=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\DefaultConnection-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -280,10 +291,10 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Images\Admin_Panel\students-icon-01.png" />
-    <Content Include="Content\Images\Admin_Panel\students-icon-02.png" />
-    <Content Include="Content\Images\Admin_Panel\teachers-icon-01.png" />
-    <Content Include="Content\Images\Admin_Panel\teachers-icon-02.png" />
+    <Content Include="Content\Images\Admin_Panel\calendar-icon.png" />
+    <Content Include="Content\Images\Admin_Panel\clock-icon.png" />
+    <Content Include="Content\Images\Admin_Panel\student-icon.png" />
+    <Content Include="Content\Images\Admin_Panel\teacher-icon.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -318,6 +329,7 @@
     <Content Include="Areas\Administration\Views\AcademicYears\Index.cshtml" />
     <Content Include="Areas\Administration\Views\AcademicYears\Details.cshtml" />
     <Content Include="Areas\Administration\Views\SchoolClasses\Details.cshtml" />
+    <None Include="Properties\PublishProfiles\schoolme.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

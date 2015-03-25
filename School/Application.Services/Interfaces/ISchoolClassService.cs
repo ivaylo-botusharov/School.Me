@@ -10,6 +10,8 @@ namespace Application.Services.Interfaces
 {
     public interface ISchoolClassService : IRepositoryService<SchoolClass>
     {
+        SchoolClass GetById(Guid id);
+
         UnitOfWork UnitOfWork { get; }
     }
 }

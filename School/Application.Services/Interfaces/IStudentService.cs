@@ -7,6 +7,8 @@
 
     public interface IStudentService : IRepositoryService<Student>
     {
+        Student GetById(int id);
+
         IQueryable<Student> SearchByName(string searchString);
 
         Student GetByUserName(string username);

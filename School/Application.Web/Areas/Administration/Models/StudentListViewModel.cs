@@ -9,7 +9,7 @@ namespace Application.Web.Areas.Administration.Models
 {
     public class StudentListViewModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Username")]
         public string UserName { get; set; }
