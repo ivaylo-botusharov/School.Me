@@ -10,6 +10,8 @@ namespace Application.Services.Interfaces
 {
     public interface ITeacherService : IRepositoryService<Teacher>
     {
+        Teacher GetById(Guid id);
+
         IQueryable<Teacher> SearchByName(string searchString);
 
         Teacher GetByUserName(string username);
