@@ -10,6 +10,8 @@
 
     public interface IAcademicYearService : IRepositoryService<AcademicYear>
     {
+        AcademicYear GetById(Guid id);
+
         UnitOfWork UnitOfWork { get; }
     }
 }

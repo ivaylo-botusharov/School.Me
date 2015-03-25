@@ -40,7 +40,8 @@
             Mapper.CreateMap<AcademicYear, Application.Web.Areas.Administration.Models.AcademicYearDetailsViewModel>();
 
             Mapper.CreateMap<Grade, Application.Web.Areas.Administration.Models.GradeListViewModel>()
-                .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count));
+                .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count))
+                .ForMember(dest => dest.SchoolClasses, opt => opt.MapFrom(src => src.SchoolClasses.OrderBy(sc => sc.ClassLetter)));
 
             Mapper.CreateMap<SchoolClass, Application.Web.Areas.Administration.Models.SchoolClassListViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear));

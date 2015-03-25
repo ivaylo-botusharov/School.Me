@@ -163,12 +163,12 @@ namespace Application.Web.Areas.Administration.Controllers
             return RedirectToAction("Index", "Students");
         }
 
-        public ActionResult Delete(Guid id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
             Student student = this.studentService.GetById(id);
 
@@ -181,7 +181,7 @@ namespace Application.Web.Areas.Administration.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(int id)
         {
             Student student = this.studentService.GetById(id);
 
