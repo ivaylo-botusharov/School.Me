@@ -28,3 +28,32 @@ textarea {
     display: inline-block;
     margin: 0 2px;
 }
+
+.carousel-inner h3 {
+    font-size: 28px;
+    font-family: Calibri;
+}
+
+.item {
+    background: #333;
+    text-align: center;
+    height: 400px;
+}
+
+.carousel {
+    margin-top: 15px;
+}
+
+/*.bs-example {
+    margin: 0;
+}*/
+
+article h1 {
+    font-family: Calibri, sans-serif;
+    font-size: 46px;
+}
+
+.main-article {
+    background-color: #dff0d8;
+    padding: 5px 15px;
+}
