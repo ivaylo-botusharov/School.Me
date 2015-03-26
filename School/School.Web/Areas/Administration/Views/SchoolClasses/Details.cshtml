@@ -1,0 +1,68 @@
+﻿@using School.Web.Areas.Administration.Models
+@model SchoolClassDetailsViewModel
+
+@{
+    ViewBag.Title = "School - School Class - Details";
+}
+
+<h2>School Class Details</h2>
+
+<dl class="dl-horizontal">
+    <dt>
+        Class Name:
+    </dt>
+
+    <dd>
+        @String.Format("{0}{1}", @Model.GradeYear, @Model.ClassLetter)
+    </dd>
+
+    <dt>
+        Academic Year:
+    </dt>   
+
+    <dd>
+        @String.Format("{0} - {1}", @Model.AcademicYear.StartYear, @Model.AcademicYear.EndYear)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(m => m.StudentsNumber)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(m => m.StudentsNumber)
+    </dd>
+
+</dl>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Students.FirstOrDefault().UserName)</th>
+            <th>@Html.DisplayNameFor(m => m.Students.FirstOrDefault().Name)</th>
+            <th>@Html.DisplayNameFor(m => m.Students.FirstOrDefault().Email)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => student.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => student.Name)</td>
+                <td>@Html.DisplayFor(modelItem => student.Email)</td>
+                <td class="text-right">
+                    @Html.ActionLinkWithSpan("", "Edit",  "Students", new { username = student.UserName }, new { @class = "btn btn-default btn-sm", title = "Edit" }, new { @class = "glyphicon glyphicon-pencil" })
+                    @Html.ActionLinkWithSpan("", "Details", "Students", new { username = student.UserName }, new { @class = "btn btn-default btn-sm", title = "Details" }, new { @class = "glyphicon glyphicon-list-alt" })
+                    @Html.ActionLinkWithSpan("", "Delete",  "Students", new { id = student.Id }, new { @class = "btn btn-default btn-sm", title = "Delete" }, new { @class = "glyphicon glyphicon-trash" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    string spanString = "<span class='glyphicon glyphicon-arrow-left'></span>";
+}
+
+@Html.ActionLinkWithHtml("", "Details", "AcademicYears", new { startYear = Model.AcademicYear.StartYear }, new { @class = "btn btn-default" }, spanString, true)
