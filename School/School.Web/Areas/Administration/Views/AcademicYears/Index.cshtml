@@ -1,0 +1,52 @@
+﻿@using School.Web.Areas.Administration.Models
+
+@model IEnumerable<AcademicYearListViewModel>
+
+@{
+    ViewBag.Title = "School - Academic Years List";
+}
+
+<h2>Academic Years List</h2>
+
+<div class="table-list">
+    <table class="table table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().StartYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().IsActive)
+            </th>
+           <th></th>
+        </tr>
+
+        @foreach (var academicYear in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.StartYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => academicYear.IsActive)
+                </td>
+                <td>
+                    <a href="@Url.Action("Details", "AcademicYears", new { startYear = academicYear.StartYear })" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span> Details
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
