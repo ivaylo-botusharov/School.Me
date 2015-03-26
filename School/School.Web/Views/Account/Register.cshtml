@@ -1,0 +1,11 @@
+﻿@model School.Web.Models.StudentRegisterSubmitModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+@Html.ActionLink("Student", "Register", "Account", new { area = "Students" }, new { @class = "btn btn-default"})
+
+@Html.ActionLink("Teacher", "Register", "Account", new { area = "Teachers" }, new { @class = "btn btn-default" })
