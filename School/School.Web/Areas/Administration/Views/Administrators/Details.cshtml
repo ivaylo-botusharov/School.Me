@@ -1,0 +1,55 @@
+﻿@using School.Web.Areas.Administration.Models
+@model AdministratorDetailsEditModel
+@{
+    ViewBag.Title = "School - Administrators - Details";
+}
+
+<h2>Administrator Details</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(m => m.AccountDetailsEditModel.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.AccountDetailsEditModel.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.AccountDetailsEditModel.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.AccountDetailsEditModel.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.AccountDetailsEditModel.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.AccountDetailsEditModel.PhoneNumber)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLinkWithSpan("Edit", new { username = Model.AccountDetailsEditModel.UserName }, new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-pencil" })
+    @Html.ActionLinkWithSpan("Index", new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-arrow-left" })
+</div>

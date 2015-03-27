@@ -1,6 +1,5 @@
 ﻿namespace School.Data.Repositories
 {
-    using System;
     using System.Linq;
 
     public interface IDeletableEntityRepository<T> : IGenericRepository<T> where T : class

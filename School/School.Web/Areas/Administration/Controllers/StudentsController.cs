@@ -151,6 +151,7 @@
 
             Mapper.Map<StudentDetailsEditModel, Student>(studentModel, student);
             Mapper.Map<AccountDetailsEditModel, ApplicationUser>(studentModel.AccountDetailsEditModel, student.ApplicationUser);
+            
             this.studentService.Update(student);
 
             RedirectUrl redirectUrl = Session["redirectUrl"] as RedirectUrl;

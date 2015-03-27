@@ -1,0 +1,38 @@
+﻿@using School.Web.Areas.Administration.Models
+@model IEnumerable<AdministratorListViewModel>
+
+@{
+    ViewBag.Title = "School - Administrators - Index";
+}
+
+<h2>Administrators List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().UserName)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().FirstName)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().LastName)</th>
+            <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Email)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var administrator in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => administrator.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => administrator.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => administrator.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => administrator.Email)</td>
+                <td class="text-right">
+                    @Html.ActionLinkWithSpan("Edit", new { username = administrator.UserName }, new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-pencil" })
+                    @Html.ActionLinkWithSpan("Details", new { username = administrator.UserName }, new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-list-alt" })
+                    @Html.ActionLinkWithSpan("Delete", new { username = administrator.UserName }, new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-trash" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLinkWithSpan("Create", new { @class = "btn btn-primary" }, new { @class = "glyphicon glyphicon-plus" })

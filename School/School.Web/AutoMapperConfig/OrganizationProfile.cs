@@ -12,6 +12,19 @@
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email));
 
+            Mapper.CreateMap<Administrator, School.Web.Areas.Administration.Models.AdministratorDetailsEditModel>()
+                .ForMember(dest => dest.AccountDetailsEditModel, opt => opt.MapFrom(src => src.ApplicationUser));
+
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.AdministratorDetailsEditModel, Administrator>()
+                .ForMember(dest => dest.ApplicationUser, opt => opt.MapFrom(src => src.AccountDetailsEditModel));
+
+            Mapper.CreateMap<Administrator, School.Web.Areas.Administration.Models.AdministratorListViewModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email));
+
+
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.AdministratorListViewModel, Administrator>();
+
             Mapper.CreateMap<School.Web.Areas.Administration.Models.StudentListViewModel, Student>();
 
             Mapper.CreateMap<Student, School.Web.Areas.Administration.Models.StudentDetailsEditModel>();
@@ -44,14 +57,12 @@
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassListViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear));
-                //.ForMember(dest => dest.SchoolThemeName, opt => opt.MapFrom(src => src.SchoolTheme.Name));
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassDetailsViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))
                 .ForMember(dest => dest.StudentsNumber, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false).Count()))
                 .ForMember(dest => dest.Students, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false)))
                 .ForMember(dest => dest.AcademicYear, opt => opt.MapFrom(src => src.Grade.AcademicYear));
-                //.ForMember(dest => dest.SchoolThemeName, opt => opt.MapFrom(src => src.SchoolTheme.Name));
         }
 
         public override string ProfileName

@@ -25,6 +25,10 @@
                     <li>@Html.ActionLink("Teachers", "Index", "Teachers", new { area = "Administration" }, new { })</li>
                     <li>@Html.ActionLink("Students", "Index", "Students", new { area = "Administration" }, new { })</li>
                     <li>@Html.ActionLink("Academic Years", "Index", "AcademicYears", new { area = "Administration" }, new { })</li>
+                    @if (User.IsInRole(School.Common.GlobalConstants.SuperAdministratorRoleName))
+                    {
+                        <li>@Html.ActionLink("Administrators", "Index", "Administrators", new { area = "Administration" }, new { })</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

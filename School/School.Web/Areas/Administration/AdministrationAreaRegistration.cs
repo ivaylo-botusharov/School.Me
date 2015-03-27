@@ -33,28 +33,49 @@
                url: "Administration/Students/Details/{username}",
                defaults: new { controller = "Students", action = "Details" },
                namespaces: new string[] { "School.Web.Areas.Administration.Controllers" }
-           );
+            );
 
             context.MapRoute(
                name: "Administration_student_edit",
                url: "Administration/Students/Edit/{username}",
                defaults: new { controller = "Students", action = "Edit" },
                namespaces: new string[] { "School.Web.Areas.Administration.Controllers" }
-           );
+            );
 
             context.MapRoute(
                name: "Administration_teacher_details",
                url: "Administration/Teachers/Details/{username}",
                defaults: new { controller = "Teachers", action = "Details" },
                namespaces: new string[] { "School.Web.Areas.Administration.Controllers" }
-           );
+            );
 
             context.MapRoute(
               name: "Administration_teacher_edit",
               url: "Administration/Teachers/Edit/{username}",
               defaults: new { controller = "Teachers", action = "Edit" },
               namespaces: new string[] { "School.Web.Areas.Administration.Controllers" }
-          );
+            );
+
+            context.MapRoute(
+               name: "Administration_administrator_details",
+               url: "Administration/Administrators/Details/{username}",
+               defaults: new { controller = "Administrators", action = "Details" },
+               namespaces: new string[] { "School.Web.Areas.Administration.Controllers" }
+            );
+
+            context.MapRoute(
+              name: "Administration_administrator_edit",
+              url: "Administration/Administrators/Edit/{username}",
+              defaults: new { controller = "Administrators", action = "Edit" },
+              namespaces: new string[] { "School.Web.Areas.Administration.Controllers" }
+            );
+
+            context.MapRoute(
+              name: "Administration_administrator_delete",
+              url: "Administration/Administrators/Delete/{username}",
+              defaults: new { controller = "Administrators", action = "Delete" },
+              namespaces: new string[] { "School.Web.Areas.Administration.Controllers" }
+            );
 
             context.MapRoute(
                 name: "Administration_default",
