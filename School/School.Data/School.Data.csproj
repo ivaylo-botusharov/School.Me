@@ -58,9 +58,11 @@
   <ItemGroup>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\AcademicYearRepository.cs" />
+    <Compile Include="Repositories\AdministratorRepository.cs" />
     <Compile Include="Repositories\ApplicationUserRepository.cs" />
     <Compile Include="Repositories\DeletableEntityRepository.cs" />
     <Compile Include="Repositories\IAcademicYearRepository.cs" />
+    <Compile Include="Repositories\IAdministratorRepository.cs" />
     <Compile Include="Repositories\IApplicationUserRepository.cs" />
     <Compile Include="Repositories\IDeletableEntityRepository.cs" />
     <Compile Include="Repositories\ISchoolClassRepository.cs" />

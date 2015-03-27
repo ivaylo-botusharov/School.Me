@@ -57,3 +57,7 @@ article h1 {
     background-color: #dff0d8;
     padding: 5px 15px;
 }
+
+dt {
+    margin-bottom: 10px;
+}

@@ -57,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcademicYearService.cs" />
+    <Compile Include="AdministratorService.cs" />
     <Compile Include="Interfaces\IAcademicYearService.cs" />
+    <Compile Include="Interfaces\IAdministratorService.cs" />
     <Compile Include="Interfaces\IRepositoryService.cs" />
     <Compile Include="Interfaces\ISchoolClassService.cs" />
     <Compile Include="Interfaces\IStudentService.cs" />

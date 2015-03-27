@@ -1,9 +1,9 @@
 ﻿namespace School.Data.Repositories
 {
-    using System;
-    using System.Linq;
     using School.Models;
+    using System;
     using System.Data.Entity;
+    using System.Linq;
 
     public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T> where T : class, IDeletableEntity
     {

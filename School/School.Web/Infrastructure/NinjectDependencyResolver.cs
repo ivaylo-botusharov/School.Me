@@ -37,6 +37,7 @@
             //  .To<UserStore<ApplicationUser>>()
             //  .WithConstructorArgument("applicationDbContext", new ApplicationDbContext());
 
+            kernel.Bind<IAdministratorService>().To<AdministratorService>();
             kernel.Bind<ITeacherService>().To<TeacherService>();
             kernel.Bind<IStudentService>().To<StudentService>();
             kernel.Bind<IAcademicYearService>().To<AcademicYearService>();

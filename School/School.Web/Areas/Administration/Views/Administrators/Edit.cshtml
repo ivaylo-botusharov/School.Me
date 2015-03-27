@@ -1,0 +1,74 @@
+﻿@using School.Web.Areas.Administration.Models
+@model AdministratorDetailsEditModel
+@{
+    ViewBag.Title = "School - Administrators - Edit";
+}
+
+<h2>Edit Admin</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
+    <div class="form-horizontal">
+        <h4>Administrator</h4>
+        <hr />
+        
+        <div class="form-group">
+            @Html.LabelFor(m => m.AccountDetailsEditModel.UserName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.AccountDetailsEditModel.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.AccountDetailsEditModel.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.AccountDetailsEditModel.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.AccountDetailsEditModel.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.AccountDetailsEditModel.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.AccountDetailsEditModel.PhoneNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.AccountDetailsEditModel.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.AccountDetailsEditModel.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLinkWithSpan("Index", new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-arrow-left" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

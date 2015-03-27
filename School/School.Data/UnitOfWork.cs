@@ -64,6 +64,19 @@
             }
         }
 
+        public IAdministratorRepository Administrators
+        {
+            get
+            {
+                var typeOfModel = typeof(Administrator);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new AdministratorRepository(this.context));
+                }
+                return (IAdministratorRepository)this.repositories[typeOfModel];
+            }
+        }
+
         public ISchoolClassRepository SchoolClasses
         {
             get
