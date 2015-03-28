@@ -18,7 +18,7 @@
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "St. Mary School Contact Details";
 
             return View();
         }

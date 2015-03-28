@@ -25,6 +25,10 @@
 
             Mapper.CreateMap<School.Web.Areas.Administration.Models.AdministratorListViewModel, Administrator>();
 
+            //Set "base" because I received an error: "Missing type map configuration or unsupported mapping."
+            //Followed Jimmy Boggard's advice on StackOverflow: http://bit.ly/19t0fw2 
+            base.CreateMap<School.Web.Areas.Administration.Models.AdministratorRegisterSubmitModel, Administrator>();
+
             Mapper.CreateMap<School.Web.Areas.Administration.Models.StudentListViewModel, Student>();
 
             Mapper.CreateMap<Student, School.Web.Areas.Administration.Models.StudentDetailsEditModel>();

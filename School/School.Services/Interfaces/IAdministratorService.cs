@@ -1,5 +1,6 @@
 ﻿namespace School.Services.Interfaces
 {
+    using School.Data;
     using School.Models;
     using System;
 
@@ -10,5 +11,7 @@
         Administrator GetByUserName(string username);
 
         bool IsUserNameUniqueOnEdit(Administrator administrator, string username);
+
+        UnitOfWork UnitOfWork { get; }
     }
 }

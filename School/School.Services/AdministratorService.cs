@@ -15,6 +15,11 @@
             this.unitOfWork = unitOfWork;
         }
 
+        public UnitOfWork UnitOfWork
+        {
+            get { return this.unitOfWork; }
+        }
+
         public Administrator GetById(Guid id)
         {
             return this.unitOfWork.Administrators.GetById(id);

@@ -1,4 +1,4 @@
-﻿namespace School.Web.Areas.Teachers.Controllers
+﻿namespace School.Web.Areas.Administration.Controllers
 {
     using AutoMapper;
     using Microsoft.AspNet.Identity;
@@ -8,7 +8,7 @@
     using School.Common;
     using School.Models;
     using School.Services.Interfaces;
-    using School.Web.Areas.Teachers.Models;
+    using School.Web.Areas.Administration.Models;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -18,13 +18,13 @@
     {
         private ApplicationUserManager userManager;
 
-        private readonly ITeacherService teacherService;
+        private readonly IAdministratorService administratorService;
 
-        public AccountController(ITeacherService teacherService)
+        public AccountController(IAdministratorService administratorService)
         {
-            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(teacherService.UnitOfWork.Context);
+            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(administratorService.UnitOfWork.Context);
             this.userManager = new ApplicationUserManager(store);
-            this.teacherService = teacherService;
+            this.administratorService = administratorService;
         }
 
         public ApplicationUserManager UserManager
@@ -52,7 +52,7 @@
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(TeacherRegisterSubmitModel model)
+        public async Task<ActionResult> Register(AdministratorRegisterSubmitModel model)
         {
             if (ModelState.IsValid)
             {
@@ -65,21 +65,14 @@
                 IdentityResult result = await UserManager.CreateAsync(user, model.RegisterViewModel.Password);
                 if (result.Succeeded)
                 {
-                    this.UserManager.AddToRole(user.Id, GlobalConstants.TeacherRoleName);
-                    await SignInAsync(user, isPersistent: false);
+                    this.UserManager.AddToRole(user.Id, GlobalConstants.AdministratorRoleName);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    Administrator administrator = new Administrator();
+                    administrator.ApplicationUserId = user.Id;
+                    Mapper.Map<AdministratorRegisterSubmitModel, Administrator>(model, administrator);
+                    this.administratorService.Add(administrator);
 
-                    Teacher teacher = new Teacher();
-                    teacher.ApplicationUserId = user.Id;
-                    Mapper.Map<TeacherRegisterSubmitModel, Teacher>(model, teacher);
-                    this.teacherService.Add(teacher);
-
-                    return RedirectToAction("Index", "Home", new { area = ""});
+                    return RedirectToAction("Index", "Administrators", new { area = "Administration" });
                 }
                 else
                 {

@@ -1,5 +1,6 @@
 ﻿namespace School.Web
 {
+    using AutoMapper;
     using School.Web.AutoMapperConfig;
     using System.Web.Http;
     using System.Web.Mvc;
@@ -17,6 +18,7 @@
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             AutoMapperWebConfiguration.Configure();
+            
         }
     }
 }

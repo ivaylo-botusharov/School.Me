@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Microsoft.AspNet.Identity;
     using School.Common;
     using School.Models;
     using School.Services.Interfaces;
@@ -26,31 +27,6 @@
             return View(administrators);
         }
 
-        public ActionResult Create()
-        {
-            AdministratorDetailsEditModel model = new AdministratorDetailsEditModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(AdministratorDetailsEditModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "The entered values do not meet the criteries. Please, try again.");
-                return View();
-            }
-
-            Administrator administrator = new Administrator();
-
-            Mapper.Map<AdministratorDetailsEditModel, Administrator>(model, administrator);
-
-            this.administratorService.Add(administrator);
-
-            return RedirectToAction("Index");
-        }
-
         public ActionResult Details(string username)
         {
             Administrator administrator = this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
@@ -72,7 +48,6 @@
 
             return View(adminModel);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -124,9 +99,10 @@
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(AdministratorDetailsEditModel model)
+        public ActionResult DeleteConfirmed(string username)
         {
-            Administrator administrator = this.administratorService.GetById(model.Id);
+            Administrator administrator = this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
+            administrator.DeletedBy = User.Identity.GetUserId();
 
             this.administratorService.Delete(administrator);
 

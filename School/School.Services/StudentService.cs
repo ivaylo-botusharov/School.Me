@@ -39,6 +39,12 @@
             var userManager = new UserManager<ApplicationUser>(store);
 
             ApplicationUser user = userManager.FindByNameAsync(username).Result;
+
+            if (user == null)
+            {
+                //TODO: Implement exception/error handling if there is no such user
+            }
+            
             Student student = this.unitOfWork.Students.All().Where(s => s.ApplicationUserId == user.Id).FirstOrDefault();
 
             return student;
@@ -81,6 +87,15 @@
                     (s.ApplicationUserId != student.ApplicationUserId));
 
             return isUserNameUnique;
+        }
+
+        public bool IsEmailUniqueOnEdit(Student student, string email)
+        {
+            bool IsEmailUnique = !this.unitOfWork.Students.AllWithDeleted()
+                .Any(s => (s.ApplicationUser.Email == email) &&
+                    (s.ApplicationUserId != student.ApplicationUserId));
+
+            return IsEmailUnique;
         }
 
         public void Dispose()
