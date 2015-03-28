@@ -15,8 +15,8 @@ namespace School.Data.Migrations
 
         private const int academicYearsCount = 3;
 
-        private DateTime startDate = new DateTime(1995, 9, 15);
-        private DateTime endDate = new DateTime(1996, 5, 31);
+        private DateTime startDate = new DateTime(2012, 9, 15);
+        private DateTime endDate = new DateTime(2013, 5, 31);
 
         private const int classStudentsNumber = 20;
         private const int gradeClassesNumber = 5;

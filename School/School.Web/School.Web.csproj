@@ -247,6 +247,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AcademicYearsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\AccountController.cs" />
     <Compile Include="Areas\Administration\Controllers\AdministratorsController.cs" />
     <Compile Include="Areas\Administration\Controllers\HomeController.cs" />
     <Compile Include="Areas\Administration\Controllers\SchoolClassesController.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Areas\Administration\Models\AcademicYearDetailsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AcademicYearListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
+    <Compile Include="Areas\Administration\Models\AccountViewModels.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorRegisterSubmitModel.cs" />
@@ -304,6 +306,8 @@
     <Content Include="Content\Images\Admin_Panel\clock-icon.png" />
     <Content Include="Content\Images\Admin_Panel\student-icon.png" />
     <Content Include="Content\Images\Admin_Panel\teacher-icon.png" />
+    <Content Include="Content\Images\Background_Textures\geometry.png" />
+    <Content Include="Content\Images\Background_Textures\school.png" />
     <Content Include="Content\Images\Home_Page_Carousel\forest-river-bridge.jpg" />
     <Content Include="Content\Images\Home_Page_Carousel\kids-sitting-in-sports-hall.jpg" />
     <Content Include="Content\Images\Home_Page_Carousel\parents-with-children-in-park.jpg" />
@@ -311,6 +315,7 @@
     <Content Include="Content\Images\Home_Page_Carousel\river-forest.jpg" />
     <Content Include="Content\Images\Home_Page_Carousel\small-lake-in-forest.jpg" />
     <Content Include="Content\Images\Home_Page_Carousel\school-girls-laughing.jpg" />
+    <Content Include="Content\Images\Home_Page_General\school-logo-lighthouse.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -350,7 +355,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Areas\Administration\Views\Administrators\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Account\Register.cshtml" />
     <None Include="Properties\PublishProfiles\schoolme.pubxml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Icon.png" />

@@ -143,9 +143,19 @@
                 student, 
                 studentModel.AccountDetailsEditModel.UserName);
 
+            bool isEmailUnique = this.studentService.IsEmailUniqueOnEdit(
+                student,
+                studentModel.AccountDetailsEditModel.Email);
+
             if (!isUserNameUnique)
             {
                 this.ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
+                return View();
+            }
+
+            if (!isEmailUnique)
+            {
+                this.ModelState.AddModelError("AccountDetailsEditModel.Email", "Duplicate emails are not allowed.");
                 return View();
             }
 
@@ -191,7 +201,7 @@
                 student.DeletedBy = User.Identity.GetUserId();
                 this.studentService.Delete(student);
 
-                var accountController = new AccountController(this.studentService);
+                var accountController = new School.Web.Areas.Students.Controllers.AccountController(this.studentService);
                 accountController.ControllerContext = this.ControllerContext;
                 accountController.LogOff();
 

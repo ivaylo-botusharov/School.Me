@@ -1,6 +1,8 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-image: url(Images/Background_Textures/school.png);
+    background-repeat:repeat;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -58,6 +60,21 @@ article h1 {
     padding: 5px 15px;
 }
 
+.main-article img {
+    margin-top: 30px;
+    margin-right: 20px;
+}
+
 dt {
     margin-bottom: 10px;
+}
+
+.body-content {
+    margin-top: 20px;
+    background-color: white;
+}
+
+.jumbotron {
+    margin-top: 25px;
+    background-color: #dcedc8;
 }
