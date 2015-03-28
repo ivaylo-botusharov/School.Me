@@ -14,6 +14,8 @@
 
         bool IsUserNameUniqueOnEdit(Student student, string username);
 
+        bool IsEmailUniqueOnEdit(Student student, string email);
+
         UnitOfWork UnitOfWork { get; }
     }
 }

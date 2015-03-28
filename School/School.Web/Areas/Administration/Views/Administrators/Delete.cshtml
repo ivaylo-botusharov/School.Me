@@ -1,0 +1,66 @@
+﻿@using School.Web.Areas.Administration.Models
+@model AdministratorDetailsEditModel
+@{
+    ViewBag.Title = "School - Administrators - Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this admin?</h3>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(m => m.AccountDetailsEditModel.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.AccountDetailsEditModel.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.AccountDetailsEditModel.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.AccountDetailsEditModel.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.AccountDetailsEditModel.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.AccountDetailsEditModel.PhoneNumber)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <button type="submit" class="btn btn-danger btn-sm">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            @Html.ActionLinkWithSpan("Index", new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-arrow-left" })
+        </div>
+    }
+</div>

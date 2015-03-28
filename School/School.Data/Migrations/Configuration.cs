@@ -1,9 +1,9 @@
 namespace School.Data.Migrations
 {
-    using School.Common;
-    using School.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using School.Common;
+    using School.Models;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
@@ -15,8 +15,8 @@ namespace School.Data.Migrations
 
         private const int academicYearsCount = 3;
 
-        private DateTime startDate = new DateTime(1995, 9, 15);
-        private DateTime endDate = new DateTime(1996, 5, 31);
+        private DateTime startDate = new DateTime(2012, 9, 15);
+        private DateTime endDate = new DateTime(2013, 5, 31);
 
         private const int classStudentsNumber = 20;
         private const int gradeClassesNumber = 5;
@@ -87,10 +87,8 @@ namespace School.Data.Migrations
             context.Configuration.AutoDetectChangesEnabled = false;
 
             this.SeedRoles(context);
-            this.SeedAdminUser(context);
+            this.SeedAdministrators(context);
             this.SeedAcademicYears(context, academicYearsCount);
-
-            //var teachers = this.SeedTeachers(context);
 
             context.Configuration.AutoDetectChangesEnabled = true;
         }
@@ -102,6 +100,7 @@ namespace School.Data.Migrations
                 return;
             }
 
+            context.Roles.AddOrUpdate(new IdentityRole(GlobalConstants.SuperAdministratorRoleName));
             context.Roles.AddOrUpdate(new IdentityRole(GlobalConstants.AdministratorRoleName));
             context.Roles.AddOrUpdate(new IdentityRole(GlobalConstants.TeacherRoleName));
             context.Roles.AddOrUpdate(new IdentityRole(GlobalConstants.StudentRoleName));
@@ -109,44 +108,69 @@ namespace School.Data.Migrations
             context.SaveChanges();
         }
 
-        private void SeedAdminUser(ApplicationDbContext context)
+        private void SeedAdministrators(ApplicationDbContext context)
         {
             if (context.Administrators.Any())
             {
                 return;
             }
 
-            var administratorProfile = new Administrator();
-            administratorProfile.FirstName = "Admin";
-            administratorProfile.LastName = "Admin";
+            var adminProfile = new Administrator();
+            adminProfile.FirstName = "SuperAdmin";
+            adminProfile.LastName = "SuperAdmin";
 
+            var adminUser = new ApplicationUser();
+            adminUser.UserName = "superadmin";
+            adminUser.Email = "superadmin@superadmin.com";
 
-            // Create Admin Role if it does not exist
+            string password = "111";
+
+            SeedAdminApplicationUser(context, adminUser, password);
+
+            adminProfile.ApplicationUser = adminUser;
+
+            context.Administrators.Add(adminProfile);
+
+            adminProfile = new Administrator();
+            adminProfile.FirstName = "Admin";
+            adminProfile.LastName = "Admin";
+
+            adminUser = new ApplicationUser();
+            adminUser.UserName = "admin";
+            adminUser.Email = "admin@admin.com";
+
+            SeedAdminApplicationUser(context, adminUser, password);
+
+            adminProfile.ApplicationUser = adminUser;
+
+            context.Administrators.Add(adminProfile);
+
+            context.SaveChanges();
+        }
+
+        private void SeedAdminApplicationUser(ApplicationDbContext context, ApplicationUser adminUser, string password)
+        {
+            if (!roleManager.RoleExists(GlobalConstants.SuperAdministratorRoleName))
+            {
+                roleManager.Create(new IdentityRole(GlobalConstants.SuperAdministratorRoleName));
+            }
+
             if (!roleManager.RoleExists(GlobalConstants.AdministratorRoleName))
             {
                 roleManager.Create(new IdentityRole(GlobalConstants.AdministratorRoleName));
             }
 
-            // Create Admin User with password
-            var administratorUser = new ApplicationUser();
-            administratorUser.UserName = "admin";
-            administratorUser.Email = "admin@admin.com";
+            var result = userManager.Create(adminUser, password);
 
-            string password = "111";
-
-            var result = userManager.Create(administratorUser, password);
-
-            // Add Admin User to Admin Role
             if (result.Succeeded)
             {
-                userManager.AddToRole(administratorUser.Id, GlobalConstants.AdministratorRoleName);
+                userManager.AddToRole(adminUser.Id, GlobalConstants.AdministratorRoleName);
+
+                if (adminUser.UserName == "superadmin")
+                {
+                    userManager.AddToRole(adminUser.Id, GlobalConstants.SuperAdministratorRoleName);
+                }
             }
-
-            // Add Admin User to Admin Profile
-            administratorProfile.ApplicationUser = administratorUser;
-            context.Administrators.Add(administratorProfile);
-
-            context.SaveChanges();
         }
 
         private void SeedAcademicYears(ApplicationDbContext context, int academicYearsCount)

@@ -8,6 +8,8 @@
 
         IStudentRepository Students { get; }
 
+        IAdministratorRepository Administrators { get; }
+
         ISchoolClassRepository SchoolClasses { get; }
 
         ApplicationDbContext Context { get; }

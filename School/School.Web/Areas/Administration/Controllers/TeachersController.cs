@@ -178,7 +178,7 @@
                 teacher.DeletedBy = User.Identity.GetUserId();
                 this.teacherService.Delete(teacher);
 
-                var accountController = new AccountController(this.teacherService);
+                var accountController = new School.Web.Areas.Teachers.Controllers.AccountController(this.teacherService);
                 accountController.ControllerContext = this.ControllerContext;
                 accountController.LogOff();
 

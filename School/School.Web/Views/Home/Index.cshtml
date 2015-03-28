@@ -2,7 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 
-<!-- Carousel
+<!-- Bootstrap Carousel
     ================================================== -->
 <div class="bs-example">
     <div id="myCarousel" class="carousel slide" data-interval="9000" data-ride="carousel">
@@ -79,9 +79,12 @@
 </div>
 
 <article class="main-article">
+    <img src="~/Content/Images/Home_Page_General/school-logo-lighthouse.png" class="pull-right" alt="school logo - lighthouse" />
     <h1>St. Mary School</h1>
     <p class="lead">Welcome to the website of St. Mary School established in 1864 in Worchenfield, Swarten.</p>
-    <p><a href="#" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <p>
+        @Html.ActionLink("Learn more »", "About", null, new { @class = "btn btn-primary btn-lg" })
+    </p>
 </article>
 
 <div class="row">
@@ -93,7 +96,7 @@
                 8 students from our Grade 6 and 7 participated in the 1997 International Mathematical Olympiad
                 held in Bologne, France and won 2 golden and one silver medals. Congratulations!
             </p>
-            <a class="btn btn-default" href="#">Learn more &raquo;</a>
+            <a class="btn btn-default" href="">Learn more &raquo;</a>
         </article>
     </section>
 

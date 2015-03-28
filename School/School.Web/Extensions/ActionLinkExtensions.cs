@@ -149,6 +149,17 @@
         }
 
         public static MvcHtmlString ActionLinkWithSpan(
+           this HtmlHelper htmlHelper,
+           string actionName,
+           object routeDict,
+           object htmlAttributes,
+           object spanAttributesDict)
+        {
+            return ActionLinkWithSpan(
+                htmlHelper, "", actionName, null, routeDict, htmlAttributes, spanAttributesDict, true);
+        }
+
+        public static MvcHtmlString ActionLinkWithSpan(
             this HtmlHelper htmlHelper,
             string linkText,
             string actionName,
@@ -158,6 +169,16 @@
         {
             return ActionLinkWithSpan(
                 htmlHelper, linkText, actionName, null, null, htmlAttributes, spanAttributesDict, spanBeforeInnerText);
+        }
+
+        public static MvcHtmlString ActionLinkWithSpan(
+            this HtmlHelper htmlHelper,
+            string actionName,
+            object htmlAttributes,
+            object spanAttributesDict)
+        {
+            return ActionLinkWithSpan(
+                htmlHelper, "", actionName, null, null, htmlAttributes, spanAttributesDict, true);
         }
 
         public static MvcHtmlString ActionLinkWithSpan(
