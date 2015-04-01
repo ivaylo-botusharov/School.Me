@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class Homework
+    public class Homework : DeletableEntity
     {
         private ICollection<HomeworkAttachment> homeworkAttachments;
 

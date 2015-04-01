@@ -1,6 +1,6 @@
 ﻿namespace School.Models
 {
-    public class HomeworkAttachment
+    public class HomeworkAttachment : DeletableEntity
     {
         public int Id { get; set; }
 

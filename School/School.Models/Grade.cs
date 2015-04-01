@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class Grade
+    public class Grade : DeletableEntity
     {
         private List<SchoolClass> schoolClasses;
 

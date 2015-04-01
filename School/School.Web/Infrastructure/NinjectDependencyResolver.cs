@@ -42,6 +42,9 @@
             kernel.Bind<IStudentService>().To<StudentService>();
             kernel.Bind<IAcademicYearService>().To<AcademicYearService>();
             kernel.Bind<ISchoolClassService>().To<SchoolClassService>();
+            kernel.Bind<ISchoolThemeService>().To<SchoolThemeService>();
+            kernel.Bind<IGradeService>().To<GradeService>();
+            kernel.Bind<ISubjectService>().To<SubjectService>();
         }
     }
 }

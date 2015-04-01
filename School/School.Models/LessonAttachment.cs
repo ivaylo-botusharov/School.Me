@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class LessonAttachment
+    public class LessonAttachment : DeletableEntity
     {
         public int Id { get; set; }
 

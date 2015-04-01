@@ -246,7 +246,25 @@ namespace School.Data.Migrations
 
             foreach (var grade in academicYear.Grades)
             {
-                SeedGradeSubjects(context, schoolThemes, grade, previousAcademicYearNumber);
+                IList<Subject> previousYearCurrentGradeSubjects = new List<Subject>();
+
+                if (previousAcademicYearGrades.Count() > 0)
+                {
+                    previousYearCurrentGradeSubjects = previousAcademicYearGrades
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
+                        .Subjects;
+                }
+
+                SeedGradeSubjects(context, schoolThemes, grade, previousYearCurrentGradeSubjects);
+
+                IList<SchoolClass> previousYearCurrentGradeClasses = new List<SchoolClass>();
+
+                if (previousAcademicYearGrades.Count() > 0)
+                {
+                    previousYearCurrentGradeClasses = previousAcademicYearGrades
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
+                        .SchoolClasses;
+                }
 
                 if (previousAcademicYear.Grades.Count() > 0 && grade.GradeYear > 1)
                 {
@@ -257,7 +275,7 @@ namespace School.Data.Migrations
                         .Count();
                 }
 
-                SeedGradeSchoolClasses(context, grade, gradeClassesNumber, schoolThemes);
+                SeedGradeSchoolClasses(context, grade, previousYearCurrentGradeClasses, gradeClassesNumber, schoolThemes);
                 
                 foreach (var schoolClass in grade.SchoolClasses)
                 {
@@ -282,6 +300,51 @@ namespace School.Data.Migrations
             context.SaveChanges();
 
             return academicYear;
+        }
+
+        private IList<SchoolTheme> SeedSchoolThemes(
+            ApplicationDbContext context,
+            IList<SchoolTheme> previousAcademicYearSchoolThemes,
+            AcademicYear currentAcademicYear)
+        {
+            IList<SchoolTheme> schoolThemes = new List<SchoolTheme>();
+
+            if (previousAcademicYearSchoolThemes.Count() > 0)
+            {
+                foreach (var schoolTheme in previousAcademicYearSchoolThemes)
+                {
+                    schoolTheme.AcademicYears.Add(currentAcademicYear);
+                    context.SchoolThemes.AddOrUpdate(schoolTheme);
+                }
+
+                schoolThemes = previousAcademicYearSchoolThemes;
+            }
+            else
+            {
+                foreach (var schoolThemeName in schoolThemeNames)
+                {
+                    SchoolTheme schoolTheme = new SchoolTheme();
+                    schoolTheme.Name = schoolThemeName;
+
+                    if (schoolThemeName == "General")
+                    {
+                        schoolTheme.StartGradeYear = 1;
+                        schoolTheme.EndGradeYear = 7;
+                    }
+                    else
+                    {
+                        schoolTheme.StartGradeYear = 8;
+                        schoolTheme.EndGradeYear = 12;
+                    }
+
+                    schoolTheme.AcademicYears.Add(currentAcademicYear);
+
+                    context.SchoolThemes.AddOrUpdate(schoolTheme);
+                    schoolThemes.Add(schoolTheme);
+                }
+            }
+
+            return schoolThemes;
         }
 
         private List<Grade> SeedGrades(
@@ -330,7 +393,213 @@ namespace School.Data.Migrations
             return grades;
         }
 
+        private List<Subject> SeedGradeSubjects(
+            ApplicationDbContext context,
+            IList<SchoolTheme> schoolThemes,
+            Grade grade,
+            IList<Subject> previousYearCurrentGradeSubjects)
+        {
+            List<Subject> subjects = new List<Subject>();
+
+            if (previousYearCurrentGradeSubjects != null && previousYearCurrentGradeSubjects.Count() > 0)
+            {
+                //Copies subject information from previous year current grade to the new subjects
+                foreach (var previousYearCurrentGradeSubject in previousYearCurrentGradeSubjects)
+                {
+                    Subject subject = new Subject();
+                    subject.Name = previousYearCurrentGradeSubject.Name;
+                    subject.Grade = grade;
+                    subject.TotalHours = previousYearCurrentGradeSubject.TotalHours;
+                    subject.SchoolTheme = previousYearCurrentGradeSubject.SchoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+                }
+            }
+            else
+            {
+                if (grade.GradeYear < 8)
+                {
+                    SchoolTheme generalSchoolTheme = schoolThemes.FirstOrDefault(st => st.Name == "General");
+                    subjects = SeedPrimarySchoolGradeSubjects(context, generalSchoolTheme, grade);
+                }
+                else
+                {
+                    IList<SchoolTheme> schoolThemesWithoutGeneral = schoolThemes.Where(st => st.Name != "General").ToList();
+                    subjects = SeedSecondarySchoolGradeSubjects(context, schoolThemesWithoutGeneral, grade);
+                }
+            }
+
+            return subjects;
+        }
+
+        private List<Subject> SeedPrimarySchoolGradeSubjects(
+            ApplicationDbContext context,
+            SchoolTheme generalSchoolTheme,
+            Grade grade)
+        {
+            List<Subject> subjects = new List<Subject>();
+
+            foreach (var subjectName in generalSchoolThemeSubjectNames)
+            {
+                Subject subject = new Subject();
+                subject.Name = subjectName;
+                subject.Grade = grade;
+                subject.TotalHours = 80;
+                subject.SchoolTheme = generalSchoolTheme;
+                context.Subjects.AddOrUpdate(subject);
+                subjects.Add(subject);
+            }
+
+            return subjects;
+        }
+
+        private List<Subject> SeedSecondarySchoolGradeSubjects(
+            ApplicationDbContext context,
+            IList<SchoolTheme> schoolThemes,
+            Grade grade)
+        {
+            List<Subject> subjects = new List<Subject>();
+
+            foreach (var schoolTheme in schoolThemes)
+            {
+                if (schoolTheme.Name == "Science, Technology, Engineering, Math (STEM)")
+                {
+                    Subject subject = new Subject();
+                    subject.Name = "Physics";
+                    subject.TotalHours = 110;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+
+                    subject = new Subject();
+                    subject.Name = "Mathematics";
+                    subject.TotalHours = 90;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+
+                    subject = new Subject();
+                    subject.Name = "Chemistry";
+                    subject.TotalHours = 70;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+                }
+
+                if (schoolTheme.Name == "Medical Careers (MC)")
+                {
+                    Subject subject = new Subject();
+                    subject.Name = "Biology";
+                    subject.TotalHours = 120;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+
+                    subject = new Subject();
+                    subject.Name = "Chemistry";
+                    subject.TotalHours = 100;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+
+                    subject = new Subject();
+                    subject.Name = "Physics";
+                    subject.TotalHours = 60;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+                }
+
+                if (schoolTheme.Name == "Humanities (H)")
+                {
+                    Subject subject = new Subject();
+                    subject.Name = "Literature";
+                    subject.TotalHours = 100;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+
+                    subject = new Subject();
+                    subject.Name = "Languages";
+                    subject.TotalHours = 90;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+
+                    subject = new Subject();
+                    subject.Name = "Philosophy";
+                    subject.TotalHours = 70;
+                    subject.Grade = grade;
+                    subject.SchoolTheme = schoolTheme;
+
+                    context.Subjects.AddOrUpdate(subject);
+                    subjects.Add(subject);
+                }
+            }
+
+            return subjects;
+        }
+
         private List<SchoolClass> SeedGradeSchoolClasses(
+            ApplicationDbContext context, 
+            Grade grade,
+            IList<SchoolClass> previousYearCurrentGradeClasses,
+            int gradeClassesNumber, 
+            IList<SchoolTheme> schoolThemes)
+        {
+            List<SchoolClass> schoolClasses = new List<SchoolClass>();
+
+            if (previousYearCurrentGradeClasses != null && previousYearCurrentGradeClasses.Count() > 0)
+            {
+                schoolClasses = CopyClassesFromPreviousYearCurrentGrade(context, grade, previousYearCurrentGradeClasses);
+            }
+            else
+            {
+                schoolClasses = CreateGradeNewSchoolClasses(context, grade, gradeClassesNumber, schoolThemes);
+            }
+
+            return schoolClasses;
+        }
+
+        private List<SchoolClass> CopyClassesFromPreviousYearCurrentGrade(
+            ApplicationDbContext context, 
+            Grade grade, 
+            IList<SchoolClass> previousYearCurrentGradeClasses)
+        {
+            List<SchoolClass> schoolClasses = new List<SchoolClass>();
+
+            foreach (var previousYearCurrentGradeClass in previousYearCurrentGradeClasses)
+            {
+                SchoolClass schoolClass = new SchoolClass();
+                schoolClass.Grade = grade;
+                schoolClass.ClassLetter = previousYearCurrentGradeClass.ClassLetter;
+                schoolClass.SchoolTheme = previousYearCurrentGradeClass.SchoolTheme;
+
+                context.SchoolClasses.AddOrUpdate(schoolClass);
+                schoolClasses.Add(schoolClass);
+            }
+
+            return schoolClasses;
+        }
+
+        private List<SchoolClass> CreateGradeNewSchoolClasses(
             ApplicationDbContext context, 
             Grade grade, 
             int gradeClassesNumber, 
@@ -393,6 +662,20 @@ namespace School.Data.Migrations
             return students;
         }
 
+        private List<Student> CreateClassOfStudents(
+            ApplicationDbContext context,
+            int classStudentsNumber)
+        {
+            var students = new List<Student>();
+            for (int i = 0; i < classStudentsNumber; i++)
+            {
+                var student = CreateSingleStudent();
+                context.Students.Add(student);
+                students.Add(student);
+            }
+            return students;
+        }
+
         private Student CreateSingleStudent()
         {
             var studentProfile = new Student();
@@ -429,259 +712,6 @@ namespace School.Data.Migrations
 
         }
 
-        private List<Student> CreateClassOfStudents(
-            ApplicationDbContext context,
-            int classStudentsNumber)
-        {
-            var students = new List<Student>();
-            for (int i = 0; i < classStudentsNumber; i++)
-            {
-                var student = CreateSingleStudent();
-                context.Students.Add(student);
-                students.Add(student);
-            }
-            return students;
-        }
-
-        private IList<SchoolTheme> SeedSchoolThemes(
-            ApplicationDbContext context, 
-            IList<SchoolTheme> previousAcademicYearSchoolThemes,
-            AcademicYear currentAcademicYear)
-        {
-            IList<SchoolTheme> schoolThemes = new List<SchoolTheme>();
-
-            if (previousAcademicYearSchoolThemes.Count() > 0)
-            {
-                foreach (var schoolTheme in previousAcademicYearSchoolThemes)
-                {
-                    schoolTheme.AcademicYears.Add(currentAcademicYear);
-                    context.SchoolThemes.AddOrUpdate(schoolTheme);
-                }
-
-                schoolThemes = previousAcademicYearSchoolThemes;
-            }
-            else
-            {
-                foreach (var schoolThemeName in schoolThemeNames)
-                {
-                    SchoolTheme schoolTheme = new SchoolTheme();
-                    schoolTheme.Name = schoolThemeName;
-
-                    if (schoolThemeName == "General")
-                    {
-                        schoolTheme.StartGradeYear = 1;
-                        schoolTheme.EndGradeYear = 7;
-                    }
-                    else
-                    {
-                        schoolTheme.StartGradeYear = 8;
-                        schoolTheme.EndGradeYear = 12;
-                    }
-
-                    schoolTheme.AcademicYears.Add(currentAcademicYear);
-
-                    context.SchoolThemes.AddOrUpdate(schoolTheme);
-                    schoolThemes.Add(schoolTheme);
-                }
-            }
-
-            return schoolThemes;
-        }
-
-        private List<Subject> SeedGradeSubjects(
-            ApplicationDbContext context, 
-            IList<SchoolTheme> schoolThemes, 
-            Grade grade, 
-            int previousAcademicYearNumber)
-        {
-            List<Subject> subjects = new List<Subject>();
-
-            if (grade.GradeYear < 8)
-            {
-                subjects = SeedPrimarySchoolGradeSubjects(context, schoolThemes, grade, previousAcademicYearNumber);
-            }
-            else
-            {
-                subjects = SeedSecondarySchoolGradeSubjects(context, schoolThemes, grade, previousAcademicYearNumber);
-            }
-
-            return subjects;
-        }
-
-        private List<Subject> SeedPrimarySchoolGradeSubjects(
-            ApplicationDbContext context, 
-            IList<SchoolTheme> schoolThemes,
-            Grade grade,
-            int previousAcademicYearNumber)
-        {
-            List<Subject> subjects = new List<Subject>();
-
-            var generalSchoolThemeSubjectsPreviousYearCurrentGrade = schoolThemes
-                    .FirstOrDefault(st => st.Name == "General")
-                    .Subjects
-                    .Where(
-                        sub => sub.Grade.GradeYear == grade.GradeYear && 
-                        sub.Grade.AcademicYear.StartDate.Year == previousAcademicYearNumber
-                    );
-
-            var generalSchoolTheme = schoolThemes.FirstOrDefault(st => st.Name == "General");
-
-            if (generalSchoolThemeSubjectsPreviousYearCurrentGrade.Count() > 0)
-            {
-                foreach (var schoolThemeSubject in generalSchoolThemeSubjectsPreviousYearCurrentGrade.ToList())
-                {
-                    Subject subject = new Subject();
-                    subject.Name = schoolThemeSubject.Name;
-                    subject.Grade = grade;
-                    subject.TotalHours = schoolThemeSubject.TotalHours;
-                    subject.SchoolTheme = generalSchoolTheme;
-                    context.Subjects.AddOrUpdate(subject);
-                    subjects.Add(subject);
-                }
-            }
-            else
-            {
-                foreach (var subjectName in generalSchoolThemeSubjectNames)
-                {
-                    Subject subject = new Subject();
-                    subject.Name = subjectName;
-                    subject.Grade = grade;
-                    subject.TotalHours = 80;
-                    subject.SchoolTheme = generalSchoolTheme;
-                    context.Subjects.AddOrUpdate(subject);
-                    subjects.Add(subject);
-                }
-            }
-
-            return subjects;
-        }
-
-        private List<Subject> SeedSecondarySchoolGradeSubjects(
-            ApplicationDbContext context, 
-            IList<SchoolTheme> schoolThemes,
-            Grade grade,
-            int previousAcademicYearNumber)
-        {
-            List<Subject> subjects = new List<Subject>();
-
-            var schoolThemesWithoutGeneral = schoolThemes.Where(st => st.Name != "General");
-
-            foreach (var currentSchoolTheme in schoolThemesWithoutGeneral)
-            {
-                var schoolThemeSubjectsPreviousYearCurrentGrade = currentSchoolTheme.Subjects.Where(
-                        sub => sub.Grade.GradeYear == grade.GradeYear &&
-                        sub.Grade.AcademicYear.StartDate.Year == previousAcademicYearNumber);
-
-                if (schoolThemeSubjectsPreviousYearCurrentGrade.Count() > 0)
-                {
-                    foreach (var schoolThemeSubject in schoolThemeSubjectsPreviousYearCurrentGrade.ToList())
-                    {
-                        Subject subject = new Subject();
-                        subject.Name = schoolThemeSubject.Name;
-                        subject.Grade = grade;
-                        subject.TotalHours = schoolThemeSubject.TotalHours;
-                        subject.SchoolTheme = currentSchoolTheme;
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-                    }
-                }
-                else
-                {
-                    if (currentSchoolTheme.Name == "Science, Technology, Engineering, Math (STEM)")
-                    {
-                        Subject subject = new Subject();
-                        subject.Name = "Physics";
-                        subject.TotalHours = 110;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-
-                        subject = new Subject();
-                        subject.Name = "Mathematics";
-                        subject.TotalHours = 90;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-
-                        subject = new Subject();
-                        subject.Name = "Chemistry";
-                        subject.TotalHours = 70;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-                    }
-
-                    if (currentSchoolTheme.Name == "Medical Careers (MC)")
-                    {
-                        Subject subject = new Subject();
-                        subject.Name = "Biology";
-                        subject.TotalHours = 120;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-
-                        subject = new Subject();
-                        subject.Name = "Chemistry";
-                        subject.TotalHours = 100;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-
-                        subject = new Subject();
-                        subject.Name = "Physics";
-                        subject.TotalHours = 60;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-                    }
-
-                    if (currentSchoolTheme.Name == "Humanities (H)")
-                    {
-                        Subject subject = new Subject();
-                        subject.Name = "Literature";
-                        subject.TotalHours = 100;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-
-                        subject = new Subject();
-                        subject.Name = "Languages";
-                        subject.TotalHours = 90;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-
-                        subject = new Subject();
-                        subject.Name = "Philosophy";
-                        subject.TotalHours = 70;
-                        subject.Grade = grade;
-                        subject.SchoolTheme = currentSchoolTheme;
-
-                        context.Subjects.AddOrUpdate(subject);
-                        subjects.Add(subject);
-                    }
-                }
-            }
-
-            return subjects;
-        }
-
         private List<Teacher> SeedTeachers(ApplicationDbContext context, IList<Grade> currentAcademicYearGrades, IList<Grade> previousAcademicYearGrades)
         {
             var teachers = new List<Teacher>();
@@ -691,6 +721,7 @@ namespace School.Data.Migrations
                 foreach (var subject in grade.Subjects)
                 {
                     Subject previousAcademicYearGradeSubject = new Subject();
+                    Teacher teacherProfile = new Teacher();
 
                     if (previousAcademicYearGrades.Count() > 0)
                     {
@@ -702,10 +733,11 @@ namespace School.Data.Migrations
                         if (previousAcademicYearGradeSubject != null)
                         {
                             subject.Teachers.Add(previousAcademicYearGradeSubject.Teachers.First());
+                            context.Subjects.AddOrUpdate(subject);
                         }
                         else
                         {
-                            Teacher teacherProfile = CreateSingleTeacher(context);
+                            teacherProfile = CreateSingleTeacher(context);
                             subject.Teachers.Add(teacherProfile);
                             context.Teachers.Add(teacherProfile);
                             teachers.Add(teacherProfile);
@@ -713,7 +745,7 @@ namespace School.Data.Migrations
                     }
                     else
                     {
-                        Teacher teacherProfile = CreateSingleTeacher(context);
+                        teacherProfile = CreateSingleTeacher(context);
                         subject.Teachers.Add(teacherProfile);
                         context.Teachers.Add(teacherProfile);
                         teachers.Add(teacherProfile);
