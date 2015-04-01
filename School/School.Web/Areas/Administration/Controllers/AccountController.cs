@@ -13,7 +13,7 @@
     using System.Web;
     using System.Web.Mvc;
 
-    [Authorize]
+    [Authorize(Roles = GlobalConstants.SuperAdministratorRoleName)]
     public class AccountController : Controller
     {
         private ApplicationUserManager userManager;
@@ -41,7 +41,6 @@
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -50,7 +49,6 @@
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(AdministratorRegisterSubmitModel model)
         {

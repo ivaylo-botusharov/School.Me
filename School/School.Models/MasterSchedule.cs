@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class MasterSchedule
+    public class MasterSchedule : DeletableEntity
     {
         public int Id { get; set; }
 

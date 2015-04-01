@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class Lesson
+    public class Lesson : DeletableEntity
     {
         private ICollection<LessonAttachment> lessonAttachments; 
 

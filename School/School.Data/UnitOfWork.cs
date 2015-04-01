@@ -90,14 +90,170 @@
             }
         }
 
-        public IGenericRepository<AcademicYear> AcademicYears
+        public IAcademicYearRepository AcademicYears
         {
             get
             {
-                return this.GetRepository<AcademicYear>();
+                var typeOfModel = typeof(AcademicYear);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new AcademicYearRepository(this.context));
+                }
+                return (IAcademicYearRepository)this.repositories[typeOfModel];
             }
         }
-        
+
+        //public IGenericRepository<AcademicYear> AcademicYears
+        //{
+        //    get
+        //    {
+        //        return this.GetRepository<AcademicYear>();
+        //    }
+        //}
+
+        public ISchoolThemeRepository SchoolThemes
+        {
+            get
+            {
+                var typeOfModel = typeof(SchoolTheme);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new SchoolThemeRepository(this.context));
+                }
+                return (ISchoolThemeRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public IGradeRepository Grades
+        {
+            get
+            {
+                var typeOfModel = typeof(Grade);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new GradeRepository(this.context));
+                }
+                return (IGradeRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public ISubjectRepository Subjects
+        {
+            get
+            {
+                var typeOfModel = typeof(Subject);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new SubjectRepository(this.context));
+                }
+                return (ISubjectRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public ILessonRepository Lessons
+        {
+            get
+            {
+                var typeOfModel = typeof(Lesson);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new LessonRepository(this.context));
+                }
+                return (ILessonRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public IHomeworkRepository Homeworks
+        {
+            get
+            {
+                var typeOfModel = typeof(Homework);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new HomeworkRepository(this.context));
+                }
+                return (IHomeworkRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public IAttachmentRepository Attachments
+        {
+            get
+            {
+                var typeOfModel = typeof(Attachment);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new AttachmentRepository(this.context));
+                }
+                return (IAttachmentRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public ILessonAttachmentRepository LessonAttachments
+        {
+            get
+            {
+                var typeOfModel = typeof(LessonAttachment);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new LessonAttachmentRepository(this.context));
+                }
+                return (ILessonAttachmentRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public IHomeworkAttachmentRepository HomeworkAttachments
+        {
+            get
+            {
+                var typeOfModel = typeof(HomeworkAttachment);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new HomeworkAttachmentRepository(this.context));
+                }
+                return (IHomeworkAttachmentRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public IHomeworkSolutionRepository HomeworkSolutions
+        {
+            get
+            {
+                var typeOfModel = typeof(HomeworkSolution);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new HomeworkSolutionRepository(this.context));
+                }
+                return (IHomeworkSolutionRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public ITotalScoreRepository TotalScores
+        {
+            get
+            {
+                var typeOfModel = typeof(TotalScore);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new TotalScoreRepository(this.context));
+                }
+                return (ITotalScoreRepository)this.repositories[typeOfModel];
+            }
+        }
+
+        public IMasterScheduleRepository MasterSchedules
+        {
+            get
+            {
+                var typeOfModel = typeof(MasterSchedule);
+                if (!this.repositories.ContainsKey(typeOfModel))
+                {
+                    this.repositories.Add(typeOfModel, new MasterScheduleRepository(this.context));
+                }
+                return (IMasterScheduleRepository)this.repositories[typeOfModel];
+            }
+        }
+
         public void Save()
         {
             this.context.SaveChanges();

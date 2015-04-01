@@ -1,0 +1,65 @@
+﻿@using School.Web.Areas.Administration.Models
+@model AcademicYearCreateSubmitModel
+@{
+    ViewBag.Title = "School - Academic Years - Create";
+}
+
+<h2>Create Academic Year</h2>
+
+<div id="spinner-container"></div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger"})
+    
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <div class="input-group date" id="datetimepicker1">
+                    @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.EndDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <div class="input-group date" id="datetimepicker2">
+                    @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default spin-activator" />
+            </div>
+        </div>
+
+    </div>
+}
+
+@Html.ActionLinkWithSpan("", "Index", "AcademicYears", new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-arrow-left" })
+
+<script type="text/javascript">
+    
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/spinner")
+    @Scripts.Render("~/bundles/bootstrap-datetimepicker-linked-fields")
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
+}

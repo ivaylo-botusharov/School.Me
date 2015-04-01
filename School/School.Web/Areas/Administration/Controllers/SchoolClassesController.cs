@@ -1,6 +1,7 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
     using AutoMapper;
+    using School.Common;
     using School.Models;
     using School.Services.Interfaces;
     using School.Web.Areas.Administration.Models;
@@ -9,6 +10,7 @@
     using System.Web.Mvc;
     using System.Web.Routing;
 
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class SchoolClassesController : Controller
     {
         private readonly ISchoolClassService schoolClassService;

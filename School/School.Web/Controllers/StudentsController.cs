@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using School.Common;
     using School.Models;
     using School.Services.Interfaces;
     using School.Web.Models;
@@ -9,6 +10,7 @@
     using System.Net;
     using System.Web.Mvc;
 
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class StudentsController : Controller
     {
         private readonly IStudentService studentService;
@@ -46,21 +48,6 @@
             return View(model);
         }
 
-        //public ActionResult Details(Guid id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Student student = this.service.Students.GetById(id);
-        //    if (student == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
-        //    return View(model);
-        //}
-
         [HttpGet]
         public ActionResult Search(string name)
         {
@@ -72,7 +59,6 @@
             return View(foundStudents.AsEnumerable());
         }
 
-        [Authorize]
         public ActionResult Edit(string username)
         {
             if (username == null)
@@ -92,7 +78,6 @@
             return View(model);
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentDetailsEditModel model)
@@ -117,38 +102,6 @@
             }
             return View(model);
         }
-
-        //public ActionResult Edit(Guid id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Student student = this.service.Students.GetById(id);
-        //    if (student == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
-
-        //    return View(model);
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(StudentDetailsEditModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //TODO: Perform validation if the currently logged on user has rights to modify the entry
-        //        Student student = this.service.Students.GetById(model.Id);
-        //        Mapper.Map<StudentDetailsEditModel, Student>(model, student);
-        //        this.service.Students.Update(student);
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(model);
-        //}
 
         protected override void Dispose(bool disposing)
         {

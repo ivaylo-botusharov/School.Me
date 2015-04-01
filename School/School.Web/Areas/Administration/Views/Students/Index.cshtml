@@ -13,17 +13,19 @@
 
 @using (Html.BeginForm("Index", "Students", FormMethod.Get))
 {
-    <div class="input-group">
-        <span class="input-group-addon">
-            <span class="glyphicon glyphicon-search"></span>
-        </span>
+    <div class="col-md-6">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-search"></span>
+            </span>
 
-        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
 
-       <span class="input-group-btn pull-left">
-           <button class="btn btn-default" type="submit">Search</button>
-       </span>
-    </div>
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">Search</button>
+            </span>
+        </div>
+    </div>   
 }
 
 <div class="table-list">

@@ -13,7 +13,7 @@
     using System.Web;
     using System.Web.Mvc;
 
-    [Authorize]
+    [Authorize(Roles = GlobalConstants.StudentRoleName)]
     public class AccountController : Controller
     {
         private ApplicationUserManager userManager;
