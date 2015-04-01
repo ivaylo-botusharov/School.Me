@@ -24,7 +24,8 @@
 
             bundles.Add(new ScriptBundle("~/bundles/spinner").Include(
                       "~/Scripts/spin.js",
-                      "~/Scripts/spin.init.js"));
+                      "~/Scripts/spin.init.js"
+                      ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker-linked-fields").Include(
                       "~/Scripts/moment.js",
