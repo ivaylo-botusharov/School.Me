@@ -1,5 +1,6 @@
 ﻿$(document).ready(
     function () {
+
         var opts = {
             lines: 13, // The number of lines to draw
             length: 20, // The length of each line
@@ -19,11 +20,14 @@
             left: '50%' // Left position relative to parent
         };
 
-        var target = document.getElementById('spinner-container');
+        var target = document.getElementById('creating_spinner_center');
         var spinner;
 
-        $('.spin-activator').click(function () {
-            spinner = new Spinner(opts).spin(target);
+        $('#create-year-form').submit(function () {
+            if ($(this).valid()) {
+                $('#Creating_Modal').modal('show');
+                spinner = new Spinner(opts).spin(target);
+            }
         });
 
     });
