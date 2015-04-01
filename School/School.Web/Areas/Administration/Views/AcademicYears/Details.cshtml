@@ -50,8 +50,9 @@
         <div class="collapse" id="submenu-@submenuCounter">
             @foreach (var schoolClass in grade.SchoolClasses)
             {
-                <a href="@Url.Action("Details", "SchoolClasses", new { gradeYear = schoolClass.GradeYear, letter = schoolClass.ClassLetter, startYear = Model.StartYear})" 
-                    class="list-group-item">@schoolClass.ClassLetter @(schoolClass.SchoolThemeName != "General" ? ", School theme: " + @schoolClass.SchoolThemeName : "")</a>
+                <a href="@Url.Action("Details", "SchoolClasses", new { gradeYear = schoolClass.GradeYear, letter = schoolClass.ClassLetter, startYear = Model.StartYear})" class="list-group-item">
+                    @schoolClass.ClassLetter @(schoolClass.SchoolThemeName != "General" ? ", School theme: " + @schoolClass.SchoolThemeName : "")
+                </a>
             }
         </div>
         

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class Subject
+    public class Subject : DeletableEntity
     {
         private ICollection<Lesson> lessons;
         private ICollection<Teacher> teachers;

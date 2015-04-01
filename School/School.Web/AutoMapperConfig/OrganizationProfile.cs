@@ -55,6 +55,9 @@
 
             Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsViewModel>();
 
+
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.AcademicYearCreateSubmitModel, AcademicYear>();
+
             Mapper.CreateMap<Grade, School.Web.Areas.Administration.Models.GradeListViewModel>()
                 .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count))
                 .ForMember(dest => dest.SchoolClasses, opt => opt.MapFrom(src => src.SchoolClasses.OrderBy(sc => sc.ClassLetter)));

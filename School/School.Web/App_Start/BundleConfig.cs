@@ -22,6 +22,15 @@
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/spinner").Include(
+                      "~/Scripts/spin.js",
+                      "~/Scripts/spin.init.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker-linked-fields").Include(
+                      "~/Scripts/moment.js",
+                      "~/Scripts/bootstrap-datetimepicker.js",
+                      "~/Scripts/bootstrap-datetimepicker.init.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

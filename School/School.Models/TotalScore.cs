@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class TotalScore
+    public class TotalScore : DeletableEntity
     {
         public int Id { get; set; }
 

@@ -9,5 +9,7 @@
         AcademicYear GetById(Guid id);
 
         UnitOfWork UnitOfWork { get; }
+
+        bool AcademicYearExistsInDb(DateTime startDate, DateTime endDate);
     }
 }
