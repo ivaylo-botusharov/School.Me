@@ -105,7 +105,11 @@
 
         protected override void Dispose(bool disposing)
         {
-            this.studentService.Dispose();
+            if (disposing)
+            {
+                this.studentService.Dispose();
+            }
+
             base.Dispose(disposing);
         }
     }

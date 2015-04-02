@@ -6,7 +6,5 @@
     public interface IHomeworkAttachment: IRepositoryService<HomeworkAttachment>
     {
         HomeworkAttachment GetById(int id);
-
-        UnitOfWork UnitOfWork { get; }
     }
 }

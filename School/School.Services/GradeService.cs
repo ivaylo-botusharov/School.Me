@@ -1,32 +1,28 @@
 ﻿namespace School.Services
 {
     using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
     using System.Linq;
 
     public class GradeService : IGradeService
     {
-        private readonly UnitOfWork unitOfWork;
+        private readonly IGradeRepository gradeRepository;
 
-        public GradeService(UnitOfWork unitOfWork)
+        public GradeService(IGradeRepository gradeRepository)
         {
-            this.unitOfWork = unitOfWork;
-        }
-
-        public UnitOfWork UnitOfWork
-        {
-            get { return this.unitOfWork; }
+            this.gradeRepository = gradeRepository;
         }
 
         public Grade GetById(int id)
         {
-            return this.unitOfWork.Grades.GetById(id);
+            return this.gradeRepository.GetById(id);
         }
 
         public bool IsGradeUniqueOnEdit(Grade grade)
         {
-            bool isGradeUnique = !this.unitOfWork.Grades
+            bool isGradeUnique = !this.gradeRepository
                 .All()
                 .Any(
                 g => (g.GradeYear == grade.GradeYear) &&
@@ -39,30 +35,30 @@
 
         public IQueryable<Grade> All()
         {
-            return this.unitOfWork.Grades.All();
+            return this.gradeRepository.All();
         }
 
         public void Add(Grade grade)
         {
-            this.unitOfWork.Grades.Add(grade);
-            this.unitOfWork.Save();
+            this.gradeRepository.Add(grade);
+            this.gradeRepository.SaveChanges();
         }
 
         public void Update(Grade grade)
         {
-            this.unitOfWork.Grades.Update(grade);
-            this.unitOfWork.Save();
+            this.gradeRepository.Update(grade);
+            this.gradeRepository.SaveChanges();
         }
 
         public void Delete(Grade grade)
         {
-            this.unitOfWork.Grades.Delete(grade);
-            this.unitOfWork.Save();
+            this.gradeRepository.Delete(grade);
+            this.gradeRepository.SaveChanges();
         }
 
         public void Dispose()
         {
-            this.unitOfWork.Dispose();
+            this.gradeRepository.Dispose();
         }
     }
 }

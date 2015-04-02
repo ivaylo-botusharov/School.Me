@@ -3,6 +3,7 @@
     using Ninject;
     using Ninject.Web.Common;
     using School.Data;
+    using School.Data.Repositories;
     using School.Services;
     using School.Services.Interfaces;
     using System;
@@ -37,14 +38,24 @@
             //  .To<UserStore<ApplicationUser>>()
             //  .WithConstructorArgument("applicationDbContext", new ApplicationDbContext());
 
-            kernel.Bind<IAdministratorService>().To<AdministratorService>();
-            kernel.Bind<ITeacherService>().To<TeacherService>();
-            kernel.Bind<IStudentService>().To<StudentService>();
+            kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>();
+            kernel.Bind<IGradeRepository>().To<GradeRepository>();
+            kernel.Bind<ISchoolClassRepository>().To<SchoolClassRepository>();
+            kernel.Bind<ISchoolThemeRepository>().To<SchoolThemeRepository>();
+            kernel.Bind<ISubjectRepository>().To<SubjectRepository>();
+            kernel.Bind<IAdministratorRepository>().To<AdministratorRepository>();
+            kernel.Bind<IStudentRepository>().To<StudentRepository>();
+            kernel.Bind<ITeacherRepository>().To<TeacherRepository>();
+            kernel.Bind<IApplicationUserRepository>().To<ApplicationUserRepository>();
+
             kernel.Bind<IAcademicYearService>().To<AcademicYearService>();
+            kernel.Bind<IGradeService>().To<GradeService>();
             kernel.Bind<ISchoolClassService>().To<SchoolClassService>();
             kernel.Bind<ISchoolThemeService>().To<SchoolThemeService>();
-            kernel.Bind<IGradeService>().To<GradeService>();
             kernel.Bind<ISubjectService>().To<SubjectService>();
+            kernel.Bind<IAdministratorService>().To<AdministratorService>();
+            kernel.Bind<IStudentService>().To<StudentService>();
+            kernel.Bind<ITeacherService>().To<TeacherService>();
         }
     }
 }

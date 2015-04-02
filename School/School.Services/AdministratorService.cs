@@ -1,6 +1,7 @@
 ﻿namespace School.Services
 {
     using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
     using System;
@@ -8,57 +9,64 @@
 
     public class AdministratorService : IAdministratorService
     {
-        private readonly UnitOfWork unitOfWork;
+        private readonly IAdministratorRepository administratorRepository;
 
-        public AdministratorService(UnitOfWork unitOfWork)
+        private readonly IApplicationUserRepository userRepository;
+
+        //private readonly IApplicationDbContext context;
+
+        public AdministratorService(
+            IAdministratorRepository administratorRepository, 
+            IApplicationUserRepository userRepository)
         {
-            this.unitOfWork = unitOfWork;
+            this.administratorRepository = administratorRepository;
+            this.userRepository = userRepository;
         }
 
-        public UnitOfWork UnitOfWork
+        public IApplicationUserRepository UserRepository
         {
-            get { return this.unitOfWork; }
+            get { return this.userRepository; }
         }
 
         public Administrator GetById(Guid id)
         {
-            return this.unitOfWork.Administrators.GetById(id);
+            return this.administratorRepository.GetById(id);
         }
 
         public Administrator GetByUserName(string username)
         {
-            return this.unitOfWork.Administrators.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
+            return this.administratorRepository.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
         }
 
         public IQueryable<Administrator> All()
         {
-            return this.unitOfWork.Administrators.All();
+            return this.administratorRepository.All();
         }
 
         public void Add(Administrator administrator)
         {
-            this.unitOfWork.Administrators.Add(administrator);
-            this.unitOfWork.Save();
+            this.administratorRepository.Add(administrator);
+            this.administratorRepository.SaveChanges();
         }
 
         public void Update(Administrator administrator)
         {
-            this.unitOfWork.Administrators.Update(administrator);
-            this.unitOfWork.Save();
+            this.administratorRepository.Update(administrator);
+            this.administratorRepository.SaveChanges();
         }
 
         public void Delete(Administrator administrator)
         {
             administrator.ApplicationUser.DeletedBy = administrator.DeletedBy;
 
-            this.unitOfWork.Users.Delete(administrator.ApplicationUser);
-            this.unitOfWork.Administrators.Delete(administrator);
-            this.unitOfWork.Save();
+            this.userRepository.Delete(administrator.ApplicationUser);
+            this.administratorRepository.Delete(administrator);
+            this.administratorRepository.SaveChanges();
         }
 
         public bool IsUserNameUniqueOnEdit(Administrator administrator, string username)
         {
-            bool isUserNameUnique = !this.unitOfWork.Administrators.AllWithDeleted()
+            bool isUserNameUnique = !this.administratorRepository.AllWithDeleted()
                 .Any(a => (a.ApplicationUser.UserName == username) &&
                     (a.ApplicationUserId != administrator.ApplicationUserId));
 
@@ -67,7 +75,7 @@
 
         public void Dispose()
         {
-            this.unitOfWork.Dispose();
+            this.administratorRepository.Dispose();
         }
     }
 }
