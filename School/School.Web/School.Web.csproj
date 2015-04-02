@@ -320,6 +320,7 @@
     <Content Include="Content\Images\Home_Page_Carousel\small-lake-in-forest.jpg" />
     <Content Include="Content\Images\Home_Page_Carousel\school-girls-laughing.jpg" />
     <Content Include="Content\Images\Home_Page_General\school-logo-lighthouse.png" />
+    <Content Include="Content\Images\Nav_Bar\school-building.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

@@ -92,8 +92,13 @@
 
             foreach (var grade in academicYear.Grades)
             {
-                IList<Subject> previousYearCurrentGradeSubjects = previousAcademicYearGrades
-                    .FirstOrDefault(g => g.GradeYear == grade.GradeYear).Subjects;
+                IList<Subject> previousYearCurrentGradeSubjects = new List<Subject>();
+
+                if (previousAcademicYear.Grades != null && previousAcademicYear.Grades.Count() > 0)
+                {
+                    previousYearCurrentGradeSubjects = previousAcademicYearGrades
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear).Subjects;
+                }
 
                 grade.Subjects = SeedGradeSubjects(grade, previousYearCurrentGradeSubjects);
 
@@ -107,9 +112,14 @@
                         .SchoolClasses;
                 }
 
-                IList<SchoolClass> previousYearCurrentGradeClasses = previousAcademicYearGrades
-                    .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
-                    .SchoolClasses;
+                IList<SchoolClass> previousYearCurrentGradeClasses = new List<SchoolClass>();
+
+                if (previousAcademicYearGrades != null && previousAcademicYearGrades.Count() > 0)
+                {
+                    previousYearCurrentGradeClasses = previousAcademicYearGrades
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
+                        .SchoolClasses;
+                }
 
                 SeedGradeSchoolClasses(grade, previousYearPreviousGradeClasses, previousYearCurrentGradeClasses);
 
