@@ -1,6 +1,6 @@
 ﻿namespace School.Services.Interfaces
 {
-    using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using System.Linq;
 
@@ -16,6 +16,6 @@
 
         bool IsEmailUniqueOnEdit(Student student, string email);
 
-        UnitOfWork UnitOfWork { get; }
+        IApplicationUserRepository UserRepository { get; }
     }
 }

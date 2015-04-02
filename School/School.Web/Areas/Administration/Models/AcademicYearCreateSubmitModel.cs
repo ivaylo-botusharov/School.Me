@@ -50,11 +50,14 @@
                 errors.Add(new ValidationResult("Academic Year with the entered start year or end year already exists."));
             }
 
-            AcademicYear latestAcademicYear = academicYearService.All().OrderByDescending(ay => ay.StartDate).First();
-
-            if (StartDate.Year > latestAcademicYear.StartDate.Year + 1)
+            if (academicYearService.All().Count() > 0)
             {
-                errors.Add(new ValidationResult("New academic year cannot be more than 1 year later than latest academic year."));
+                AcademicYear latestAcademicYear = academicYearService.All().OrderByDescending(ay => ay.StartDate).First();
+                
+                if (latestAcademicYear != null && StartDate.Year > latestAcademicYear.StartDate.Year + 1)
+                {
+                    errors.Add(new ValidationResult("New academic year cannot be more than 1 year later than latest academic year."));
+                }
             }
 
             if (EndDate.Year > StartDate.Year + 1)

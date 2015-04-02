@@ -8,6 +8,7 @@
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly IApplicationDbContext context;
+        
         protected readonly IDbSet<T> dbSet;
 
         public GenericRepository(IApplicationDbContext context)
@@ -99,5 +100,29 @@
 
             entry.State = state;
         }
+
+        public void Dispose()
+        {
+            this.context.Dispose();
+        }
+
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (!this.disposed)
+        //    {
+        //        if (disposing)
+        //        {
+        //            this.context.Dispose();
+        //        }
+        //    }
+
+        //    this.disposed = true;
+        //}
+
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
     }
 }

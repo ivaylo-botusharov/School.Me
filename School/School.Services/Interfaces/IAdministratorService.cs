@@ -1,6 +1,7 @@
 ﻿namespace School.Services.Interfaces
 {
     using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using System;
 
@@ -12,6 +13,6 @@
 
         bool IsUserNameUniqueOnEdit(Administrator administrator, string username);
 
-        UnitOfWork UnitOfWork { get; }
+        IApplicationUserRepository UserRepository { get; }
     }
 }

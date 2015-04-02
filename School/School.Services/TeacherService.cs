@@ -1,8 +1,6 @@
 ﻿namespace School.Services
 {
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
     using System;
@@ -10,83 +8,71 @@
 
     public class TeacherService : ITeacherService
     {
-        private readonly UnitOfWork unitOfWork;
-        
-        public TeacherService(UnitOfWork unitOfWork)
+        private readonly ITeacherRepository teacherRepository;
+
+        private readonly IApplicationUserRepository userRepository;
+
+        public TeacherService(ITeacherRepository teacherRepository, IApplicationUserRepository userRepository)
         {
-            this.unitOfWork = unitOfWork;
+            this.teacherRepository = teacherRepository;
+            this.userRepository = userRepository;
         }
 
-        public UnitOfWork UnitOfWork
+        public IApplicationUserRepository UserRepository
         {
-            get { return this.unitOfWork;  }
+            get { return this.userRepository; }
         }
 
         public IQueryable<Teacher> All()
         {
-            return this.unitOfWork.Teachers.All();
+            return this.teacherRepository.All();
         }
 
         public Teacher GetById(Guid id)
         {
-            return this.unitOfWork.Teachers.GetById(id);
+            return this.teacherRepository.GetById(id);
         }
 
-        //TODO: Move GetByUserName() in the TeachersRepository.
-        //This way Services will be decoupled from Microsoft.AspNet.Identity and ApplicationDbContext.
         public Teacher GetByUserName(string username)
         {
-            var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
-            var userManager = new UserManager<ApplicationUser>(store);
-
-            ApplicationUser user = userManager.FindByNameAsync(username).Result;
-            Teacher teacher = this.unitOfWork.Teachers.All().Where(t => t.ApplicationUserId == user.Id).FirstOrDefault();
-
-            return teacher;
+            return this.teacherRepository.GetByUserName(username);
         }
 
         public void Add(Teacher teacher)
         {
-            this.unitOfWork.Teachers.Add(teacher);
-            this.unitOfWork.Save();
+            this.teacherRepository.Add(teacher);
+            this.teacherRepository.SaveChanges();
         }
 
         public void Update(Teacher teacher)
         {
-            this.unitOfWork.Teachers.Update(teacher);
-            this.unitOfWork.Save();
+            this.teacherRepository.Update(teacher);
+            this.teacherRepository.SaveChanges();
         }
 
         public void Delete(Teacher teacher)
         {
             teacher.ApplicationUser.DeletedBy = teacher.DeletedBy;
 
-            this.unitOfWork.Users.Delete(teacher.ApplicationUser);
-            this.unitOfWork.Teachers.Delete(teacher);
+            this.userRepository.Delete(teacher.ApplicationUser);
+            this.teacherRepository.Delete(teacher);
 
-            this.unitOfWork.Save();
+            this.teacherRepository.SaveChanges();
         }
 
-        //TODO: move method in the TeacherRepository. 
         public IQueryable<Teacher> SearchByName(string searchString)
         {
-            var query = this.unitOfWork.Teachers.All().Where(t => t.Name.Contains(searchString));
-            //var query = unitOfWork.Teachers.Get(filter: teacher => teacher.Name.Contains(searchString));
-            return query;
+            return this.teacherRepository.SearchByName(searchString);
         }
 
         public bool IsUserNameUniqueOnEdit(Teacher teacher, string username)
         {
-            bool isUserNameUnique = !this.unitOfWork.Teachers.AllWithDeleted()
-                .Any(t => (t.ApplicationUser.UserName == username) &&
-                    (t.ApplicationUserId != teacher.ApplicationUserId));
-
-            return isUserNameUnique;
+            return this.teacherRepository.IsUserNameUniqueOnEdit(teacher, username);
         }
 
         public void Dispose()
         {
-            this.unitOfWork.Dispose();
+            this.teacherRepository.Dispose();
         }
     }
 }

@@ -1,55 +1,51 @@
 ﻿namespace School.Services
 {
     using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
     using System.Linq;
 
     public class SubjectService : ISubjectService
     {
-        private readonly UnitOfWork unitOfWork;
+        private readonly ISubjectRepository subjectRepository;
+
+        public SubjectService(ISubjectRepository subjectRepository)
+        {
+            this.subjectRepository = subjectRepository;
+        }
         
-        public SubjectService(UnitOfWork unitOfWork)
-        {
-            this.unitOfWork = unitOfWork;
-        }
-
-        public UnitOfWork UnitOfWork
-        {
-            get { return this.unitOfWork; }
-        }
-
         public Subject GetById(int id)
         {
-            return this.unitOfWork.Subjects.GetById(id);
+            return this.subjectRepository.GetById(id);
         }
 
         public IQueryable<Subject> All()
         {
-            return this.unitOfWork.Subjects.All() ;
+            return this.subjectRepository.All();
         }
 
         public void Add(Subject subject)
         {
-            this.unitOfWork.Subjects.Add(subject);
-            this.unitOfWork.Save();
+            this.subjectRepository.Add(subject);
+            this.subjectRepository.SaveChanges();
         }
 
         public void Update(Subject subject)
         {
-            this.unitOfWork.Subjects.Update(subject);
-            this.unitOfWork.Save();
+            this.subjectRepository.Update(subject);
+            this.subjectRepository.SaveChanges();
         }
 
         public void Delete(Subject subject)
         {
-            this.unitOfWork.Subjects.Delete(subject);
-            this.unitOfWork.Save();
+            this.subjectRepository.Delete(subject);
+            this.subjectRepository.SaveChanges();
         }
 
         public void Dispose()
         {
-            this.unitOfWork.Dispose();
+            this.subjectRepository.Dispose();
         }
     }
 }
