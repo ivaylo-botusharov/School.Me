@@ -6,7 +6,5 @@
     public interface IHomeworkService : IRepositoryService<Homework>
     {
         Homework GetById(int id);
-
-        UnitOfWork UnitOfWork { get; }
     }
 }

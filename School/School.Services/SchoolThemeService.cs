@@ -1,55 +1,51 @@
 ﻿namespace School.Services
 {
     using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
     using System.Linq;
 
     public class SchoolThemeService : ISchoolThemeService
     {
-        private readonly UnitOfWork unitOfWork;
+        private readonly ISchoolThemeRepository schoolThemeRepository;
 
-        public SchoolThemeService(UnitOfWork unitOfWork)
+        public SchoolThemeService(ISchoolThemeRepository schoolThemeRepository)
         {
-            this.unitOfWork = unitOfWork;
+            this.schoolThemeRepository = schoolThemeRepository;
         }
-
-        public UnitOfWork UnitOfWork
-        {
-            get { return this.unitOfWork; }
-        }
-
+        
         public SchoolTheme GetById(int id)
         {
-            return this.unitOfWork.SchoolThemes.GetById(id);
+            return this.schoolThemeRepository.GetById(id);
         }
 
         public IQueryable<SchoolTheme> All()
         {
-            return this.unitOfWork.SchoolThemes.All();
+            return this.schoolThemeRepository.All();
         }
 
         public void Add(SchoolTheme schoolTheme)
         {
-            this.unitOfWork.SchoolThemes.Add(schoolTheme);
-            this.unitOfWork.Save();
+            this.schoolThemeRepository.Add(schoolTheme);
+            this.schoolThemeRepository.SaveChanges();
         }
 
         public void Update(SchoolTheme schoolTheme)
         {
-            this.unitOfWork.SchoolThemes.Update(schoolTheme);
-            this.unitOfWork.Save();
+            this.schoolThemeRepository.Update(schoolTheme);
+            this.schoolThemeRepository.SaveChanges();
         }
 
         public void Delete(SchoolTheme schoolTheme)
         {
-            this.unitOfWork.SchoolThemes.Delete(schoolTheme);
-            this.unitOfWork.Save();
+            this.schoolThemeRepository.Delete(schoolTheme);
+            this.schoolThemeRepository.SaveChanges();
         }
 
         public void Dispose()
         {
-            this.unitOfWork.Dispose();
+            this.schoolThemeRepository.Dispose();
         }
     }
 }

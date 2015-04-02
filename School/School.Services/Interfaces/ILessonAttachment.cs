@@ -6,7 +6,5 @@
     public interface ILessonAttachment : IRepositoryService<LessonAttachment>
     {
         LessonAttachment GetById(int id);
-
-        UnitOfWork UnitOfWork { get; }
     }
 }

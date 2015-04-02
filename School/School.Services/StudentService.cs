@@ -3,104 +3,83 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using School.Data;
+    using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
     using System.Linq;
     
     public class StudentService : IStudentService
     {
-        private readonly UnitOfWork unitOfWork;
+        private readonly IStudentRepository studentRepository;
 
-        public StudentService(UnitOfWork unitOfWork)
+        private readonly IApplicationUserRepository userRepository;
+
+        public StudentService(IStudentRepository studentRepository, IApplicationUserRepository userRepository)
         {
-            this.unitOfWork = unitOfWork;
+            this.studentRepository = studentRepository;
+            this.userRepository = userRepository;
         }
 
-        public UnitOfWork UnitOfWork
+        public IApplicationUserRepository UserRepository
         {
-            get { return this.unitOfWork; }
+            get { return this.userRepository; }
         }
 
         public IQueryable<Student> All()
         {
-            return this.unitOfWork.Students.All();
+            return this.studentRepository.All();
         }
 
         public Student GetById(int id)
         {
-            return this.unitOfWork.Students.GetById(id);
+            return this.studentRepository.GetById(id);
         }
 
-        //TODO: Create StudentsRepository and move GetByUserName() there.
-        //This way Services will be decoupled from Microsoft.AspNet.Identity and ApplicationDbContext.
         public Student GetByUserName(string username)
         {
-            var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
-            var userManager = new UserManager<ApplicationUser>(store);
-
-            ApplicationUser user = userManager.FindByNameAsync(username).Result;
-
-            if (user == null)
-            {
-                //TODO: Implement exception/error handling if there is no such user
-            }
-            
-            Student student = this.unitOfWork.Students.All().Where(s => s.ApplicationUserId == user.Id).FirstOrDefault();
-
-            return student;
+            return this.studentRepository.GetByUserName(username);
         }
 
         public void Add(Student student)
         {
-            this.unitOfWork.Students.Add(student);
-            this.unitOfWork.Save();
+            this.studentRepository.Add(student);
+            this.studentRepository.SaveChanges();
         }
 
         public void Update(Student student)
         {
-            this.unitOfWork.Students.Update(student);
-            this.unitOfWork.Save();
+            this.studentRepository.Update(student);
+            this.studentRepository.SaveChanges();
         }
 
         public void Delete(Student student)
         {
             student.ApplicationUser.DeletedBy = student.DeletedBy;
 
-            this.unitOfWork.Users.Delete(student.ApplicationUser);
-            this.unitOfWork.Students.Delete(student);
+            this.userRepository.Delete(student.ApplicationUser);
+            this.studentRepository.Delete(student);
 
-            this.unitOfWork.Save();
+            this.studentRepository.SaveChanges();
         }
 
-        //TODO: Create StudentsRepository and move it there. 
         public IQueryable<Student> SearchByName(string searchString)
         {
-            var query = this.unitOfWork.Students.All().Where(student => student.Name.Contains(searchString));
-            //var query = unitOfWork.Students.Get(filter: student => student.Name.Contains(searchString));
-            return query;
+            return this.studentRepository.SearchByName(searchString);
         }
 
         public bool IsUserNameUniqueOnEdit(Student student, string username)
         {
-            bool isUserNameUnique = ! this.unitOfWork.Students.AllWithDeleted()
-                .Any(s => (s.ApplicationUser.UserName == username) &&
-                    (s.ApplicationUserId != student.ApplicationUserId));
-
-            return isUserNameUnique;
+            return this.studentRepository.IsUserNameUniqueOnEdit(student, username);
         }
 
         public bool IsEmailUniqueOnEdit(Student student, string email)
         {
-            bool IsEmailUnique = !this.unitOfWork.Students.AllWithDeleted()
-                .Any(s => (s.ApplicationUser.Email == email) &&
-                    (s.ApplicationUserId != student.ApplicationUserId));
-
-            return IsEmailUnique;
+            return this.studentRepository.IsEmailUniqueOnEdit(student, email);
         }
 
         public void Dispose()
         {
-            this.unitOfWork.Dispose();
+            this.studentRepository.Dispose();
         }
     }
 }

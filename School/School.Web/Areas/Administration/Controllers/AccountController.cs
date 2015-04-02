@@ -22,7 +22,7 @@
 
         public AccountController(IAdministratorService administratorService)
         {
-            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(administratorService.UnitOfWork.Context);
+            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(administratorService.UserRepository.Context);
             this.userManager = new ApplicationUserManager(store);
             this.administratorService = administratorService;
         }

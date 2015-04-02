@@ -22,7 +22,7 @@
 
         public AccountController(IStudentService studentService)
         {
-            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(studentService.UnitOfWork.Context);
+            IUserStore<ApplicationUser> store = new UserStore<ApplicationUser>(studentService.UserRepository.Context);
             this.userManager = new ApplicationUserManager(store);
             this.studentService = studentService;
         }

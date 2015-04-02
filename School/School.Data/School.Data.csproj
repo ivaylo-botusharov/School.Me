@@ -93,9 +93,7 @@
     <Compile Include="Repositories\SubjectRepository.cs" />
     <Compile Include="Repositories\TeacherRepository.cs" />
     <Compile Include="Repositories\TotalScoreRepository.cs" />
-    <Compile Include="UnitOfWork.cs" />
     <Compile Include="ApplicationDbContext.cs" />
-    <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IApplicationDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />

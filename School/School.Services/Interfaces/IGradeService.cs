@@ -9,7 +9,5 @@
         Grade GetById(int id);
 
         bool IsGradeUniqueOnEdit(Grade grade);
-
-        UnitOfWork UnitOfWork { get; }
     }
 }

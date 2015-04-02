@@ -4,5 +4,6 @@
 
     public interface IApplicationUserRepository : IDeletableEntityRepository<ApplicationUser>
     {
+        ApplicationDbContext Context { get; }
     }
 }
