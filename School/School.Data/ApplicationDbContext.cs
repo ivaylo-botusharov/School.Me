@@ -1,11 +1,11 @@
 ﻿namespace School.Data
 {
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using School.Data.Migrations;
-    using School.Models;
     using System.Data.Entity;
     using System.Data.Entity.Validation;
     using System.Linq;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using School.Data.Migrations;
+    using School.Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {

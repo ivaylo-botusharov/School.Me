@@ -1,7 +1,7 @@
 ﻿namespace School.Data.Repositories
 {
-    using School.Models;
     using System;
+    using School.Models;
 
     public interface IAcademicYearRepository : IDeletableEntityRepository<AcademicYear>
     {

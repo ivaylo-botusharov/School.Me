@@ -1,5 +1,7 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
+    using System.Linq;
+    using System.Web.Mvc;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
@@ -7,9 +9,6 @@
     using School.Models;
     using School.Services.Interfaces;
     using School.Web.Areas.Administration.Models;
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
 
     [Authorize(Roles = GlobalConstants.SuperAdministratorRoleName)]
     public class AdministratorsController : Controller
@@ -33,7 +32,7 @@
 
             if (administrator == null)
             {
-                ModelState.AddModelError("", "No such user exists.");
+                ModelState.AddModelError(string.Empty, "No such user exists.");
                 return RedirectToAction("Index");
             }
 
@@ -55,7 +54,7 @@
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "User data has not been filled correctly. Please, re-enter");
+                ModelState.AddModelError(string.Empty, "User data has not been filled correctly. Please, re-enter");
 
                 return View(adminModel);
             }
@@ -64,7 +63,7 @@
 
             if (administrator == null)
             {
-                ModelState.AddModelError("", "No such user exists.");
+                ModelState.AddModelError(string.Empty, "No such user exists.");
 
                 return View();
             }
@@ -75,7 +74,7 @@
 
             if (!isUserNameUnique)
             {
-                this.ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
+                ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
                 return View();
             }
 
@@ -85,8 +84,7 @@
             
             return RedirectToAction("Index", "Administrators");
         }
-
-
+        
         public ActionResult Delete(string username)
         {
             Administrator administrator = this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);

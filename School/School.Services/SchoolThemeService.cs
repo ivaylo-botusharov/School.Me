@@ -1,11 +1,10 @@
 ﻿namespace School.Services
 {
-    using School.Data;
+    using System.Linq;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
-    using System.Linq;
-
+    
     public class SchoolThemeService : ISchoolThemeService
     {
         private readonly ISchoolThemeRepository schoolThemeRepository;
@@ -41,11 +40,6 @@
         {
             this.schoolThemeRepository.Delete(schoolTheme);
             this.schoolThemeRepository.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            this.schoolThemeRepository.Dispose();
         }
     }
 }

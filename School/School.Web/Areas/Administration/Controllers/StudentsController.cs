@@ -1,5 +1,9 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
@@ -8,13 +12,8 @@
     using School.Models;
     using School.Services.Interfaces;
     using School.Web.Areas.Administration.Models;
-    using School.Web.Areas.Students.Controllers;
     using School.Web.Infrastructure;
-    using System;
-    using System.Linq;
-    using System.Net;
-    using System.Web.Mvc;
-
+    
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class StudentsController : Controller
     {
@@ -29,7 +28,7 @@
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.UserNameSortParam = String.IsNullOrEmpty(sortOrder) ? "username_desc" : "";
+            ViewBag.UserNameSortParam = string.IsNullOrEmpty(sortOrder) ? "username_desc" : string.Empty;
             ViewBag.NameSortParam = sortOrder == "name" ? "name_desc" : "name";
 
             if (searchString != null)
@@ -45,7 +44,7 @@
 
             IQueryable<Student> students = this.studentService.All();
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 students = students
                     .Where(s => s.ApplicationUser.UserName.Contains(searchString) || s.Name.Contains(searchString));
@@ -70,11 +69,11 @@
             IQueryable<StudentListViewModel> sortedStudents = students.Project().To<StudentListViewModel>();
 
             int pageSize = 10;
-            int pageIndex = (page ?? 1);
+            int pageIndex = page ?? 1;
 
             RedirectUrl redirectUrl = new RedirectUrl(this.ControllerContext, null);
 
-            Session["redirectUrl"] = redirectUrl;
+            this.Session["redirectUrl"] = redirectUrl;
 
             return View(sortedStudents.ToPagedList(pageIndex, pageSize));
         }
@@ -103,7 +102,7 @@
         {
             if (string.IsNullOrEmpty(username))
             {
-                ModelState.AddModelError("", "No user has been selected");
+                ModelState.AddModelError(string.Empty, "No user has been selected");
                 return View();
             }
 
@@ -111,7 +110,7 @@
 
             if (student == null)
             {
-                ModelState.AddModelError("", "Such user does not exist");
+                ModelState.AddModelError(string.Empty, "Such user does not exist");
                 return View();
             }
 
@@ -127,7 +126,7 @@
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "User data has not been filled correctly. Please, re-enter");
+                ModelState.AddModelError(string.Empty, "User data has not been filled correctly. Please, re-enter");
                 return View(studentModel);
             }
 
@@ -135,7 +134,7 @@
 
             if (student == null)
             {
-                ModelState.AddModelError("", "No such user exists");
+                ModelState.AddModelError(string.Empty, "No such user exists");
                 return View();
             }
 
@@ -149,13 +148,13 @@
 
             if (!isUserNameUnique)
             {
-                this.ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
+                ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
                 return View();
             }
 
             if (!isEmailUnique)
             {
-                this.ModelState.AddModelError("AccountDetailsEditModel.Email", "Duplicate emails are not allowed.");
+                ModelState.AddModelError("AccountDetailsEditModel.Email", "Duplicate emails are not allowed.");
                 return View();
             }
 
@@ -176,10 +175,10 @@
 
         public ActionResult Delete(int id)
         {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
+            /*if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }*/
 
             Student student = this.studentService.GetById(id);
 
@@ -187,6 +186,7 @@
             {
                 return HttpNotFound();
             }
+
             return View(student);
         }
 
@@ -195,18 +195,6 @@
         public ActionResult DeleteConfirmed(int id)
         {
             Student student = this.studentService.GetById(id);
-
-            if (student.ApplicationUserId == User.Identity.GetUserId())
-            {
-                student.DeletedBy = User.Identity.GetUserId();
-                this.studentService.Delete(student);
-
-                var accountController = new School.Web.Areas.Students.Controllers.AccountController(this.studentService);
-                accountController.ControllerContext = this.ControllerContext;
-                accountController.LogOff();
-
-                return RedirectToAction("Index", "Home");
-            }
 
             student.DeletedBy = User.Identity.GetUserId();
             this.studentService.Delete(student);
@@ -219,12 +207,6 @@
             }
 
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            this.studentService.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

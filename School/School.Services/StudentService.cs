@@ -1,13 +1,10 @@
 ﻿namespace School.Services
 {
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using School.Data;
+    using System.Linq;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
-    using System.Linq;
-    
+
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository studentRepository;
@@ -75,11 +72,6 @@
         public bool IsEmailUniqueOnEdit(Student student, string email)
         {
             return this.studentRepository.IsEmailUniqueOnEdit(student, email);
-        }
-
-        public void Dispose()
-        {
-            this.studentRepository.Dispose();
         }
     }
 }

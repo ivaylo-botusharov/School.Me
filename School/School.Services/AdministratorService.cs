@@ -1,19 +1,16 @@
 ﻿namespace School.Services
 {
-    using School.Data;
+    using System;
+    using System.Linq;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
-    using System;
-    using System.Linq;
 
     public class AdministratorService : IAdministratorService
     {
         private readonly IAdministratorRepository administratorRepository;
 
         private readonly IApplicationUserRepository userRepository;
-
-        //private readonly IApplicationDbContext context;
 
         public AdministratorService(
             IAdministratorRepository administratorRepository, 
@@ -71,11 +68,6 @@
                     (a.ApplicationUserId != administrator.ApplicationUserId));
 
             return isUserNameUnique;
-        }
-
-        public void Dispose()
-        {
-            this.administratorRepository.Dispose();
         }
     }
 }

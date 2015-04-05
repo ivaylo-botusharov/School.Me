@@ -1,11 +1,10 @@
 ﻿namespace School.Services
 {
-    using School.Data;
+    using System.Linq;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
-    using System.Linq;
-
+    
     public class SubjectService : ISubjectService
     {
         private readonly ISubjectRepository subjectRepository;
@@ -41,11 +40,6 @@
         {
             this.subjectRepository.Delete(subject);
             this.subjectRepository.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            this.subjectRepository.Dispose();
         }
     }
 }

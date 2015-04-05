@@ -1,8 +1,6 @@
 ﻿namespace School.Services.Interfaces
 {
-    using School.Data;
     using School.Models;
-    using System.Linq;
 
     public interface IGradeService : IRepositoryService<Grade>
     {

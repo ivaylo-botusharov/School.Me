@@ -1,10 +1,10 @@
 ﻿namespace School.Services
 {
+    using System;
+    using System.Linq;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
-    using System;
-    using System.Linq;
 
     public class SchoolClassService : ISchoolClassService
     {
@@ -25,6 +25,11 @@
             return this.schoolClassRepository.GetById(id);
         }
 
+        public SchoolClass GetByDetails(int gradeYear, string letter, int startYear)
+        {
+            return this.schoolClassRepository.GetByDetails(gradeYear, letter, startYear);
+        }
+
         public void Add(SchoolClass schoolClass)
         {
             this.schoolClassRepository.Add(schoolClass);
@@ -38,11 +43,6 @@
         public void Delete(SchoolClass schoolClass)
         {
             this.schoolClassRepository.Delete(schoolClass);
-        }
-
-        public void Dispose()
-        {
-            this.schoolClassRepository.Dispose();
         }
     }
 }

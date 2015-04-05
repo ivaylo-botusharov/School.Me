@@ -1,8 +1,8 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
-    using School.Common;
     using System.Web.Mvc;
-
+    using School.Common;
+    
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class HomeController : Controller
     {
