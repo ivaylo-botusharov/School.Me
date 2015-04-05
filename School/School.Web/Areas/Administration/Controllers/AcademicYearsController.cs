@@ -1,13 +1,13 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
+    using System.Linq;
+    using System.Web.Mvc;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using School.Common;
     using School.Models;
     using School.Services.Interfaces;
     using School.Web.Areas.Administration.Models;
-    using System.Linq;
-    using System.Web.Mvc;
 
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class AcademicYearsController : Controller

@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public interface IGenericRepository<T> : IDisposable where T : class
+    public interface IGenericRepository<T>
     {
         IQueryable<T> All();
 
@@ -14,8 +14,7 @@
 
         IQueryable<T> Get(
             Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>,
-            IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "");
 
         void Add(T entity);

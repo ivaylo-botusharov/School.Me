@@ -1,8 +1,7 @@
 ﻿namespace School.Services.Interfaces
 {
-    using School.Data;
-    using School.Models;
     using System;
+    using School.Models;
 
     public interface IAcademicYearService : IRepositoryService<AcademicYear>
     {

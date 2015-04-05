@@ -1,8 +1,8 @@
 ﻿namespace School.Web.Areas.Students.Models
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
-
+    using School.Web.Areas.Students.Models.AccountViewModels;
+    
     public class StudentRegisterSubmitModel
     {
         public int Id { get; set; }

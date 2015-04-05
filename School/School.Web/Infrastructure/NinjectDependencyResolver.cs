@@ -1,61 +1,61 @@
 ﻿namespace School.Web.Infrastructure
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc; 
     using Ninject;
     using Ninject.Web.Common;
     using School.Data;
     using School.Data.Repositories;
     using School.Services;
     using School.Services.Interfaces;
-    using System;
-    using System.Collections.Generic;
-    using System.Web.Mvc;
-
+    
     public class NinjectDependencyResolver : IDependencyResolver
     {
-        private IKernel kernel;
+        private readonly IKernel kernel;
 
         public NinjectDependencyResolver(IKernel kernelParam)
         {
-            kernel = kernelParam;
-            AddBindings();
+            this.kernel = kernelParam;
+            this.AddBindings();
         }
 
         public object GetService(Type serviceType)
         {
-            return kernel.TryGet(serviceType);
+            return this.kernel.TryGet(serviceType);
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return kernel.GetAll(serviceType);
+            return this.kernel.GetAll(serviceType);
         }
 
         private void AddBindings()
         {
-            kernel.Bind<IApplicationDbContext>().To<ApplicationDbContext>().InRequestScope();
+            this.kernel.Bind<IApplicationDbContext>().To<ApplicationDbContext>().InRequestScope();
 
-            //kernel.Bind<IUserStore<ApplicationUser>>()
-            //  .To<UserStore<ApplicationUser>>()
-            //  .WithConstructorArgument("applicationDbContext", new ApplicationDbContext());
+            /*kernel.Bind<IUserStore<ApplicationUser>>()
+               .To<UserStore<ApplicationUser>>()
+               .WithConstructorArgument("applicationDbContext", new ApplicationDbContext());*/
 
-            kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>();
-            kernel.Bind<IGradeRepository>().To<GradeRepository>();
-            kernel.Bind<ISchoolClassRepository>().To<SchoolClassRepository>();
-            kernel.Bind<ISchoolThemeRepository>().To<SchoolThemeRepository>();
-            kernel.Bind<ISubjectRepository>().To<SubjectRepository>();
-            kernel.Bind<IAdministratorRepository>().To<AdministratorRepository>();
-            kernel.Bind<IStudentRepository>().To<StudentRepository>();
-            kernel.Bind<ITeacherRepository>().To<TeacherRepository>();
-            kernel.Bind<IApplicationUserRepository>().To<ApplicationUserRepository>();
+            this.kernel.Bind<IAcademicYearRepository>().To<AcademicYearRepository>();
+            this.kernel.Bind<IGradeRepository>().To<GradeRepository>();
+            this.kernel.Bind<ISchoolClassRepository>().To<SchoolClassRepository>();
+            this.kernel.Bind<ISchoolThemeRepository>().To<SchoolThemeRepository>();
+            this.kernel.Bind<ISubjectRepository>().To<SubjectRepository>();
+            this.kernel.Bind<IAdministratorRepository>().To<AdministratorRepository>();
+            this.kernel.Bind<IStudentRepository>().To<StudentRepository>();
+            this.kernel.Bind<ITeacherRepository>().To<TeacherRepository>();
+            this.kernel.Bind<IApplicationUserRepository>().To<ApplicationUserRepository>();
 
-            kernel.Bind<IAcademicYearService>().To<AcademicYearService>();
-            kernel.Bind<IGradeService>().To<GradeService>();
-            kernel.Bind<ISchoolClassService>().To<SchoolClassService>();
-            kernel.Bind<ISchoolThemeService>().To<SchoolThemeService>();
-            kernel.Bind<ISubjectService>().To<SubjectService>();
-            kernel.Bind<IAdministratorService>().To<AdministratorService>();
-            kernel.Bind<IStudentService>().To<StudentService>();
-            kernel.Bind<ITeacherService>().To<TeacherService>();
+            this.kernel.Bind<IAcademicYearService>().To<AcademicYearService>();
+            this.kernel.Bind<IGradeService>().To<GradeService>();
+            this.kernel.Bind<ISchoolClassService>().To<SchoolClassService>();
+            this.kernel.Bind<ISchoolThemeService>().To<SchoolThemeService>();
+            this.kernel.Bind<ISubjectService>().To<SubjectService>();
+            this.kernel.Bind<IAdministratorService>().To<AdministratorService>();
+            this.kernel.Bind<IStudentService>().To<StudentService>();
+            this.kernel.Bind<ITeacherService>().To<TeacherService>();
         }
     }
 }

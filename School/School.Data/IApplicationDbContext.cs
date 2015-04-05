@@ -1,11 +1,12 @@
 ﻿namespace School.Data
 {
-    using School.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    
+    using School.Models;
 
-    public interface IApplicationDbContext : IDisposable
+    public interface IApplicationDbContext
     {
         IDbSet<ApplicationUser> Users { get; set; }
 

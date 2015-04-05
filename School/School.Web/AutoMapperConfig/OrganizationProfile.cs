@@ -1,16 +1,26 @@
 ﻿namespace School.Web.AutoMapperConfig
 {
+    using System.Linq;
     using AutoMapper;
     using School.Models;
-    using System.Linq;
-
+    
     public class OrganizationProfile : Profile
     {
+        public override string ProfileName
+        {
+            get
+            {
+                return this.GetType().Name;
+            }
+        }
+
         protected override void Configure()
         {
-            Mapper.CreateMap<Student, School.Web.Areas.Administration.Models.StudentListViewModel>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email));
+            Mapper.CreateMap<ApplicationUser, School.Web.Areas.Administration.Models.AccountDetailsEditModel>();
+
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.AccountDetailsEditModel, ApplicationUser>();
+            
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.AdministratorRegisterSubmitModel, Administrator>();
 
             Mapper.CreateMap<Administrator, School.Web.Areas.Administration.Models.AdministratorDetailsEditModel>()
                 .ForMember(dest => dest.AccountDetailsEditModel, opt => opt.MapFrom(src => src.ApplicationUser));
@@ -22,20 +32,19 @@
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email));
 
-
             Mapper.CreateMap<School.Web.Areas.Administration.Models.AdministratorListViewModel, Administrator>();
 
-            //Set "base" because I received an error: "Missing type map configuration or unsupported mapping."
-            //Followed Jimmy Boggard's advice on StackOverflow: http://bit.ly/19t0fw2 
-            base.CreateMap<School.Web.Areas.Administration.Models.AdministratorRegisterSubmitModel, Administrator>();
+            Mapper.CreateMap<School.Web.Areas.Students.Models.StudentRegisterSubmitModel, Student>();
+
+            Mapper.CreateMap<Student, School.Web.Areas.Administration.Models.StudentListViewModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email));
 
             Mapper.CreateMap<School.Web.Areas.Administration.Models.StudentListViewModel, Student>();
 
             Mapper.CreateMap<Student, School.Web.Areas.Administration.Models.StudentDetailsEditModel>();
 
             Mapper.CreateMap<School.Web.Areas.Administration.Models.StudentDetailsEditModel, Student>();
-
-            Mapper.CreateMap<School.Web.Areas.Students.Models.StudentRegisterSubmitModel, Student>();
 
             Mapper.CreateMap<School.Web.Areas.Teachers.Models.TeacherRegisterSubmitModel, Teacher>();
 
@@ -47,16 +56,11 @@
 
             Mapper.CreateMap<School.Web.Areas.Administration.Models.TeacherDetailsEditModel, Teacher>();
 
-            Mapper.CreateMap<ApplicationUser, School.Web.Areas.Administration.Models.AccountDetailsEditModel>();
-
-            Mapper.CreateMap<School.Web.Areas.Administration.Models.AccountDetailsEditModel, ApplicationUser>();
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.AcademicYearCreateSubmitModel, AcademicYear>();
 
             Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearListViewModel>();
 
             Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsViewModel>();
-
-
-            Mapper.CreateMap<School.Web.Areas.Administration.Models.AcademicYearCreateSubmitModel, AcademicYear>();
 
             Mapper.CreateMap<Grade, School.Web.Areas.Administration.Models.GradeListViewModel>()
                 .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count))
@@ -70,14 +74,6 @@
                 .ForMember(dest => dest.StudentsNumber, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false).Count()))
                 .ForMember(dest => dest.Students, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false)))
                 .ForMember(dest => dest.AcademicYear, opt => opt.MapFrom(src => src.Grade.AcademicYear));
-        }
-
-        public override string ProfileName
-        {
-            get
-            {
-                return this.GetType().Name;
-            }
         }
     }
 }

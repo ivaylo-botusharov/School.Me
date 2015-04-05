@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
 
-    public interface IRepositoryService<T> : IDisposable where T : class
+    public interface IRepositoryService<T>
     {
         IQueryable<T> All();
 

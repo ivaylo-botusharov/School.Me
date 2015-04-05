@@ -10,6 +10,7 @@
         {
             this.schoolClasses = new List<SchoolClassListViewModel>();
         }
+
         public int Id { get; set; }
 
         public int GradeYear { get; set; }

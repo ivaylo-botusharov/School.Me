@@ -7,50 +7,49 @@
 
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
+        protected readonly IDbSet<T> DbSet;
+
         private readonly IApplicationDbContext context;
         
-        protected readonly IDbSet<T> dbSet;
-
         public GenericRepository(IApplicationDbContext context)
         {
             if (context == null)
             {
                 throw new ArgumentException("An instance of DbContext is required to use this repository.", "context");
             }
+
             this.context = context;
-            this.dbSet = context.Set<T>();
+            this.DbSet = context.Set<T>();
         }
 
         public virtual IQueryable<T> All()
         {
-            return this.dbSet;
+            return this.DbSet;
         }
 
         public virtual T GetById(Guid id)
         {
-            return this.dbSet.Find(id);
+            return this.DbSet.Find(id);
         }
 
         public virtual T GetById(int id)
         {
-            return this.dbSet.Find(id);
+            return this.DbSet.Find(id);
         }
 
         public virtual IQueryable<T> Get(
-            Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>,
-            IOrderedQueryable<T>> orderBy = null,
+            Expression<Func<T, bool>> filter = null, 
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = this.DbSet;
 
             if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
             }
@@ -95,34 +94,10 @@
             var entry = this.context.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
-                this.dbSet.Attach(entity);
+                this.DbSet.Attach(entity);
             }
 
             entry.State = state;
         }
-
-        public void Dispose()
-        {
-            this.context.Dispose();
-        }
-
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!this.disposed)
-        //    {
-        //        if (disposing)
-        //        {
-        //            this.context.Dispose();
-        //        }
-        //    }
-
-        //    this.disposed = true;
-        //}
-
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    GC.SuppressFinalize(this);
-        //}
     }
 }

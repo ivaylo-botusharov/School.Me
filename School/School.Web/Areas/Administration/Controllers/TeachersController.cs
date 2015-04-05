@@ -1,5 +1,9 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Microsoft.AspNet.Identity;
@@ -8,12 +12,7 @@
     using School.Models;
     using School.Services.Interfaces;
     using School.Web.Areas.Administration.Models;
-    using School.Web.Areas.Teachers.Controllers;
-    using System;
-    using System.Linq;
-    using System.Net;
-    using System.Web.Mvc;
-
+    
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class TeachersController : Controller
     {
@@ -28,7 +27,7 @@
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.UserNameSortParam = String.IsNullOrEmpty(sortOrder) ? "username_desc" : "";
+            ViewBag.UserNameSortParam = string.IsNullOrEmpty(sortOrder) ? "username_desc" : string.Empty;
             ViewBag.NameSortParam = sortOrder == "name" ? "name_desc" : "name";
 
             if (searchString != null)
@@ -44,7 +43,7 @@
 
             IQueryable<Teacher> teachers = this.teacherService.All();
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 teachers = teachers
                     .Where(s => s.ApplicationUser.UserName.Contains(searchString) || s.Name.Contains(searchString));
@@ -69,7 +68,7 @@
             IQueryable<TeacherListViewModel> sortedTeachers = teachers.Project().To<TeacherListViewModel>();
 
             int pageSize = 10;
-            int pageIndex = (page ?? 1);
+            int pageIndex = page ?? 1;
 
             return View(sortedTeachers.ToPagedList(pageIndex, pageSize));
         }
@@ -98,7 +97,7 @@
         {
             if (string.IsNullOrEmpty(username))
             {
-                ModelState.AddModelError("", "No user has been selected");
+                ModelState.AddModelError(string.Empty, "No user has been selected");
                 return View();
             }
 
@@ -106,7 +105,7 @@
 
             if (teacher == null)
             {
-                ModelState.AddModelError("", "Such user does not exist");
+                ModelState.AddModelError(string.Empty, "Such user does not exist");
                 return View();
             }
 
@@ -122,7 +121,7 @@
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "User data has not been filled correctly. Please, re-enter");
+                ModelState.AddModelError(string.Empty, "User data has not been filled correctly. Please, re-enter");
                 return View(teacherModel);
             }
 
@@ -130,7 +129,7 @@
 
             if (teacher == null)
             {
-                ModelState.AddModelError("", "No such user exists");
+                ModelState.AddModelError(string.Empty, "No such user exists");
                 return View();
             }
 
@@ -140,7 +139,7 @@
 
             if (!isUserNameUnique)
             {
-                this.ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
+                ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
                 return View();
             }
 
@@ -164,6 +163,7 @@
             {
                 return HttpNotFound();
             }
+
             return View(teacher);
         }
 
@@ -178,22 +178,18 @@
                 teacher.DeletedBy = User.Identity.GetUserId();
                 this.teacherService.Delete(teacher);
 
-                var accountController = new School.Web.Areas.Teachers.Controllers.AccountController(this.teacherService);
+                var accountController = new School.Web.Controllers.AccountController();
                 accountController.ControllerContext = this.ControllerContext;
                 accountController.LogOff();
 
                 return RedirectToAction("Index", "Home");
             }
-
-            teacher.DeletedBy = User.Identity.GetUserId();
-            this.teacherService.Delete(teacher);
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            this.teacherService.Dispose();
-            base.Dispose(disposing);
+            else
+            {
+                teacher.DeletedBy = User.Identity.GetUserId();
+                this.teacherService.Delete(teacher);
+                return RedirectToAction("Index");
+            }
         }
     }
 }

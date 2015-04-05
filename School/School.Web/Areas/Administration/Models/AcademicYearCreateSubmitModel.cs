@@ -1,14 +1,14 @@
 ﻿namespace School.Web.Areas.Administration.Models
 {
-    using School.Models;
-    using School.Services.Interfaces;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Mvc;
-
-    //[YearShoudNotExistInDb]
+    using School.Models;
+    using School.Services.Interfaces;
+    
+    // [YearShoudNotExistInDb]
     public class AcademicYearCreateSubmitModel : IValidatableObject
     {
         public Guid Id { get; set; }
@@ -36,14 +36,14 @@
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if (StartDate >= EndDate)
+            if (this.StartDate >= this.EndDate)
             {
                 errors.Add(new ValidationResult("Start date should not be equal or greater than end date."));
             }
 
             IAcademicYearService academicYearService = DependencyResolver.Current.GetService<IAcademicYearService>();
 
-            bool yearExistsInDb = academicYearService.AcademicYearExistsInDb(StartDate, EndDate) ? true : false;
+            bool yearExistsInDb = academicYearService.AcademicYearExistsInDb(this.StartDate, this.EndDate) ? true : false;
 
             if (yearExistsInDb)
             {
@@ -54,13 +54,13 @@
             {
                 AcademicYear latestAcademicYear = academicYearService.All().OrderByDescending(ay => ay.StartDate).First();
                 
-                if (latestAcademicYear != null && StartDate.Year > latestAcademicYear.StartDate.Year + 1)
+                if (latestAcademicYear != null && this.StartDate.Year > latestAcademicYear.StartDate.Year + 1)
                 {
                     errors.Add(new ValidationResult("New academic year cannot be more than 1 year later than latest academic year."));
                 }
             }
 
-            if (EndDate.Year > StartDate.Year + 1)
+            if (this.EndDate.Year > this.StartDate.Year + 1)
             {
                 errors.Add(new ValidationResult("Academic Year may not last more than 1 astronomical year."));
             }

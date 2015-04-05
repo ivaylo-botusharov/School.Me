@@ -1,4 +1,4 @@
-﻿namespace School.Web
+﻿namespace School.Web.App_Start
 {
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -12,16 +12,14 @@
             routes.MapRoute(
                 name: "Students",
                 url: "Students/{action}/{username}",
-                defaults: new { controller = "Students", action = "Index", username = "" },
-                namespaces: new string[] { "School.Web.Controllers" }
-            );
+                defaults: new { controller = "Students", action = "Index", username = string.Empty },
+                namespaces: new string[] { "School.Web.Controllers" });
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-                namespaces: new string[] { "School.Web.Controllers" }
-            );
+                namespaces: new string[] { "School.Web.Controllers" });
         }
     }
 }
