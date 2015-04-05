@@ -1,4 +1,4 @@
-﻿namespace School.Web.Areas.Administration.Models
+﻿namespace School.Web.Models
 {
     using System.ComponentModel.DataAnnotations;
 

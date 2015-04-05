@@ -1,10 +1,10 @@
 ﻿namespace School.Web.Extensions
 {
-    using School.Web.Infrastructure;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
-
+    using School.Web.Infrastructure;
+    
     public static class ActionLinkExtensions
     {
         public static MvcHtmlString ActionLinkWithHtml(
@@ -156,7 +156,7 @@
            object spanAttributesDict)
         {
             return ActionLinkWithSpan(
-                htmlHelper, "", actionName, null, routeDict, htmlAttributes, spanAttributesDict, true);
+                htmlHelper, string.Empty, actionName, null, routeDict, htmlAttributes, spanAttributesDict, true);
         }
 
         public static MvcHtmlString ActionLinkWithSpan(
@@ -178,7 +178,7 @@
             object spanAttributesDict)
         {
             return ActionLinkWithSpan(
-                htmlHelper, "", actionName, null, null, htmlAttributes, spanAttributesDict, true);
+                htmlHelper, string.Empty, actionName, null, null, htmlAttributes, spanAttributesDict, true);
         }
 
         public static MvcHtmlString ActionLinkWithSpan(

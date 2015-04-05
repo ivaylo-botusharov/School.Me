@@ -1,8 +1,8 @@
 ﻿namespace School.Data.Repositories
 {
-    using School.Models;
     using System;
     using System.Linq;
+    using School.Models;
 
     public class AcademicYearRepository : DeletableEntityRepository<AcademicYear>, IAcademicYearRepository
     {
@@ -10,7 +10,7 @@
         {
         }
 
-        //Checks if AcademicYear with specified start year or end year exists in database
+        // Checks if AcademicYear with specified start year or end year exists in database
         public bool ExistsInDb(DateTime startDate, DateTime endDate)
         {
             bool academicYearExists = false;

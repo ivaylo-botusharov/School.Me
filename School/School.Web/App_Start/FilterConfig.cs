@@ -1,4 +1,4 @@
-﻿namespace School.Web
+﻿namespace School.Web.App_Start
 {
     using System.Web.Mvc;
 

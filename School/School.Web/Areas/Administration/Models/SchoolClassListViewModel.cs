@@ -12,6 +12,6 @@
 
         public int StartYear { get; set; }
 
-        public string SchoolThemeName { get; set;}
+        public string SchoolThemeName { get; set; }
     }
 }

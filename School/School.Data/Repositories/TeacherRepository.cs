@@ -1,22 +1,22 @@
 ﻿namespace School.Data.Repositories
 {
+    using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using School.Models;
-    using System.Linq;
 
     public class TeacherRepository : DeletableEntityRepository<Teacher>, ITeacherRepository
     {
         private readonly IApplicationDbContext context;
 
-        public TeacherRepository(IApplicationDbContext context)  : base(context)
+        public TeacherRepository(IApplicationDbContext context) : base(context)
         {
             this.context = context;
         }
 
         public Teacher GetByUserName(string username)
         {
-            var store = new UserStore<ApplicationUser>((ApplicationDbContext)context);
+            var store = new UserStore<ApplicationUser>((ApplicationDbContext)this.context);
             var userManager = new UserManager<ApplicationUser>(store);
 
             ApplicationUser user = userManager.FindByNameAsync(username).Result;
@@ -27,8 +27,9 @@
 
         public IQueryable<Teacher> SearchByName(string searchString)
         {
+            // var query = this.Get(filter: teacher => teacher.Name.Contains(searchString));
             var query = this.All().Where(t => t.Name.Contains(searchString));
-            //var query = this.Get(filter: teacher => teacher.Name.Contains(searchString));
+
             return query;
         }
 

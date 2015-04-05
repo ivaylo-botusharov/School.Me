@@ -1,22 +1,22 @@
 ﻿namespace School.Web.Validators
 {
-    using School.Services.Interfaces;
-    using School.Web.Areas.Administration.Models;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-
-    public class YearShoudNotExistInDb : ValidationAttribute
+    using School.Services.Interfaces;
+    using School.Web.Areas.Administration.Models;
+    
+    public class YearShoudNotExistInDbAttribute : ValidationAttribute
     {
-        public YearShoudNotExistInDb()
+        public YearShoudNotExistInDbAttribute()
         {
-            ErrorMessage = "Academic Year with the entered start year or end year already exists.";
+            this.ErrorMessage = "Academic Year with the entered start year or end year already exists.";
         }
 
         public override bool IsValid(object value)
         {
-            //Type originalType = value.GetType();
+            /*Type originalType = value.GetType();*/
 
-            //var acadYear = value as originalType;
+            /*var acadYear = value as originalType;*/
 
             AcademicYearCreateSubmitModel academicYear = value as AcademicYearCreateSubmitModel;
 

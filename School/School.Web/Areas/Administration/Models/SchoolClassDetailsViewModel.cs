@@ -7,8 +7,7 @@
     public class SchoolClassDetailsViewModel
     {
         private List<StudentListViewModel> students;
-
-
+        
         public SchoolClassDetailsViewModel()
         {
             this.students = new List<StudentListViewModel>();
@@ -24,7 +23,7 @@
 
         public string SchoolThemeName { get; set; }
 
-        [Display(Name="Students number:")]
+        [Display(Name = "Students number:")]
         public int StudentsNumber { get; set; }
 
         public List<StudentListViewModel> Students

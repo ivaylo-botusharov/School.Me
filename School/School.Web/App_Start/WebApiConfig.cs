@@ -1,4 +1,4 @@
-﻿namespace School.Web
+﻿namespace School.Web.App_Start
 {
     using System.Web.Http;
 
@@ -14,8 +14,7 @@
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+                defaults: new { id = RouteParameter.Optional });
         }
     }
 }

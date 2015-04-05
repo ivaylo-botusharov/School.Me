@@ -1,29 +1,23 @@
 namespace School.Data.Migrations
 {
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using School.Common;
-    using School.Models;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using School.Common;
+    using School.Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<School.Data.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<School.Data.ApplicationDbContext>, IDisposable
     {
-        private const int lastSchoolYear = 12;
+        private const int LastSchoolYear = 12;
 
-        private const int academicYearsCount = 3;
+        private const int AcademicYearsCount = 3;
 
-        private DateTime startDate = new DateTime(2012, 9, 15);
-        private DateTime endDate = new DateTime(2013, 5, 31);
+        private const int ClassStudentsNumber = 20;
 
-        private const int classStudentsNumber = 20;
-        private const int gradeClassesNumber = 5;
-
-        private int studentCounter = 1;
-
-        private int teacherCounter = 1;
+        private const int GradeClassesNumber = 5;
 
         private readonly List<string> personNames = new List<string>()
         {
@@ -48,7 +42,7 @@ namespace School.Data.Migrations
             "Ivy Kearney",
             "Sammy Keen",
         };
-        
+
         private readonly List<string> generalSchoolThemeSubjectNames = new List<string>()
         {
             "Literature",
@@ -59,7 +53,7 @@ namespace School.Data.Migrations
             "Music",
             "Physical education"
         };
-        
+
         private readonly List<string> schoolThemeNames = new List<string>()
         {
             "Science, Technology, Engineering, Math (STEM)",
@@ -68,6 +62,19 @@ namespace School.Data.Migrations
             "General"
         };
 
+        private readonly DateTime startDate = new DateTime(2012, 9, 15);
+        
+        private readonly DateTime endDate = new DateTime(2013, 5, 31);
+
+        private int studentCounter = 1;
+
+        private int teacherCounter = 1;
+
+        private UserManager<ApplicationUser> userManager;
+
+        private RoleManager<IdentityRole> roleManager;
+
+        private bool disposed = false;
 
         public Configuration()
         {
@@ -75,24 +82,39 @@ namespace School.Data.Migrations
             this.AutomaticMigrationDataLossAllowed = true;
         }
 
-        private UserManager<ApplicationUser> userManager;
-
-        private RoleManager<IdentityRole> roleManager;
-
-        protected override void Seed(School.Data.ApplicationDbContext context)
+        public void Dispose()
         {
-            userManager = this.CreateUserManager(context);
-            roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        
+        protected override void Seed(ApplicationDbContext context)
+        {
+            this.userManager = this.CreateUserManager(context);
+            this.roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
             context.Configuration.AutoDetectChangesEnabled = false;
 
             this.SeedRoles(context);
             this.SeedAdministrators(context);
-            this.SeedAcademicYears(context, academicYearsCount);
+            this.SeedAcademicYears(context, AcademicYearsCount);
 
             context.Configuration.AutoDetectChangesEnabled = true;
         }
+        
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.roleManager.Dispose();
+                }
+            }
 
+            this.disposed = true;
+        }
+        
         private void SeedRoles(ApplicationDbContext context)
         {
             if (context.Roles.Any())
@@ -125,7 +147,7 @@ namespace School.Data.Migrations
 
             string password = "111";
 
-            SeedAdminApplicationUser(context, adminUser, password);
+            this.SeedAdminApplicationUser(adminUser, password);
 
             adminProfile.ApplicationUser = adminUser;
 
@@ -139,7 +161,7 @@ namespace School.Data.Migrations
             adminUser.UserName = "admin";
             adminUser.Email = "admin@admin.com";
 
-            SeedAdminApplicationUser(context, adminUser, password);
+            this.SeedAdminApplicationUser(adminUser, password);
 
             adminProfile.ApplicationUser = adminUser;
 
@@ -148,27 +170,27 @@ namespace School.Data.Migrations
             context.SaveChanges();
         }
 
-        private void SeedAdminApplicationUser(ApplicationDbContext context, ApplicationUser adminUser, string password)
+        private void SeedAdminApplicationUser(ApplicationUser adminUser, string password)
         {
-            if (!roleManager.RoleExists(GlobalConstants.SuperAdministratorRoleName))
+            if (!this.roleManager.RoleExists(GlobalConstants.SuperAdministratorRoleName))
             {
-                roleManager.Create(new IdentityRole(GlobalConstants.SuperAdministratorRoleName));
+                this.roleManager.Create(new IdentityRole(GlobalConstants.SuperAdministratorRoleName));
             }
 
-            if (!roleManager.RoleExists(GlobalConstants.AdministratorRoleName))
+            if (!this.roleManager.RoleExists(GlobalConstants.AdministratorRoleName))
             {
-                roleManager.Create(new IdentityRole(GlobalConstants.AdministratorRoleName));
+                this.roleManager.Create(new IdentityRole(GlobalConstants.AdministratorRoleName));
             }
 
-            var result = userManager.Create(adminUser, password);
+            var result = this.userManager.Create(adminUser, password);
 
             if (result.Succeeded)
             {
-                userManager.AddToRole(adminUser.Id, GlobalConstants.AdministratorRoleName);
+                this.userManager.AddToRole(adminUser.Id, GlobalConstants.AdministratorRoleName);
 
                 if (adminUser.UserName == "superadmin")
                 {
-                    userManager.AddToRole(adminUser.Id, GlobalConstants.SuperAdministratorRoleName);
+                    this.userManager.AddToRole(adminUser.Id, GlobalConstants.SuperAdministratorRoleName);
                 }
             }
         }
@@ -184,8 +206,8 @@ namespace School.Data.Migrations
 
             var previousAcademicYear = new AcademicYear();
 
-            previousAcademicYear.StartDate = startDate;
-            previousAcademicYear.EndDate = endDate;
+            previousAcademicYear.StartDate = this.startDate;
+            previousAcademicYear.EndDate = this.endDate;
 
             for (int i = 0; i < academicYearsCount; i++)
             {
@@ -194,7 +216,7 @@ namespace School.Data.Migrations
                     previousAcademicYear = academicYears.Last();
                 }
 
-                var academicYear = SeedSingleAcademicYear(context, previousAcademicYear, lastSchoolYear, gradeClassesNumber);
+                var academicYear = this.SeedSingleAcademicYear(context, previousAcademicYear, LastSchoolYear, GradeClassesNumber);
                 academicYears.Add(academicYear);
             }
         }
@@ -226,23 +248,20 @@ namespace School.Data.Migrations
             if (previousAcademicYear.Grades.Count() > 0 && previousAcademicYear.SchoolThemes.Count() > 0)
             {
                 previousAcademicYearSchoolThemes = previousAcademicYear.SchoolThemes;
-
             }
 
-            IList<SchoolTheme> schoolThemes = SeedSchoolThemes(context, previousAcademicYearSchoolThemes, academicYear);
+            IList<SchoolTheme> schoolThemes = this.SeedSchoolThemes(context, previousAcademicYearSchoolThemes, academicYear);
 
             academicYear.SchoolThemes = schoolThemes;
 
             IList<Grade> previousAcademicYearGrades = new List<Grade>();
-            int previousAcademicYearNumber = 0;
 
             if (previousAcademicYear.Grades.Count() > 0)
             {
                 previousAcademicYearGrades = previousAcademicYear.Grades;
-                previousAcademicYearNumber = previousAcademicYear.StartDate.Year;
             }
 
-            academicYear.Grades = SeedGrades(context, previousAcademicYearGrades, lastSchoolYear, academicYear);
+            academicYear.Grades = this.SeedGrades(context, previousAcademicYearGrades, lastSchoolYear, academicYear);
 
             foreach (var grade in academicYear.Grades)
             {
@@ -255,7 +274,7 @@ namespace School.Data.Migrations
                         .Subjects;
                 }
 
-                SeedGradeSubjects(context, schoolThemes, grade, previousYearCurrentGradeSubjects);
+                this.SeedGradeSubjects(context, schoolThemes, grade, previousYearCurrentGradeSubjects);
 
                 IList<SchoolClass> previousYearCurrentGradeClasses = new List<SchoolClass>();
 
@@ -275,7 +294,7 @@ namespace School.Data.Migrations
                         .Count();
                 }
 
-                SeedGradeSchoolClasses(context, grade, previousYearCurrentGradeClasses, gradeClassesNumber, schoolThemes);
+                this.SeedGradeSchoolClasses(context, grade, previousYearCurrentGradeClasses, gradeClassesNumber, schoolThemes);
                 
                 foreach (var schoolClass in grade.SchoolClasses)
                 {
@@ -290,11 +309,11 @@ namespace School.Data.Migrations
                            .FirstOrDefault(sc => sc.ClassLetter == schoolClass.ClassLetter);
                     }
 
-                    schoolClass.Students = SeedSchoolClassStudents(context, oldSchoolClass, classStudentsNumber);
+                    schoolClass.Students = this.SeedSchoolClassStudents(context, oldSchoolClass, ClassStudentsNumber);
                 }
             }
 
-            SeedTeachers(context, academicYear.Grades, previousAcademicYearGrades);
+            this.SeedTeachers(context, academicYear.Grades, previousAcademicYearGrades);
 
             context.AcademicYears.AddOrUpdate(academicYear);
             context.SaveChanges();
@@ -321,7 +340,7 @@ namespace School.Data.Migrations
             }
             else
             {
-                foreach (var schoolThemeName in schoolThemeNames)
+                foreach (var schoolThemeName in this.schoolThemeNames)
                 {
                     SchoolTheme schoolTheme = new SchoolTheme();
                     schoolTheme.Name = schoolThemeName;
@@ -403,7 +422,7 @@ namespace School.Data.Migrations
 
             if (previousYearCurrentGradeSubjects != null && previousYearCurrentGradeSubjects.Count() > 0)
             {
-                //Copies subject information from previous year current grade to the new subjects
+                // Copies subject information from previous year current grade to the new subjects
                 foreach (var previousYearCurrentGradeSubject in previousYearCurrentGradeSubjects)
                 {
                     Subject subject = new Subject();
@@ -421,12 +440,12 @@ namespace School.Data.Migrations
                 if (grade.GradeYear < 8)
                 {
                     SchoolTheme generalSchoolTheme = schoolThemes.FirstOrDefault(st => st.Name == "General");
-                    subjects = SeedPrimarySchoolGradeSubjects(context, generalSchoolTheme, grade);
+                    subjects = this.SeedPrimarySchoolGradeSubjects(context, generalSchoolTheme, grade);
                 }
                 else
                 {
                     IList<SchoolTheme> schoolThemesWithoutGeneral = schoolThemes.Where(st => st.Name != "General").ToList();
-                    subjects = SeedSecondarySchoolGradeSubjects(context, schoolThemesWithoutGeneral, grade);
+                    subjects = this.SeedSecondarySchoolGradeSubjects(context, schoolThemesWithoutGeneral, grade);
                 }
             }
 
@@ -440,7 +459,7 @@ namespace School.Data.Migrations
         {
             List<Subject> subjects = new List<Subject>();
 
-            foreach (var subjectName in generalSchoolThemeSubjectNames)
+            foreach (var subjectName in this.generalSchoolThemeSubjectNames)
             {
                 Subject subject = new Subject();
                 subject.Name = subjectName;
@@ -568,11 +587,11 @@ namespace School.Data.Migrations
 
             if (previousYearCurrentGradeClasses != null && previousYearCurrentGradeClasses.Count() > 0)
             {
-                schoolClasses = CopyClassesFromPreviousYearCurrentGrade(context, grade, previousYearCurrentGradeClasses);
+                schoolClasses = this.CopyClassesFromPreviousYearCurrentGrade(context, grade, previousYearCurrentGradeClasses);
             }
             else
             {
-                schoolClasses = CreateGradeNewSchoolClasses(context, grade, gradeClassesNumber, schoolThemes);
+                schoolClasses = this.CreateGradeNewSchoolClasses(context, grade, gradeClassesNumber, schoolThemes);
             }
 
             return schoolClasses;
@@ -606,7 +625,7 @@ namespace School.Data.Migrations
             IList<SchoolTheme> schoolThemes)
         {
             List<SchoolClass> schoolClasses = new List<SchoolClass>();
-            int charANumber = (int)'A';
+            int charANumber = 'A';
 
             for (int currentChar = charANumber; currentChar < charANumber + gradeClassesNumber; currentChar++)
             {
@@ -656,7 +675,7 @@ namespace School.Data.Migrations
             }
             else
             {
-                students = CreateClassOfStudents(context, classStudentsNumber);
+                students = this.CreateClassOfStudents(context, classStudentsNumber);
             }
 
             return students;
@@ -669,10 +688,11 @@ namespace School.Data.Migrations
             var students = new List<Student>();
             for (int i = 0; i < classStudentsNumber; i++)
             {
-                var student = CreateSingleStudent();
+                var student = this.CreateSingleStudent();
                 context.Students.Add(student);
                 students.Add(student);
             }
+
             return students;
         }
 
@@ -683,33 +703,32 @@ namespace School.Data.Migrations
             studentProfile.Name = this.personNames[rand.Next(0, this.personNames.Count() - 1)];
 
             // Create Student Role if it does not exist
-            if (!roleManager.RoleExists(GlobalConstants.StudentRoleName))
+            if (!this.roleManager.RoleExists(GlobalConstants.StudentRoleName))
             {
-                roleManager.Create(new IdentityRole(GlobalConstants.StudentRoleName));
+                this.roleManager.Create(new IdentityRole(GlobalConstants.StudentRoleName));
             }
 
             // Create Student User with password
             var studentUser = new ApplicationUser();
 
-            studentUser.UserName = "student" + studentCounter.ToString("D4");
-            studentUser.Email = "s" + studentCounter.ToString("D4") + "@s.com";
-            studentCounter++;
+            studentUser.UserName = "student" + this.studentCounter.ToString("D4");
+            studentUser.Email = "s" + this.studentCounter.ToString("D4") + "@s.com";
+            this.studentCounter++;
 
             string password = "111";
 
-            var result = userManager.Create(studentUser, password);
+            var result = this.userManager.Create(studentUser, password);
 
             // Add Student User to Student Role
             if (result.Succeeded)
             {
-                userManager.AddToRole(studentUser.Id, GlobalConstants.StudentRoleName);
+                this.userManager.AddToRole(studentUser.Id, GlobalConstants.StudentRoleName);
             }
 
             // Add Student User to Student Profile
             studentProfile.ApplicationUser = studentUser;
 
             return studentProfile;
-
         }
 
         private List<Teacher> SeedTeachers(ApplicationDbContext context, IList<Grade> currentAcademicYearGrades, IList<Grade> previousAcademicYearGrades)
@@ -737,7 +756,7 @@ namespace School.Data.Migrations
                         }
                         else
                         {
-                            teacherProfile = CreateSingleTeacher(context);
+                            teacherProfile = this.CreateSingleTeacher();
                             subject.Teachers.Add(teacherProfile);
                             context.Teachers.Add(teacherProfile);
                             teachers.Add(teacherProfile);
@@ -745,7 +764,7 @@ namespace School.Data.Migrations
                     }
                     else
                     {
-                        teacherProfile = CreateSingleTeacher(context);
+                        teacherProfile = this.CreateSingleTeacher();
                         subject.Teachers.Add(teacherProfile);
                         context.Teachers.Add(teacherProfile);
                         teachers.Add(teacherProfile);
@@ -756,38 +775,37 @@ namespace School.Data.Migrations
             return teachers;
         }
 
-        private Teacher CreateSingleTeacher(ApplicationDbContext context)
+        private Teacher CreateSingleTeacher()
         {
             var teacherProfile = new Teacher();
             Random rand = new Random();
             teacherProfile.Name = this.personNames[rand.Next(0, this.personNames.Count())];
 
             // Create Teacher Role if it does not exist
-            if (!roleManager.RoleExists(GlobalConstants.TeacherRoleName))
+            if (!this.roleManager.RoleExists(GlobalConstants.TeacherRoleName))
             {
-                roleManager.Create(new IdentityRole(GlobalConstants.TeacherRoleName));
+                this.roleManager.Create(new IdentityRole(GlobalConstants.TeacherRoleName));
             }
 
             // Create Teacher User with password
             var teacherUser = new ApplicationUser();
-            string counter = teacherCounter.ToString("D3");
+            string counter = this.teacherCounter.ToString("D3");
             teacherUser.UserName = "teacher" + counter;
             teacherUser.Email = "t" + counter + "@t.com";
             string password = "111";
 
-            teacherCounter++;
+            this.teacherCounter++;
 
-            var result = userManager.Create(teacherUser, password);
+            var result = this.userManager.Create(teacherUser, password);
 
             // Add Teacher User to Teacher Role
             if (result.Succeeded)
             {
-                userManager.AddToRole(teacherUser.Id, GlobalConstants.TeacherRoleName);
+                this.userManager.AddToRole(teacherUser.Id, GlobalConstants.TeacherRoleName);
             }
 
             // Add Teacher User to Teacher Profile
             teacherProfile.ApplicationUser = teacherUser;
-            
 
             return teacherProfile;
         }

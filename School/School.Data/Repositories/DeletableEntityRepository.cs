@@ -1,9 +1,9 @@
 ﻿namespace School.Data.Repositories
 {
-    using School.Models;
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using School.Models;
 
     public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T> where T : class, IDeletableEntity
     {
@@ -25,7 +25,7 @@
         {
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.Now;
-            base.ChangeEntityState(entity, EntityState.Modified);
+            this.ChangeEntityState(entity, EntityState.Modified);
         }
 
         public void HardDelete(T entity)

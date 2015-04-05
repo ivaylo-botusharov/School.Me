@@ -1,11 +1,11 @@
 ﻿namespace School.Web
 {
-    using AutoMapper;
-    using School.Web.AutoMapperConfig;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
+    using School.Web.App_Start;
+    using School.Web.AutoMapperConfig;
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -18,7 +18,6 @@
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             AutoMapperWebConfiguration.Configure();
-            
         }
     }
 }

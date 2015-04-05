@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using School.Web.Areas.Teachers.Models.AccountViewModels;
 
     public class TeacherRegisterSubmitModel
     {

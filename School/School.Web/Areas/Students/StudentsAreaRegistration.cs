@@ -18,8 +18,7 @@
                 name: "Students_default",
                 url: "Students/{controller}/{action}/{id}",
                 defaults: new { action = "Index", id = UrlParameter.Optional },
-                namespaces: new string[] { "School.Web.Areas.Students.Controllers" }
-            );
+                namespaces: new string[] { "School.Web.Areas.Students.Controllers" });
         }
     }
 }

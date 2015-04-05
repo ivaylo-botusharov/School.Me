@@ -1,10 +1,9 @@
 ﻿namespace School.Services
 {
-    using School.Data;
+    using System.Linq;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
-    using System.Linq;
 
     public class GradeService : IGradeService
     {
@@ -27,8 +26,7 @@
                 .Any(
                 g => (g.GradeYear == grade.GradeYear) &&
                     (g.AcademicYear.StartDate.Year == grade.AcademicYear.StartDate.Year) &&
-                    (g.Id != grade.Id)
-                );
+                    (g.Id != grade.Id));
 
             return isGradeUnique;
         }
@@ -54,11 +52,6 @@
         {
             this.gradeRepository.Delete(grade);
             this.gradeRepository.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            this.gradeRepository.Dispose();
         }
     }
 }

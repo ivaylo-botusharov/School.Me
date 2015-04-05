@@ -1,11 +1,11 @@
 ﻿namespace School.Services
 {
+    using System;
+    using System.Linq;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
-    using System;
-    using System.Linq;
-
+    
     public class TeacherService : ITeacherService
     {
         private readonly ITeacherRepository teacherRepository;
@@ -68,11 +68,6 @@
         public bool IsUserNameUniqueOnEdit(Teacher teacher, string username)
         {
             return this.teacherRepository.IsUserNameUniqueOnEdit(teacher, username);
-        }
-
-        public void Dispose()
-        {
-            this.teacherRepository.Dispose();
         }
     }
 }
