@@ -30,7 +30,7 @@ Registration: After clicking on the Register link in the Navigation bar a new pa
 
 ### Private Area
 
-Private area could be accessed only by registered users. The 'Dashboard' section in this area is designed for website administrators. It contains links to 4 web pages:
+Private area could be accessed only by registered users. The **Dashboard** section in this area is designed for website administrators. It contains links to 4 web pages:
 
 *Teachers* (displaying the school's teachers list) - Next to each teacher there are buttons for: 
 
@@ -60,7 +60,7 @@ Clicking on the link of specific class opens a new page having the class details
 
 Superadministrator can view a list of website administrators and create / delete an admin.
 
-- Master Schedule - A web page where administrators fill in a calendar each class periods with their respective subjects (not completed yet).
+*Master Schedule* - A web page where administrators fill in a calendar each class periods with their respective subjects (not completed yet).
 
 ---
 ## Technical requirements
@@ -89,8 +89,7 @@ Web technologies: <a href="http://www.asp.net/mvc/mvc5" target="_blank">ASP.NET 
 
 ### Architectural Design Patterns: 
 
-- <a href="http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application" target="_blank">Repository</a>
-
+- Repository (see demo <a href="http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application" target="_blank">here</a>)
 
 - Dependency Injection (using <a href="http://www.ninject.org/" target="_blank">Ninject DI Container</a>)
 
@@ -134,7 +133,7 @@ Comply with the following tools for code standards and analysis:
 <a href="https://stylecop.codeplex.com/" target="_blank">*StyleCop*</a>, excluding rules:
 - <a href="http://www.stylecop.com/docs/SA1126.html" target="_blank">SA1126: PrefixCallsCorrectly</a> for School.Web Project
 
-This rule has to be turned off for the web projects so that StyleCop would not require base controller methods like: View() and RedirectToAction() to be prefixed with 'this.'
+This rule has to be turned off for the VS Web project (School.Web) so that StyleCop would not require base controller methods like: View() and RedirectToAction() to be prefixed with 'this.'
 
 - <a href="http://stylecop.soyuz5.com/SA1600.html" target="_blank">SA1600 ElementsMustBeDocumented</a> for all VS Projects in Solution (Classed and methods documentation to be completed later)
 
