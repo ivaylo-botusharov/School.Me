@@ -89,7 +89,7 @@ Web technologies: <a href="http://www.asp.net/mvc/mvc5" target="_blank">ASP.NET 
 
 ### Architectural Design Patterns: 
 
-- <a href="http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application target="_blank">Repository</a>
+- <a href="http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application" target="_blank">Repository</a>
 
 
 - Dependency Injection (using <a href="http://www.ninject.org/" target="_blank">Ninject DI Container</a>)
