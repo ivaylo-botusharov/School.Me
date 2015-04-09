@@ -69,12 +69,24 @@
             this.academicYearRepository.SaveChanges();
         }
 
+        public void HardDelete(AcademicYear academicYear)
+        {
+            this.academicYearRepository.HardDelete(academicYear);
+            this.academicYearRepository.SaveChanges();
+        }
+
         // Checks if AcademicYear with specified start year or end year exists in database
         public bool AcademicYearExistsInDb(DateTime startDate, DateTime endDate)
         {
             return this.academicYearRepository.ExistsInDb(startDate, endDate);
         }
 
+        public bool AcademicYearUniqueOnEdit(Guid id, DateTime startDate, DateTime endDate)
+        {
+            return this.academicYearRepository.IsUniqueOnEdit(id, startDate, endDate);
+        }
+
+        // Helpers
         private AcademicYear CreateSingleAcademicYear(AcademicYear academicYear, AcademicYear previousAcademicYear, int lastSchoolYear)
         {
             academicYear.IsActive = true;

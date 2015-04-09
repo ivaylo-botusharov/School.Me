@@ -7,6 +7,7 @@
     using System.Web.Mvc;
     using School.Models;
     using School.Services.Interfaces;
+    using School.Web.Validators;
     
     // [YearShoudNotExistInDb]
     public class AcademicYearCreateSubmitModel : IValidatableObject
@@ -14,24 +15,17 @@
         public Guid Id { get; set; }
 
         [Required]
+        [FutureDate(ErrorMessage = "The entered date should be current or future date.")]
         [Display(Name = "Start date")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [FutureDate(ErrorMessage = "The entered date should be current or future date.")]
         [Display(Name = "End date")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
-
-        [Display(Name = "Transfer Previous Academic Year")]
-        public bool TransferStudentsFromPreviousYear { get; set; }
-
-        [Display(Name = "Grades number")]
-        public int GradesCount { get; set; }
-
-        [Display(Name = "School classes number")]
-        public int SchoolClassesCount { get; set; }
-
+        
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();

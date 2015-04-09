@@ -25,5 +25,17 @@
 
             return academicYearExists;
         }
+
+        public bool IsUniqueOnEdit(Guid id, DateTime startDate, DateTime endDate)
+        {
+            bool isUnique = !this
+                .All()
+                .Any(
+                ay => ay.Id != id &&
+                    (ay.StartDate.Year == startDate.Year ||
+                    ay.EndDate.Year == endDate.Year));
+            
+            return isUnique;
+        }
     }
 }

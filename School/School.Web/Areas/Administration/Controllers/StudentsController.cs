@@ -93,7 +93,8 @@
             }
 
             StudentDetailsEditModel model = Mapper.Map<Student, StudentDetailsEditModel>(student);
-            model.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(student.ApplicationUser);
+            model.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(
+                student.ApplicationUser);
 
             return View(model);
         }
@@ -115,7 +116,8 @@
             }
 
             StudentDetailsEditModel studentModel = Mapper.Map<Student, StudentDetailsEditModel>(student);
-            studentModel.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(student.ApplicationUser);
+            studentModel.AccountDetailsEditModel = Mapper.Map<ApplicationUser, AccountDetailsEditModel>(
+                student.ApplicationUser);
 
             return View(studentModel);
         }
@@ -159,7 +161,8 @@
             }
 
             Mapper.Map<StudentDetailsEditModel, Student>(studentModel, student);
-            Mapper.Map<AccountDetailsEditModel, ApplicationUser>(studentModel.AccountDetailsEditModel, student.ApplicationUser);
+            Mapper.Map<AccountDetailsEditModel, ApplicationUser>(
+                studentModel.AccountDetailsEditModel, student.ApplicationUser);
             
             this.studentService.Update(student);
 
@@ -167,7 +170,10 @@
 
             if (!string.IsNullOrEmpty(redirectUrl.RedirectControllerName))
             {
-                return RedirectToAction(redirectUrl.RedirectActionName, redirectUrl.RedirectControllerName, redirectUrl.RedirectParameters);
+                return RedirectToAction(
+                    redirectUrl.RedirectActionName, 
+                    redirectUrl.RedirectControllerName, 
+                    redirectUrl.RedirectParameters);
             }
 
             return RedirectToAction("Index", "Students");
@@ -203,7 +209,10 @@
 
             if (!string.IsNullOrEmpty(redirectUrl.RedirectControllerName))
             {
-                return RedirectToAction(redirectUrl.RedirectActionName, redirectUrl.RedirectControllerName, redirectUrl.RedirectParameters);
+                return RedirectToAction(
+                    redirectUrl.RedirectActionName, 
+                    redirectUrl.RedirectControllerName, 
+                    redirectUrl.RedirectParameters);
             }
 
             return RedirectToAction("Index");

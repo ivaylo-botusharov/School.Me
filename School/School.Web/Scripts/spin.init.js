@@ -20,7 +20,7 @@
             left: '50%' // Left position relative to parent
         };
 
-        var target = document.getElementById('creating_spinner_center');
+        var target = document.getElementById('spinner_center');
         var spinner;
 
         $('#create-year-form').submit(function () {
