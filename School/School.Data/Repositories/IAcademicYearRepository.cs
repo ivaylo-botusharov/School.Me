@@ -6,5 +6,7 @@
     public interface IAcademicYearRepository : IDeletableEntityRepository<AcademicYear>
     {
         bool ExistsInDb(DateTime startDate, DateTime endDate);
+
+        bool IsUniqueOnEdit(Guid id, DateTime startDate, DateTime endDate);
     }
 }

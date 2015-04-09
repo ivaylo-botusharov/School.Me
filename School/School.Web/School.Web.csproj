@@ -257,6 +257,8 @@
     <Compile Include="Areas\Administration\Controllers\StudentsController.cs" />
     <Compile Include="Areas\Administration\Controllers\TeachersController.cs" />
     <Compile Include="Areas\Administration\Models\AcademicYearCreateSubmitModel.cs" />
+    <Compile Include="Areas\Administration\Models\AcademicYearDetailsDeleteModel.cs" />
+    <Compile Include="Areas\Administration\Models\AcademicYearDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\AcademicYearDetailsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AcademicYearListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
@@ -315,6 +317,7 @@
     <Compile Include="Models\StudentRegisterSubmitModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Validators\FutureDateAttribute.cs" />
     <Compile Include="Validators\YearShoudNotExistInDbAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +384,8 @@
     <Content Include="Areas\Administration\Views\AcademicYears\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Account\Register.cshtml" />
     <Content Include="Areas\Teachers\Views\Account\Register.cshtml" />
+    <Content Include="Areas\Administration\Views\AcademicYears\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\AcademicYears\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\schoolme.pubxml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Icon.png" />
@@ -449,6 +454,7 @@
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DatePicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

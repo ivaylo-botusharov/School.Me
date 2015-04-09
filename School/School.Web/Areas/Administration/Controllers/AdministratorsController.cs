@@ -22,13 +22,15 @@
 
         public ActionResult Index()
         {
-            IQueryable<AdministratorListViewModel> administrators = this.administratorService.All().Project().To<AdministratorListViewModel>();
+            IQueryable<AdministratorListViewModel> administrators = 
+                this.administratorService.All().Project().To<AdministratorListViewModel>();
             return View(administrators);
         }
 
         public ActionResult Details(string username)
         {
-            Administrator administrator = this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
+            Administrator administrator = 
+                this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
 
             if (administrator == null)
             {
@@ -36,14 +38,18 @@
                 return RedirectToAction("Index");
             }
 
-            AdministratorDetailsEditModel adminModel = Mapper.Map<Administrator, AdministratorDetailsEditModel>(administrator);
+            AdministratorDetailsEditModel adminModel = 
+                Mapper.Map<Administrator, AdministratorDetailsEditModel>(administrator);
             return View(adminModel);
         }
 
         public ActionResult Edit(string username)
         {
-            Administrator administrator = this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
-            AdministratorDetailsEditModel adminModel = Mapper.Map<Administrator, AdministratorDetailsEditModel>(administrator);
+            Administrator administrator = 
+                this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
+            
+            AdministratorDetailsEditModel adminModel = 
+                Mapper.Map<Administrator, AdministratorDetailsEditModel>(administrator);
 
             return View(adminModel);
         }
@@ -87,9 +93,11 @@
         
         public ActionResult Delete(string username)
         {
-            Administrator administrator = this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
+            Administrator administrator = 
+                this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
 
-            AdministratorDetailsEditModel adminModel = Mapper.Map<Administrator, AdministratorDetailsEditModel>(administrator);
+            AdministratorDetailsEditModel adminModel = 
+                Mapper.Map<Administrator, AdministratorDetailsEditModel>(administrator);
 
             return View(adminModel);
         }
@@ -99,7 +107,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string username)
         {
-            Administrator administrator = this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
+            Administrator administrator = 
+                this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
+            
             administrator.DeletedBy = User.Identity.GetUserId();
 
             this.administratorService.Delete(administrator);

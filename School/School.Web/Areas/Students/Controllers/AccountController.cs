@@ -11,7 +11,7 @@
     using School.Services.Interfaces;
     using School.Web.App_Start.IdentityConfig;
     using School.Web.Areas.Students.Models;
-    
+                                                                                                                                
     [Authorize(Roles = GlobalConstants.StudentRoleName)]
     public class AccountController : Controller
     {

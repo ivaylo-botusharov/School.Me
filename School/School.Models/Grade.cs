@@ -31,7 +31,7 @@
 
         public virtual AcademicYear AcademicYear { get; set; }
 
-        public Guid? AcademicYearId { get; set; }
+        public Guid AcademicYearId { get; set; }
 
         public int GradeYear { get; set; }
     }

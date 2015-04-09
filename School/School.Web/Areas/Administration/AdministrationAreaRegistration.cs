@@ -26,6 +26,11 @@
                 defaults: new { controller = "AcademicYears", action = "Details" },
                 namespaces: new string[] { "School.Web.Areas.Administration.Controllers" });
 
+            // context.MapRoute(
+            //     name: "Administration_academicyear_edit",
+            //     url: "Administration/AcademicYears/{action}/{startYear}",
+            //     defaults: new { controller = "AcademicYears", action = "Edit" },
+            //     namespaces: new string[] { "School.Web.Areas.Administration.Controllers" });
             context.MapRoute(
                name: "Administration_student_details",
                url: "Administration/Students/Details/{username}",
