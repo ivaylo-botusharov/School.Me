@@ -18,18 +18,36 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AccountDetailsEditModel.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(
+                model => model.AccountDetailsEditModel.UserName, 
+                htmlAttributes: new { @class = "control-label col-md-2" })
+
             <div class="col-md-4">
-                @Html.EditorFor(model => model.AccountDetailsEditModel.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AccountDetailsEditModel.UserName, "", new { @class = "text-danger" })
+                @Html.EditorFor(
+                    model => model.AccountDetailsEditModel.UserName, 
+                    new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(
+                    model => model.AccountDetailsEditModel.UserName, 
+                    "", 
+                    new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AccountDetailsEditModel.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(
+                model => model.AccountDetailsEditModel.Email, 
+                htmlAttributes: new { @class = "control-label col-md-2" })
+
             <div class="col-md-4">
-                @Html.EditorFor(model => model.AccountDetailsEditModel.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AccountDetailsEditModel.Email, "", new { @class = "text-danger" })
+                @Html.EditorFor(
+                    model => model.AccountDetailsEditModel.Email, 
+                    new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(
+                    model => model.AccountDetailsEditModel.Email, 
+                    "", 
+                    new { @class = "text-danger" })
             </div>
         </div>
 
@@ -50,10 +68,19 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AccountDetailsEditModel.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(
+                model => model.AccountDetailsEditModel.PhoneNumber, 
+                htmlAttributes: new { @class = "control-label col-md-2" })
+
             <div class="col-md-4">
-                @Html.EditorFor(model => model.AccountDetailsEditModel.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AccountDetailsEditModel.PhoneNumber, "", new { @class = "text-danger" })
+                @Html.EditorFor(
+                    model => model.AccountDetailsEditModel.PhoneNumber, 
+                    new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(
+                    model => model.AccountDetailsEditModel.PhoneNumber, 
+                    "", 
+                    new { @class = "text-danger" })
             </div>
         </div>
 
@@ -66,7 +93,12 @@
 }
 
 <div>
-    @Html.ActionLinkWithSpanUsingSession("Index", "Students", "redirectUrl", new { @class = "btn btn-default btn-sm", title = "Back to List" }, new { @class = "glyphicon glyphicon-arrow-left" })
+    @Html.ActionLinkWithSpanUsingSession(
+        "Index", 
+        "Students", 
+        "redirectUrl", 
+        new { @class = "btn btn-default btn-sm", title = "Back to List" }, 
+        new { @class = "glyphicon glyphicon-arrow-left" })
 </div>
 
 

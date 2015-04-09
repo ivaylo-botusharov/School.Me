@@ -62,17 +62,30 @@
 
             Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsViewModel>();
 
+            Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsEditModel>();
+
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.AcademicYearDetailsEditModel, AcademicYear>();
+
+            Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsDeleteModel>()
+                .ForMember(dest => dest.GradesCount, opt => opt.MapFrom(src => src.Grades.Count()));
+
             Mapper.CreateMap<Grade, School.Web.Areas.Administration.Models.GradeListViewModel>()
                 .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count))
-                .ForMember(dest => dest.SchoolClasses, opt => opt.MapFrom(src => src.SchoolClasses.OrderBy(sc => sc.ClassLetter)));
+                .ForMember(
+                dest => dest.SchoolClasses, 
+                opt => opt.MapFrom(src => src.SchoolClasses.OrderBy(sc => sc.ClassLetter)));
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassListViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear));
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassDetailsViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))
-                .ForMember(dest => dest.StudentsNumber, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false).Count()))
-                .ForMember(dest => dest.Students, opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false)))
+                .ForMember(
+                    dest => dest.StudentsNumber,
+                    opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false).Count()))
+                .ForMember(
+                    dest => dest.Students, 
+                    opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false)))
                 .ForMember(dest => dest.AcademicYear, opt => opt.MapFrom(src => src.Grade.AcademicYear));
         }
     }

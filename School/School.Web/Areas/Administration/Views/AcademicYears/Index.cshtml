@@ -41,15 +41,46 @@
                 <td>
                     @Html.DisplayFor(modelItem => academicYear.IsActive)
                 </td>
-                <td>
-                    <a href="@Url.Action("Details", "AcademicYears", new { startYear = academicYear.StartYear })" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span> Details
+                <td class="text-right">
+                    @Html.ActionLinkWithSpan(
+                        "", 
+                        "Edit", 
+                        "AcademicYears", 
+                        new { startYear = academicYear.StartYear }, 
+                        new { @class = "btn btn-default" }, 
+                        new { @class = "glyphicon glyphicon-pencil" })
+
+                    <a href="@Url.Action("Details", "AcademicYears", new {startYear = academicYear.StartYear})"
+                       class="btn btn-default">
+                        <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                     </a>
+                    
+                    @if (academicYear.StartDate >= DateTime.Now)
+                    {
+                        @Html.ActionLinkWithSpan(
+                        "",
+                        "Delete",
+                        "AcademicYears",
+                        new { startYear = academicYear.StartYear },
+                        new { @class = "btn btn-default" },
+                        new { @class = "glyphicon glyphicon-trash" })
+                    }
                 </td>
             </tr>
         }
     </table>
 </div>
 
-@Html.ActionLinkWithSpan("", "Index", "Home", new { @class = "btn btn-default" }, new { @class = "glyphicon glyphicon-arrow-left" })
-@Html.ActionLinkWithSpan("Add", "Create", "AcademicYears", new { @class = "btn btn-primary" }, new { @class = "glyphicon glyphicon-plus" })
+@Html.ActionLinkWithSpan(
+    "",
+    "Index",
+    "Home",
+    new { @class = "btn btn-default" },
+    new { @class = "glyphicon glyphicon-arrow-left" })
+
+@Html.ActionLinkWithSpan(
+    "Add", 
+    "Create",
+    "AcademicYears",
+    new { @class = "btn btn-primary" },
+    new { @class = "glyphicon glyphicon-plus" })
