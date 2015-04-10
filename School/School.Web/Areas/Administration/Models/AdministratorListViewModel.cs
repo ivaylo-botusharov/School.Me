@@ -18,5 +18,7 @@
 
         [Display(Name = "E-mail")]
         public string Email { get; set; }
+
+        public string ApplicationUserId { get; set; } 
     }
 }

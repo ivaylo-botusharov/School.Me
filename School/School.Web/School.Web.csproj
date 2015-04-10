@@ -263,6 +263,7 @@
     <Compile Include="Areas\Administration\Models\AcademicYearListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountViewModels\RegisterViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\AdministratorDeleteSubmitModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorRegisterSubmitModel.cs" />
