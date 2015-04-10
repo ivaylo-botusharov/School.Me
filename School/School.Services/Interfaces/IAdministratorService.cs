@@ -13,5 +13,7 @@
         Administrator GetByUserName(string username);
 
         bool IsUserNameUniqueOnEdit(Administrator administrator, string username);
+
+        void HardDelete(Administrator academicYear);
     }
 }

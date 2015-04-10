@@ -96,8 +96,10 @@
             Administrator administrator = 
                 this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
 
-            AdministratorDetailsEditModel adminModel = 
-                Mapper.Map<Administrator, AdministratorDetailsEditModel>(administrator);
+            AdministratorDeleteSubmitModel adminModel = 
+                Mapper.Map<Administrator, AdministratorDeleteSubmitModel>(administrator);
+
+            adminModel.DeletePermanent = true;
 
             return View(adminModel);
         }
@@ -105,13 +107,24 @@
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string username)
+        public ActionResult DeleteConfirmed(AdministratorDeleteSubmitModel model)
         {
             Administrator administrator = 
-                this.administratorService.All().FirstOrDefault(a => a.ApplicationUser.UserName == username);
-            
-            administrator.DeletedBy = User.Identity.GetUserId();
+                this.administratorService.GetById(model.Id);
 
+            if (administrator.ApplicationUser.Email == "superadmin@superadmin.com")
+            {
+                ModelState.AddModelError(string.Empty, "Superadmin cannot delete herself / himself.");
+                return View();
+            }
+
+            if (model.DeletePermanent)
+            {
+                this.administratorService.HardDelete(administrator);
+                return RedirectToAction("Index");
+            }
+
+            administrator.DeletedBy = User.Identity.GetUserId();
             this.administratorService.Delete(administrator);
 
             return RedirectToAction("Index");

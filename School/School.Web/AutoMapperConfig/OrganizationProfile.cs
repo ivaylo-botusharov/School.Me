@@ -34,6 +34,8 @@
 
             Mapper.CreateMap<School.Web.Areas.Administration.Models.AdministratorListViewModel, Administrator>();
 
+            Mapper.CreateMap<Administrator, School.Web.Areas.Administration.Models.AdministratorDeleteSubmitModel>();
+
             Mapper.CreateMap<School.Web.Areas.Students.Models.StudentRegisterSubmitModel, Student>();
 
             Mapper.CreateMap<Student, School.Web.Areas.Administration.Models.StudentListViewModel>()

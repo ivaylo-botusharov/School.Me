@@ -14,6 +14,8 @@
     <div class="form-horizontal">
         <h4>Administrator</h4>
         <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+
 
         <div class="form-group">
             @Html.LabelFor(m => m.RegisterViewModel.UserName, new { @class = "control-label col-md-2" })
@@ -70,7 +72,12 @@
 }
 
 <div>
-    @Html.ActionLinkWithSpan("", "Index", "Administrators", new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-arrow-left" })
+    @Html.ActionLinkWithSpan(
+        "", 
+        "Index", 
+        "Administrators", 
+        new { @class = "btn btn-default btn-sm" }, 
+        new { @class = "glyphicon glyphicon-arrow-left" })
 </div>
 
 @section Scripts {

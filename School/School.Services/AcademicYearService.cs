@@ -47,13 +47,11 @@
         {
             int lastSchoolYear = 12;
 
-            AcademicYear previousAcademicYear = this.academicYearRepository.All().OrderByDescending(ay => ay.StartDate).FirstOrDefault();
+            AcademicYear previousAcademicYear = this
+                .academicYearRepository.All().OrderByDescending(ay => ay.StartDate).FirstOrDefault();
 
-            if (previousAcademicYear == null)
-            {
-                previousAcademicYear = new AcademicYear();
-            }
-
+            previousAcademicYear = previousAcademicYear ?? new AcademicYear();
+            
             this.CreateSingleAcademicYear(academicYear, previousAcademicYear, lastSchoolYear);
         }
 
@@ -73,6 +71,16 @@
         {
             this.academicYearRepository.HardDelete(academicYear);
             this.academicYearRepository.SaveChanges();
+
+            AcademicYear latestAcademicYear =
+                this.academicYearRepository.All().OrderByDescending(ay => ay.StartDate).FirstOrDefault();
+
+            if (latestAcademicYear != null)
+            {
+                latestAcademicYear.IsActive = true;
+                this.academicYearRepository.Update(latestAcademicYear);
+                this.academicYearRepository.SaveChanges();
+            }
         }
 
         // Checks if AcademicYear with specified start year or end year exists in database
@@ -87,7 +95,8 @@
         }
 
         // Helpers
-        private AcademicYear CreateSingleAcademicYear(AcademicYear academicYear, AcademicYear previousAcademicYear, int lastSchoolYear)
+        private AcademicYear CreateSingleAcademicYear(
+            AcademicYear academicYear, AcademicYear previousAcademicYear, int lastSchoolYear)
         {
             academicYear.IsActive = true;
             previousAcademicYear.IsActive = false;
@@ -96,7 +105,7 @@
 
             IList<Grade> previousAcademicYearGrades = new List<Grade>();
 
-            if (previousAcademicYear.Grades.Count() > 0)
+            if (previousAcademicYear.Grades.Any())
             {
                 previousAcademicYearGrades = previousAcademicYear.Grades;
             }
@@ -107,34 +116,33 @@
             {
                 IList<Subject> previousYearCurrentGradeSubjects = new List<Subject>();
 
-                if (previousAcademicYear.Grades != null && previousAcademicYear.Grades.Count() > 0)
+                if (previousAcademicYear.Grades != null && previousAcademicYear.Grades.Any())
                 {
                     previousYearCurrentGradeSubjects = previousAcademicYearGrades
-                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear).Subjects;
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
+                        .Subjects;
                 }
 
                 grade.Subjects = this.CreateGradeSubjects(grade, previousYearCurrentGradeSubjects);
 
                 IList<SchoolClass> previousYearPreviousGradeClasses = new List<SchoolClass>();
 
-                if (previousAcademicYear.Grades.Count() > 0 && grade.GradeYear > 1)
+                if (previousAcademicYear.Grades.Any() && grade.GradeYear > 1)
                 {
                     previousYearPreviousGradeClasses = previousAcademicYear
-                        .Grades
-                        .First(g => g.GradeYear == grade.GradeYear - 1)
-                        .SchoolClasses;
+                        .Grades.First(g => g.GradeYear == grade.GradeYear - 1).SchoolClasses;
                 }
 
                 IList<SchoolClass> previousYearCurrentGradeClasses = new List<SchoolClass>();
 
-                if (previousAcademicYearGrades != null && previousAcademicYearGrades.Count() > 0)
+                if (previousAcademicYearGrades != null && previousAcademicYearGrades.Any())
                 {
                     previousYearCurrentGradeClasses = previousAcademicYearGrades
-                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
-                        .SchoolClasses;
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear).SchoolClasses;
                 }
 
-                this.CreateGradeSchoolClasses(grade, previousYearPreviousGradeClasses, previousYearCurrentGradeClasses);
+                this.CreateGradeSchoolClasses(
+                    grade, previousYearPreviousGradeClasses, previousYearCurrentGradeClasses);
 
                 foreach (var schoolClass in grade.SchoolClasses)
                 {
@@ -168,7 +176,7 @@
         {
             var grades = new List<Grade>();
 
-            if (previousAcademicYearGrades == null || previousAcademicYearGrades.Count() == 0)
+            if (previousAcademicYearGrades == null || previousAcademicYearGrades.Any())
             {
                 for (int gradeIndex = 0; gradeIndex < lastSchoolYear; gradeIndex++)
                 {
@@ -220,10 +228,11 @@
                 {
                     bool schoolThemesMatching = false;
 
-                    SchoolClass previousYearCurrentGradeClass =
-                        previousYearCurrentGradeClasses.FirstOrDefault(c => c.ClassLetter == previousYearPreviousGradeClass.ClassLetter);
+                    SchoolClass previousYearCurrentGradeClass = previousYearCurrentGradeClasses
+                        .FirstOrDefault(c => c.ClassLetter == previousYearPreviousGradeClass.ClassLetter);
 
-                    schoolThemesMatching = this.AreClassesSchoolThemesMatching(previousYearCurrentGradeClass, previousYearPreviousGradeClass);
+                    schoolThemesMatching = this
+                        .AreClassesSchoolThemesMatching(previousYearCurrentGradeClass, previousYearPreviousGradeClass);
 
                     if (schoolThemesMatching)
                     {
@@ -281,7 +290,7 @@
         {
             IList<SchoolTheme> schoolThemes = new List<SchoolTheme>();
 
-            if (previousAcademicYearSchoolThemes != null && previousAcademicYearSchoolThemes.Count() > 0)
+            if (previousAcademicYearSchoolThemes != null && previousAcademicYearSchoolThemes.Any())
             {
                 foreach (var schoolTheme in previousAcademicYearSchoolThemes)
                 {
@@ -314,7 +323,8 @@
             return subjects;
         }
 
-        private List<Teacher> CreateTeachers(IList<Grade> currentAcademicYearGrades, IList<Grade> previousAcademicYearGrades)
+        private void CreateTeachers(
+            IList<Grade> currentAcademicYearGrades, IList<Grade> previousAcademicYearGrades)
         {
             var teachers = new List<Teacher>();
 
@@ -338,8 +348,6 @@
                     }
                 }
             }
-
-            return teachers;
         }
     }
 }
