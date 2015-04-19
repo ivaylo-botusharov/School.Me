@@ -41,7 +41,13 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLinkWithSpan("", "Index", "AcademicYears", new { @class = "btn btn-default" }, new { @class = "glyphicon glyphicon-arrow-left" })
+                @Html.ActionLinkWithSpan(
+                    "", 
+                    "Index", 
+                    "AcademicYears", 
+                    new { @class = "btn btn-default" }, 
+                    new { @class = "glyphicon glyphicon-arrow-left" })
+
                 <input type="submit" value="Save" id="spin-activator" class="btn btn-primary" />
             </div>
         </div>

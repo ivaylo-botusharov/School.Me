@@ -7,6 +7,8 @@
     {
         AcademicYear GetById(Guid id);
 
+        void Add(AcademicYear academicYear, int highestGrade);
+
         bool AcademicYearExistsInDb(DateTime startDate, DateTime endDate);
 
         bool AcademicYearUniqueOnEdit(Guid id, DateTime startDate, DateTime endDate);

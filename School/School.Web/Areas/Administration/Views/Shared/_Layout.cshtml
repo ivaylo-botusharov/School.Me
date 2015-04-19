@@ -18,17 +18,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("St. Mary School", "Index", new { controller = "Home", area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(
+                    "St. Mary School", 
+                    "Index", 
+                    new { controller = "Home", area = "" }, 
+                    new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Dashboard", "Index", "Home", new { area = "Administration" }, new { })</li>
-                    <li>@Html.ActionLink("Teachers", "Index", "Teachers", new { area = "Administration" }, new { })</li>
-                    <li>@Html.ActionLink("Students", "Index", "Students", new { area = "Administration" }, new { })</li>
-                    <li>@Html.ActionLink("Academic Years", "Index", "AcademicYears", new { area = "Administration" }, new { })</li>
+                    <li>
+                        @Html.ActionLink("Dashboard", "Index", "Home", new {area = "Administration"}, new {})
+                    </li>
+                    <li>
+                        @Html.ActionLink("Teachers", "Index", "Teachers", new {area = "Administration"}, new {})
+                    </li>
+                    <li>
+                        @Html.ActionLink("Students", "Index", "Students", new {area = "Administration"}, new {})
+                    </li>
+                    <li>
+                        @Html.ActionLink("Academic Years", "Index", "AcademicYears", new {area = "Administration"}, new {})
+                    </li>
                     @if (User.IsInRole(School.Common.GlobalConstants.SuperAdministratorRoleName))
                     {
-                        <li>@Html.ActionLink("Administrators", "Index", "Administrators", new { area = "Administration" }, new { })</li>
+                        <li>
+                            @Html.ActionLink("Administrators", "Index", "Administrators", new {area = "Administration"}, new {})
+                        </li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

@@ -94,3 +94,45 @@ dt {
     margin-top: 25px;
     background-color: #dcedc8;
 }
+
+.grade-container {
+    position: relative;
+    height: 40px;
+}
+
+.grade-anchor-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;   
+  z-index: 0;
+  border-top: 1px;
+  border-right: 1px;
+  border-left: 1px;
+  border-bottom: 0;
+  border-color: #ddd;
+  border-style: solid;
+}
+
+#normal-details-button , #normal-delete-button{
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  -webkit-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+
+
+#normal-details-button {
+  right: 110px;
+}
+
+
+#normal-delete-button {
+  right: 60px;
+}
