@@ -61,6 +61,13 @@
             this.administratorRepository.SaveChanges();
         }
 
+        public void HardDelete(Administrator administrator)
+        {
+            this.userRepository.HardDelete(administrator.ApplicationUser);
+            this.administratorRepository.HardDelete(administrator);
+            this.administratorRepository.SaveChanges();
+        }
+
         public bool IsUserNameUniqueOnEdit(Administrator administrator, string username)
         {
             bool isUserNameUnique = !this.administratorRepository.AllWithDeleted()

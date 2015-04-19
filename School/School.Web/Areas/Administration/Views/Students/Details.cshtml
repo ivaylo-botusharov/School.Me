@@ -43,6 +43,17 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLinkWithSpan("", "Edit", new { username = Model.AccountDetailsEditModel.UserName }, new { @class = "btn btn-default btn-sm", title = "Edit"}, new { @class = "glyphicon glyphicon-pencil"})
-    @Html.ActionLinkWithSpanUsingSession("Index", "Students", "redirectUrl", new { @class = "btn btn-default btn-sm", title = "Back to List" }, new { @class = "glyphicon glyphicon-arrow-left" })
+    @Html.ActionLinkWithSpan(
+        "", 
+        "Edit", 
+        new { username = Model.AccountDetailsEditModel.UserName }, 
+        new { @class = "btn btn-default btn-sm", title = "Edit"}, 
+        new { @class = "glyphicon glyphicon-pencil"})
+
+    @Html.ActionLinkWithSpanUsingSession(
+        "Index", 
+        "Students", 
+        "redirectUrl", 
+        new { @class = "btn btn-default btn-sm", title = "Back to List" }, 
+        new { @class = "glyphicon glyphicon-arrow-left" })
 </p>

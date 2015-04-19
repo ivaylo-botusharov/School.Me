@@ -1,4 +1,5 @@
-﻿@using School.Web.Areas.Administration.Models
+﻿@using Microsoft.AspNet.Identity
+@using School.Web.Areas.Administration.Models
 @model IEnumerable<AdministratorListViewModel>
 
 @{
@@ -26,14 +27,42 @@
                 <td>@Html.DisplayFor(modelItem => administrator.LastName)</td>
                 <td>@Html.DisplayFor(modelItem => administrator.Email)</td>
                 <td class="text-right">
-                    @Html.ActionLinkWithSpan("Edit", new { username = administrator.UserName }, new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-pencil" })
-                    @Html.ActionLinkWithSpan("Details", new { username = administrator.UserName }, new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-list-alt" })
-                    @Html.ActionLinkWithSpan("Delete", new { username = administrator.UserName }, new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-trash" })
+                    @Html.ActionLinkWithSpan(
+                        "Edit", 
+                        new { username = administrator.UserName }, 
+                        new { @class = "btn btn-default btn-sm" }, 
+                        new { @class = "glyphicon glyphicon-pencil" })
+
+                    @Html.ActionLinkWithSpan(
+                        "Details", 
+                        new { username = administrator.UserName }, 
+                        new { @class = "btn btn-default btn-sm" }, 
+                        new { @class = "glyphicon glyphicon-list-alt" })
+
+                    @if (User.Identity.GetUserId() != administrator.ApplicationUserId)
+                    {
+                        @Html.ActionLinkWithSpan(
+                            "Delete",
+                            new { username = administrator.UserName },
+                            new { @class = "btn btn-default btn-sm" },
+                            new { @class = "glyphicon glyphicon-trash" })
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@Html.ActionLinkWithSpan("", "Index", "Home", new { @class = "btn btn-default btn-sm" }, new { @class = "glyphicon glyphicon-arrow-left" })
-@Html.ActionLinkWithSpan("Add", "Register", "Account", new { @class = "btn btn-primary btn-sm" }, new { @class = "glyphicon glyphicon-plus" })
+@Html.ActionLinkWithSpan(
+    "", 
+    "Index", 
+    "Home", 
+    new { @class = "btn btn-default btn-sm" }, 
+    new { @class = "glyphicon glyphicon-arrow-left" })
+
+@Html.ActionLinkWithSpan(
+    "Add", 
+    "Register", 
+    "Account", 
+    new { @class = "btn btn-primary btn-sm" }, 
+    new { @class = "glyphicon glyphicon-plus" })

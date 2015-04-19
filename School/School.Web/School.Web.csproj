@@ -252,6 +252,7 @@
     <Compile Include="Areas\Administration\Controllers\AcademicYearsController.cs" />
     <Compile Include="Areas\Administration\Controllers\AccountController.cs" />
     <Compile Include="Areas\Administration\Controllers\AdministratorsController.cs" />
+    <Compile Include="Areas\Administration\Controllers\GradesController.cs" />
     <Compile Include="Areas\Administration\Controllers\HomeController.cs" />
     <Compile Include="Areas\Administration\Controllers\SchoolClassesController.cs" />
     <Compile Include="Areas\Administration\Controllers\StudentsController.cs" />
@@ -263,10 +264,13 @@
     <Compile Include="Areas\Administration\Models\AcademicYearListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\AccountViewModels\RegisterViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\AdministratorDeleteSubmitModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorDetailsEditModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorRegisterSubmitModel.cs" />
+    <Compile Include="Areas\Administration\Models\GradeCreateSubmitModel.cs" />
     <Compile Include="Areas\Administration\Models\GradeListViewModel.cs" />
+    <Compile Include="Areas\Administration\Models\SchoolClassCreateSubmitModel.cs" />
     <Compile Include="Areas\Administration\Models\SchoolClassDetailsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\SchoolClassListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\StudentListViewModel.cs" />
@@ -329,6 +333,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\About_Page\skype-icon.png" />
+    <Content Include="Content\Images\Admin_Panel\administrator-icon.png" />
     <Content Include="Content\Images\Admin_Panel\calendar-icon.png" />
     <Content Include="Content\Images\Admin_Panel\clock-icon.png" />
     <Content Include="Content\Images\Admin_Panel\student-icon.png" />
@@ -386,6 +391,8 @@
     <Content Include="Areas\Teachers\Views\Account\Register.cshtml" />
     <Content Include="Areas\Administration\Views\AcademicYears\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\AcademicYears\Delete.cshtml" />
+    <Content Include="Areas\Administration\Views\SchoolClasses\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Grades\Create.cshtml" />
     <None Include="Properties\PublishProfiles\schoolme.pubxml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Icon.png" />

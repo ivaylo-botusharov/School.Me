@@ -168,6 +168,8 @@
 
             RedirectUrl redirectUrl = Session["redirectUrl"] as RedirectUrl;
 
+            redirectUrl = redirectUrl ?? new RedirectUrl();
+
             if (!string.IsNullOrEmpty(redirectUrl.RedirectControllerName))
             {
                 return RedirectToAction(
@@ -206,6 +208,8 @@
             this.studentService.Delete(student);
 
             RedirectUrl redirectUrl = Session["redirectUrl"] as RedirectUrl;
+
+            redirectUrl = redirectUrl ?? new RedirectUrl();
 
             if (!string.IsNullOrEmpty(redirectUrl.RedirectControllerName))
             {

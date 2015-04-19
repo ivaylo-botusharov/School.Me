@@ -24,7 +24,7 @@
         public DateTime EndDate { get; set; }
 
         public bool IsActive { get; set; }
-
+        
         public virtual IList<Grade> Grades
         {
             get { return this.grades; }

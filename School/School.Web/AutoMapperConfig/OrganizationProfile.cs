@@ -34,6 +34,8 @@
 
             Mapper.CreateMap<School.Web.Areas.Administration.Models.AdministratorListViewModel, Administrator>();
 
+            Mapper.CreateMap<Administrator, School.Web.Areas.Administration.Models.AdministratorDeleteSubmitModel>();
+
             Mapper.CreateMap<School.Web.Areas.Students.Models.StudentRegisterSubmitModel, Student>();
 
             Mapper.CreateMap<Student, School.Web.Areas.Administration.Models.StudentListViewModel>()
@@ -60,7 +62,8 @@
 
             Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearListViewModel>();
 
-            Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsViewModel>();
+            Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsViewModel>()
+                .ForMember(dest => dest.Grades, opt => opt.MapFrom(src => src.Grades.OrderBy(g => g.GradeYear)));
 
             Mapper.CreateMap<AcademicYear, School.Web.Areas.Administration.Models.AcademicYearDetailsEditModel>();
 
@@ -74,6 +77,12 @@
                 .ForMember(
                 dest => dest.SchoolClasses, 
                 opt => opt.MapFrom(src => src.SchoolClasses.OrderBy(sc => sc.ClassLetter)));
+
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.GradeCreateSubmitModel, Grade>();
+
+            Mapper.CreateMap<Grade, School.Web.Areas.Administration.Models.GradeCreateSubmitModel>()
+                .ForMember(dest => dest.AcademicYearStartDate, opt => opt.MapFrom(src => src.AcademicYear.StartDate))
+                .ForMember(dest => dest.AcademicYearEndDate, opt => opt.MapFrom(src => src.AcademicYear.EndDate));
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassListViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear));
