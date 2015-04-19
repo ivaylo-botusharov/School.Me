@@ -13,6 +13,10 @@
 
         private RouteValueDictionary redirectParameters;
 
+        public RedirectUrl()
+        {
+        }
+
         public RedirectUrl(ControllerContext controllerContext, RouteValueDictionary redirectParameters)
         {
             this.redirectControllerName = controllerContext.RouteData.Values["controller"].ToString();

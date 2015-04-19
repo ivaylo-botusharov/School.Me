@@ -1,0 +1,56 @@
+﻿@model School.Web.Areas.Administration.Models.GradeCreateSubmitModel
+@{
+    ViewBag.Title = "School - Grade - Create";
+}
+
+<h2>Create grade</h2>
+
+<dl class="horizontal">
+    <dt>
+        Academic year:
+    </dt>
+    <dd>
+        @Model.AcademicYearStartDate.Year - @Model.AcademicYearEndDate.Year
+    </dd>
+</dl>
+
+@using (Html.BeginForm("Create", "Grades", FormMethod.Post, new { role = "form"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.AcademicYearStartDate)
+    @Html.HiddenFor(m => m.AcademicYearEndDate)
+    
+    <hr/>
+    
+    @Html.ValidationSummary("", new { @class = "text-danger"})
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(m => m.GradeYear, new { @class = "control-label col-md-2"})
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.GradeYear, new { @class = "form-control", @Value = "" })
+                @Html.ValidationMessageFor(m => m.GradeYear, "", new { @class = "text-danger" }) 
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-3">
+                <input type="submit" value="Save" class="btn btn-default">
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLinkWithSpanUsingSession(
+        "",
+        "Details",
+        "AcademicYears",
+        "redirectUrl",
+        new {@class = "btn btn-default btn-sm", title = "Back to academic year"},
+        new {@class = "glyphicon glyphicon-arrow-left"}
+        )
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

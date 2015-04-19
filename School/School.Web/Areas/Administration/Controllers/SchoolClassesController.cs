@@ -19,11 +19,24 @@
             this.schoolClassService = schoolClassService;
         }
 
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(SchoolClassCreateSubmitModel model)
+        {
+            return View();
+        }
+
         public ActionResult Details(int gradeYear, string letter, int startYear)
         {
             SchoolClass schoolClass = this.schoolClassService.GetByDetails(gradeYear, letter, startYear);
 
-            SchoolClassDetailsViewModel schoolClassModel = Mapper.Map<SchoolClass, SchoolClassDetailsViewModel>(schoolClass);
+            SchoolClassDetailsViewModel schoolClassModel = 
+                Mapper.Map<SchoolClass, SchoolClassDetailsViewModel>(schoolClass);
 
             RouteValueDictionary routeParameters = new RouteValueDictionary
             {

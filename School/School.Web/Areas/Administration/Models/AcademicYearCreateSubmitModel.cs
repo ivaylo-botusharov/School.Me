@@ -37,20 +37,24 @@
 
             IAcademicYearService academicYearService = DependencyResolver.Current.GetService<IAcademicYearService>();
 
-            bool yearExistsInDb = academicYearService.AcademicYearExistsInDb(this.StartDate, this.EndDate) ? true : false;
+            bool yearExistsInDb = 
+                academicYearService.AcademicYearExistsInDb(this.StartDate, this.EndDate) ? true : false;
 
             if (yearExistsInDb)
             {
-                errors.Add(new ValidationResult("Academic Year with the entered start year or end year already exists."));
+                errors.Add(new ValidationResult(
+                    "Academic Year with the entered start year or end year already exists."));
             }
 
-            if (academicYearService.All().Count() > 0)
+            if (academicYearService.All().Any())
             {
-                AcademicYear latestAcademicYear = academicYearService.All().OrderByDescending(ay => ay.StartDate).First();
+                AcademicYear latestAcademicYear = 
+                    academicYearService.All().OrderByDescending(ay => ay.StartDate).First();
                 
                 if (latestAcademicYear != null && this.StartDate.Year > latestAcademicYear.StartDate.Year + 1)
                 {
-                    errors.Add(new ValidationResult("New academic year cannot be more than 1 year later than latest academic year."));
+                    errors.Add(new ValidationResult(
+                        "New academic year cannot be more than 1 year later than latest academic year."));
                 }
             }
 

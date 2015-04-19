@@ -95,7 +95,14 @@
             bool spanBeforeInnerText)
         {
             return ActionLinkWithSpan(
-                htmlHelper, linkText, actionName, controllerName, null, htmlAttributes, spanAttributesDict, spanBeforeInnerText);
+                htmlHelper, 
+                linkText, 
+                actionName, 
+                controllerName, 
+                null, 
+                htmlAttributes, 
+                spanAttributesDict, 
+                spanBeforeInnerText);
         }
 
         public static MvcHtmlString ActionLinkWithSpan(
@@ -133,7 +140,14 @@
             bool spanBeforeInnerText)
         {
             return ActionLinkWithSpan(
-                htmlHelper, linkText, actionName, null, routeDict, htmlAttributes, spanAttributesDict, spanBeforeInnerText);
+                htmlHelper, 
+                linkText, 
+                actionName, 
+                null, 
+                routeDict, 
+                htmlAttributes, 
+                spanAttributesDict, 
+                spanBeforeInnerText);
         }
 
         public static MvcHtmlString ActionLinkWithSpan(
@@ -260,7 +274,14 @@
             object spanAttributesDict)
         {
             return ActionLinkWithSpanUsingSession(
-                htmlHelper, linkText, defaultActionName, defaultControllerName, sessionVariableName, htmlAttributes, spanAttributesDict, true);
+                htmlHelper, 
+                linkText, 
+                defaultActionName, 
+                defaultControllerName, 
+                sessionVariableName, 
+                htmlAttributes, 
+                spanAttributesDict, 
+                true);
         }
 
         public static MvcHtmlString ActionLinkWithSpanUsingSession(
@@ -272,7 +293,14 @@
             object spanAttributesDict)
         {
             return ActionLinkWithSpanUsingSession(
-                htmlHelper, null, defaultActionName, defaultControllerName, sessionVariableName, htmlAttributes, spanAttributesDict, true);
+                htmlHelper, 
+                null, 
+                defaultActionName, 
+                defaultControllerName, 
+                sessionVariableName, 
+                htmlAttributes, 
+                spanAttributesDict, 
+                true);
         }
     }
 }

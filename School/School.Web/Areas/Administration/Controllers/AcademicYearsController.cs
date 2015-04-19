@@ -3,12 +3,14 @@
     using System;
     using System.Linq;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using School.Common;
     using School.Models;
     using School.Services.Interfaces;
     using School.Web.Areas.Administration.Models;
+    using School.Web.Infrastructure;
     
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class AcademicYearsController : Controller
@@ -45,11 +47,11 @@
                 return View(model);
             }
 
-            var academicYear = new AcademicYear();
+            var academicYear = Mapper.Map<AcademicYearCreateSubmitModel, AcademicYear>(model);
 
-            academicYear = Mapper.Map<AcademicYearCreateSubmitModel, AcademicYear>(model);
+            int highestGrade = 12;
 
-            this.academicYearService.Add(academicYear);
+            this.academicYearService.Add(academicYear, highestGrade);
 
             return RedirectToAction("Index");
         }
@@ -62,6 +64,15 @@
             AcademicYearDetailsViewModel academicYearViewModel = Mapper
                 .Map<AcademicYear, AcademicYearDetailsViewModel>(academicYear);
 
+            var redirectParamaters = new RouteValueDictionary()
+            {
+                { "startYear", startYear }
+            };
+
+            RedirectUrl redirectUrl = new RedirectUrl(this.ControllerContext, redirectParamaters);
+
+            this.Session["redirectUrl"] = redirectUrl;
+ 
             return View(academicYearViewModel);
         }
 

@@ -42,16 +42,50 @@
 
     @foreach (var grade in Model.Grades)
     {
-        <a href="#submenu-@submenuCounter" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#main-menu">
-            @grade.GradeYear
-            <span class="badge">@grade.SchoolClassesCount</span>
-        </a>
+        <div class="grade-container">
+            <a
+                href="#submenu-@submenuCounter"
+                class="list-group-item list-group-item-success grade-anchor-container"
+                data-toggle="collapse"
+                data-parent="#main-menu">
+                
+                @grade.GradeYear
+                <span class="badge">@grade.SchoolClassesCount</span>
+            
+            </a>
+            @Html.ActionLinkWithSpan(
+                "", 
+                "Details", 
+                "Grades", 
+                new { id = grade.Id }, 
+                new { @class = "btn btn-default btn-sm", title = "Grade details", id = "normal-details-button"}, 
+                new { @class = "glyphicon glyphicon-list" })
 
+            @Html.ActionLinkWithSpan(
+                "",
+                "Delete",
+                "Grades",
+                new { id = grade.Id },
+                new { @class = "btn btn-default btn-sm", title = "Delete grade", id = "normal-delete-button" },
+                new { @class = "glyphicon glyphicon-trash" })
+
+        </div>
         <div class="collapse" id="submenu-@submenuCounter">
             @foreach (var schoolClass in grade.SchoolClasses)
             {
-                <a href="@Url.Action("Details", "SchoolClasses", new { gradeYear = schoolClass.GradeYear, letter = schoolClass.ClassLetter, startYear = Model.StartYear})" class="list-group-item">
-                    @schoolClass.ClassLetter @(schoolClass.SchoolThemeName != "General" ? ", School theme: " + @schoolClass.SchoolThemeName : "")
+                <a
+                    href="@Url.Action(
+                              "Details",
+                              "SchoolClasses",
+                              new
+                              {
+                                  gradeYear = schoolClass.GradeYear,
+                                  letter = schoolClass.ClassLetter, startYear = Model.StartYear
+                              })"
+                    class="list-group-item">
+                    
+                    @schoolClass.ClassLetter @(schoolClass.SchoolThemeName != 
+                        "General" ? (", School theme: " + @schoolClass.SchoolThemeName) : "")
                 </a>
             }
         </div>
@@ -60,4 +94,17 @@
     }
 </div>
 
-@Html.ActionLinkWithSpan("", "Index", new { @class = "btn btn-default" }, new { @class = "glyphicon glyphicon-arrow-left" })
+<div>
+    @Html.ActionLinkWithSpan(
+        "",
+        "Index",
+        new {@class = "btn btn-default"},
+        new {@class = "glyphicon glyphicon-arrow-left"})
+
+    @Html.ActionLinkWithSpan(
+        "Add grade",
+        "Create",
+        "Grades",
+        new {@class = "btn btn-default"},
+        new {@class = "glyphicon glyphicon-plus"})
+</div>
