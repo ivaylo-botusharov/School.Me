@@ -1,6 +1,7 @@
 ﻿namespace School.Web.Areas.Administration.Models
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class SchoolClassListViewModel
     {
@@ -13,5 +14,8 @@
         public int StartYear { get; set; }
 
         public string SchoolThemeName { get; set; }
+
+        [Display(Name = "Students number")]
+        public int StudentsNumber { get; set; }
     }
 }

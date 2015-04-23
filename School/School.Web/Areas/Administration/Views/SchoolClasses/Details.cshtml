@@ -52,9 +52,29 @@
                 <td>@Html.DisplayFor(modelItem => student.Name)</td>
                 <td>@Html.DisplayFor(modelItem => student.Email)</td>
                 <td class="text-right">
-                    @Html.ActionLinkWithSpan("", "Edit",  "Students", new { username = student.UserName }, new { @class = "btn btn-default btn-sm", title = "Edit" }, new { @class = "glyphicon glyphicon-pencil" })
-                    @Html.ActionLinkWithSpan("", "Details", "Students", new { username = student.UserName }, new { @class = "btn btn-default btn-sm", title = "Details" }, new { @class = "glyphicon glyphicon-list-alt" })
-                    @Html.ActionLinkWithSpan("", "Delete",  "Students", new { id = student.Id }, new { @class = "btn btn-default btn-sm", title = "Delete" }, new { @class = "glyphicon glyphicon-trash" })
+                    @Html.ActionLinkWithSpan(
+                        "", 
+                        "Edit",  
+                        "Students", 
+                        new { username = student.UserName }, 
+                        new { @class = "btn btn-default btn-sm", title = "Edit" }, 
+                        new { @class = "glyphicon glyphicon-pencil" })
+
+                    @Html.ActionLinkWithSpan(
+                        "", 
+                        "Details", 
+                        "Students", 
+                        new { username = student.UserName }, 
+                        new { @class = "btn btn-default btn-sm", title = "Details" }, 
+                        new { @class = "glyphicon glyphicon-list-alt" })
+
+                    @Html.ActionLinkWithSpan(
+                        "", 
+                        "Delete",  
+                        "Students", 
+                        new { id = student.Id }, 
+                        new { @class = "btn btn-default btn-sm", title = "Delete" }, 
+                        new { @class = "glyphicon glyphicon-trash" })
                 </td>
             </tr>
         }
@@ -65,4 +85,11 @@
     string spanString = "<span class='glyphicon glyphicon-arrow-left'></span>";
 }
 
-@Html.ActionLinkWithHtml("", "Details", "AcademicYears", new { startYear = Model.AcademicYear.StartYear }, new { @class = "btn btn-default" }, spanString, true)
+@Html.ActionLinkWithHtml(
+    "", 
+    "Details", 
+    "AcademicYears", 
+    new { startYear = Model.AcademicYear.StartYear }, 
+    new { @class = "btn btn-default" }, 
+    spanString, 
+    true)

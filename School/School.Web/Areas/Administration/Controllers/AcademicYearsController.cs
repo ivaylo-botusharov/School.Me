@@ -49,9 +49,9 @@
 
             var academicYear = Mapper.Map<AcademicYearCreateSubmitModel, AcademicYear>(model);
 
-            int highestGrade = 12;
+            const int HighestGrade = 12;
 
-            this.academicYearService.Add(academicYear, highestGrade);
+            this.academicYearService.Add(academicYear, HighestGrade);
 
             return RedirectToAction("Index");
         }
@@ -71,7 +71,7 @@
 
             RedirectUrl redirectUrl = new RedirectUrl(this.ControllerContext, redirectParamaters);
 
-            this.Session["redirectUrl"] = redirectUrl;
+            Session["redirectUrl"] = redirectUrl;
  
             return View(academicYearViewModel);
         }

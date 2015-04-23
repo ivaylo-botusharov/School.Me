@@ -53,5 +53,11 @@
             this.gradeRepository.Delete(grade);
             this.gradeRepository.SaveChanges();
         }
+
+        public void HardDelete(Grade grade)
+        {
+            this.gradeRepository.HardDelete(grade);
+            this.gradeRepository.SaveChanges();
+        }
     }
 }

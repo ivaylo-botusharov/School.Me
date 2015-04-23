@@ -73,7 +73,7 @@
 
             RedirectUrl redirectUrl = new RedirectUrl(this.ControllerContext, null);
 
-            this.Session["redirectUrl"] = redirectUrl;
+            Session["redirectUrl"] = redirectUrl;
 
             return View(sortedStudents.ToPagedList(pageIndex, pageSize));
         }
