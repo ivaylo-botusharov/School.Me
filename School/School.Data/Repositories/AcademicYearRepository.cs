@@ -15,8 +15,10 @@
         {
             bool academicYearExists = false;
 
-            int academicYearsCount = this.All()
-                .Where(ay => ay.StartDate.Year == startDate.Year || ay.EndDate.Year == endDate.Year).Count();
+            int academicYearsCount = this
+                .All()
+                .Where(ay => ay.StartDate.Year == startDate.Year || ay.EndDate.Year == endDate.Year)
+                .Count();
 
             if (academicYearsCount > 0)
             {

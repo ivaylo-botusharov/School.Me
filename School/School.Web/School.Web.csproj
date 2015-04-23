@@ -269,6 +269,7 @@
     <Compile Include="Areas\Administration\Models\AdministratorListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\AdministratorRegisterSubmitModel.cs" />
     <Compile Include="Areas\Administration\Models\GradeCreateSubmitModel.cs" />
+    <Compile Include="Areas\Administration\Models\GradeDetailsViewModel.cs" />
     <Compile Include="Areas\Administration\Models\GradeListViewModel.cs" />
     <Compile Include="Areas\Administration\Models\SchoolClassCreateSubmitModel.cs" />
     <Compile Include="Areas\Administration\Models\SchoolClassDetailsViewModel.cs" />
@@ -393,6 +394,8 @@
     <Content Include="Areas\Administration\Views\AcademicYears\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\SchoolClasses\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Grades\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Grades\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\Grades\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\schoolme.pubxml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Icon.png" />

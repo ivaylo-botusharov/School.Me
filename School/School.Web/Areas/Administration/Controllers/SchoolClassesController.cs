@@ -51,5 +51,18 @@
 
             return View(schoolClassModel);
         }
+
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            return View();
+        }
     }
 }

@@ -112,8 +112,7 @@
             previousAcademicYear.IsActive = false;
             academicYear.SchoolThemes = this.CreateSchoolThemes(previousAcademicYear.SchoolThemes, academicYear);
 
-            IList<Grade> previousAcademicYearGrades = 
-                previousAcademicYear.Grades.Any() ? previousAcademicYear.Grades : new List<Grade>();
+            IList<Grade> previousAcademicYearGrades = previousAcademicYear.Grades ?? new List<Grade>();
 
             academicYear.Grades = this.CreateGrades(previousAcademicYearGrades, academicYear, highestGrade);
 
@@ -121,17 +120,23 @@
             {
                 IList<Subject> previousYearCurrentGradeSubjects = new List<Subject>();
 
-                if (previousAcademicYear.Grades != null && previousAcademicYear.Grades.Any())
+                Grade previousAcademicYearCurrentGrade = previousAcademicYearGrades
+                    .FirstOrDefault(g => g.GradeYear == grade.GradeYear);
+
+                if (previousAcademicYearCurrentGrade != null)
                 {
-                    previousYearCurrentGradeSubjects = 
-                        previousAcademicYearGrades.FirstOrDefault(g => g.GradeYear == grade.GradeYear).Subjects;
+                    previousYearCurrentGradeSubjects = previousAcademicYearCurrentGrade.Subjects;
+                }
+                else
+                {
+                    previousYearCurrentGradeSubjects = new List<Subject>();
                 }
 
                 grade.Subjects = this.CreateGradeSubjects(grade, previousYearCurrentGradeSubjects);
 
                 IList<SchoolClass> previousYearPreviousGradeClasses = new List<SchoolClass>();
 
-                if (previousAcademicYear.Grades.Any() && grade.GradeYear > 1)
+                if (previousAcademicYear.Grades != null && previousAcademicYear.Grades.Any() && grade.GradeYear > 1)
                 {
                     previousYearPreviousGradeClasses = 
                         previousAcademicYear.Grades.First(g => g.GradeYear == grade.GradeYear - 1).SchoolClasses;
@@ -139,10 +144,10 @@
 
                 IList<SchoolClass> previousYearCurrentGradeClasses = new List<SchoolClass>();
 
-                if (previousAcademicYearGrades != null && previousAcademicYearGrades.Any())
+                if (previousAcademicYearCurrentGrade != null && previousAcademicYearCurrentGrade.SchoolClasses != null)
                 {
-                    previousYearCurrentGradeClasses = 
-                        previousAcademicYearGrades.FirstOrDefault(g => g.GradeYear == grade.GradeYear).SchoolClasses;
+                    previousYearCurrentGradeClasses =
+                        previousAcademicYearCurrentGrade.SchoolClasses;
                 }
 
                 this.CreateGradeSchoolClasses(
@@ -152,13 +157,12 @@
                 {
                     SchoolClass oldSchoolClass = new SchoolClass();
 
-                    if (previousAcademicYear.Grades.Any() && grade.GradeYear > 1)
+                    if (previousAcademicYear.Grades != null && 
+                        previousAcademicYear.Grades.Any() &&
+                        grade.GradeYear > 1)
                     {
-                        oldSchoolClass = previousAcademicYear
-                           .Grades
-                           .FirstOrDefault(g => g.GradeYear == grade.GradeYear - 1)
-                           .SchoolClasses
-                           .FirstOrDefault(sc => sc.ClassLetter == schoolClass.ClassLetter);
+                        oldSchoolClass = previousYearPreviousGradeClasses
+                            .FirstOrDefault(sc => sc.ClassLetter == schoolClass.ClassLetter);
                     }
 
                     schoolClass.Students = this.CreateSchoolClassStudents(oldSchoolClass);
@@ -336,10 +340,12 @@
                 {
                     Subject previousAcademicYearGradeSubject = new Subject();
 
-                    if (previousAcademicYearGrades.Any())
+                    Grade previousAcademicYearCurrentGrade = previousAcademicYearGrades
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear);
+
+                    if (previousAcademicYearGrades.Any() && previousAcademicYearCurrentGrade != null)
                     {
-                        previousAcademicYearGradeSubject = previousAcademicYearGrades
-                            .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
+                        previousAcademicYearGradeSubject = previousAcademicYearCurrentGrade 
                             .Subjects
                             .FirstOrDefault(s => s.Name == subject.Name);
 

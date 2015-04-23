@@ -1,5 +1,6 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Linq;
     using System.Web.Mvc;
     using AutoMapper;
@@ -70,6 +71,62 @@
 
             return RedirectToAction(
                 redirectUrl.RedirectActionName, redirectUrl.RedirectControllerName, redirectUrl.RedirectParameters);
+        }
+
+        public ActionResult Details(int id)
+        {
+            Grade grade = this.gradeService.GetById(id);
+
+            if (grade == null)
+            {
+                var redirectUrl = Session["redirectUrl"] as RedirectUrl;
+
+                redirectUrl = redirectUrl ?? new RedirectUrl();
+
+                return RedirectToAction(
+                    redirectUrl.RedirectActionName, 
+                    redirectUrl.RedirectControllerName,
+                    redirectUrl.RedirectParameters);
+            }
+
+            GradeDetailsViewModel model = Mapper.Map<Grade, GradeDetailsViewModel>(grade);
+
+            return View(model);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            Grade grade = this.gradeService.GetById(id);
+
+            GradeDetailsViewModel model = Mapper.Map<Grade, GradeDetailsViewModel>(grade);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Grade grade = this.gradeService.GetById(id);
+
+            if (grade.AcademicYear.StartDate < DateTime.Now)
+            {
+                ModelState.AddModelError(string.Empty, "Grade for already started academic year cannot be deleted");
+                GradeDetailsViewModel model = Mapper.Map<Grade, GradeDetailsViewModel>(grade);
+                return View(model);
+            }
+
+            this.gradeService.HardDelete(grade);
+
+            var redirectUrl = Session["redirectUrl"] as RedirectUrl;
+
+            redirectUrl = redirectUrl ?? new RedirectUrl();
+
+            return RedirectToAction(
+                redirectUrl.RedirectActionName, 
+                redirectUrl.RedirectControllerName,
+                redirectUrl.RedirectParameters);
         }
     }
 }

@@ -7,5 +7,7 @@
         Grade GetById(int id);
 
         bool IsGradeUniqueOnEdit(Grade grade);
+
+        void HardDelete(Grade grade);
     }
 }

@@ -61,14 +61,17 @@
                 new { @class = "btn btn-default btn-sm", title = "Grade details", id = "normal-details-button"}, 
                 new { @class = "glyphicon glyphicon-list" })
 
-            @Html.ActionLinkWithSpan(
+            @if (Model.StartDate >= DateTime.Now)
+            {
+                @Html.ActionLinkWithSpan(
                 "",
                 "Delete",
                 "Grades",
                 new { id = grade.Id },
                 new { @class = "btn btn-default btn-sm", title = "Delete grade", id = "normal-delete-button" },
                 new { @class = "glyphicon glyphicon-trash" })
-
+            }
+            
         </div>
         <div class="collapse" id="submenu-@submenuCounter">
             @foreach (var schoolClass in grade.SchoolClasses)
@@ -80,7 +83,8 @@
                               new
                               {
                                   gradeYear = schoolClass.GradeYear,
-                                  letter = schoolClass.ClassLetter, startYear = Model.StartYear
+                                  letter = schoolClass.ClassLetter, 
+                                  startYear = Model.StartYear
                               })"
                     class="list-group-item">
                     
