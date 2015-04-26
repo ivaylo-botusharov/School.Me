@@ -33,16 +33,25 @@
         public void Add(SchoolClass schoolClass)
         {
             this.schoolClassRepository.Add(schoolClass);
+            this.schoolClassRepository.SaveChanges();
         }
 
         public void Update(SchoolClass schoolClass)
         {
             this.schoolClassRepository.Update(schoolClass);
+            this.schoolClassRepository.SaveChanges();
         }
 
         public void Delete(SchoolClass schoolClass)
         {
             this.schoolClassRepository.Delete(schoolClass);
+            this.schoolClassRepository.SaveChanges();
+        }
+
+        public void HardDelete(SchoolClass schoolClass)
+        {
+            this.schoolClassRepository.HardDelete(schoolClass);
+            this.schoolClassRepository.SaveChanges();
         }
     }
 }

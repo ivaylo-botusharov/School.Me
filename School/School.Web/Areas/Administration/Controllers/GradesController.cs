@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using AutoMapper;
     using School.Models;
     using School.Services.Interfaces;
@@ -77,10 +78,10 @@
         {
             Grade grade = this.gradeService.GetById(id);
 
+            var redirectUrl = Session["redirectUrl"] as RedirectUrl;
+            
             if (grade == null)
             {
-                var redirectUrl = Session["redirectUrl"] as RedirectUrl;
-
                 redirectUrl = redirectUrl ?? new RedirectUrl();
 
                 return RedirectToAction(
@@ -88,6 +89,15 @@
                     redirectUrl.RedirectControllerName,
                     redirectUrl.RedirectParameters);
             }
+
+            var redirectParamaters = new RouteValueDictionary()
+            {
+                { "id", id }
+            };
+
+            redirectUrl = new RedirectUrl(this.ControllerContext, redirectParamaters);
+
+            Session["redirectUrl"] = redirectUrl;
 
             GradeDetailsViewModel model = Mapper.Map<Grade, GradeDetailsViewModel>(grade);
 

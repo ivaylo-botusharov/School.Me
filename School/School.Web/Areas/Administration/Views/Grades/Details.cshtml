@@ -64,13 +64,16 @@
                         new { @class = "btn btn-default btn-sm", title = "Class details" },
                         new { @class = "glyphicon glyphicon-list" })
 
-                    @Html.ActionLinkWithSpan(
+                    @if (schoolClass.AcademicYearStartDate >= DateTime.Now)
+                    {
+                        @Html.ActionLinkWithSpan(
                         "",
                         "Delete",
                         "SchoolClasses",
                         new { id = schoolClass.Id },
                         new { @class = "btn btn-default btn-sm", title = "Delete class" },
                         new { @class = "glyphicon glyphicon-trash" })
+                    }
                 </td>
             </tr>
         }

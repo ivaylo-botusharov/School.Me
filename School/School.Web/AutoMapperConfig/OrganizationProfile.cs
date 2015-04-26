@@ -1,4 +1,6 @@
-﻿namespace School.Web.AutoMapperConfig
+﻿using School.Web.Areas.Administration.Models;
+
+namespace School.Web.AutoMapperConfig
 {
     using System.Linq;
     using AutoMapper;
@@ -98,7 +100,10 @@
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))
                 .ForMember(
                     dest => dest.StudentsNumber,
-                    opt => opt.MapFrom(src => src.Students.Count(s => s.IsDeleted == false)));
+                    opt => opt.MapFrom(src => src.Students.Count(s => s.IsDeleted == false)))
+                .ForMember(
+                    dest => dest.AcademicYearStartDate, 
+                    opt => opt.MapFrom(src => src.Grade.AcademicYear.StartDate));
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassDetailsViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))
@@ -109,6 +114,22 @@
                     dest => dest.Students, 
                     opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false)))
                 .ForMember(dest => dest.AcademicYear, opt => opt.MapFrom(src => src.Grade.AcademicYear));
+
+            Mapper.CreateMap<SchoolClass, SchoolClassEditViewModel>();
+
+            Mapper.CreateMap<SchoolClassEditViewModel, SchoolClass>();
+
+            Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassDeleteViewModel>()
+                .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))
+                .ForMember(
+                    dest => dest.AcademicYearStartDate, 
+                    opt => opt.MapFrom(src => src.Grade.AcademicYear.StartDate))
+                .ForMember(
+                    dest => dest.AcademicYearEndDate,
+                    opt => opt.MapFrom(src => src.Grade.AcademicYear.EndDate))
+                .ForMember(
+                    dest => dest.StudentsNumber,
+                    opt => opt.MapFrom(src => src.Students.Count()));
         }
     }
 }

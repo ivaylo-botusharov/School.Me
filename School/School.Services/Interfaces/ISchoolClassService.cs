@@ -8,5 +8,7 @@
         SchoolClass GetById(Guid id);
 
         SchoolClass GetByDetails(int gradeYear, string letter, int startYear);
+
+        void HardDelete(SchoolClass schoolClass);
     }
 }
