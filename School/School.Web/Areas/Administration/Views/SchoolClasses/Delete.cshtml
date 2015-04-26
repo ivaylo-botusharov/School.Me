@@ -1,0 +1,58 @@
+﻿@model School.Web.Areas.Administration.Models.SchoolClassDeleteViewModel
+@{
+    ViewBag.Title = "School - Classes - Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this class?</h3>
+
+<dl class="dl-horizontal">
+    <dt>
+        Class Name:
+    </dt>
+    <dd>
+        @string.Format("{0}{1}", @Html.DisplayFor(m => m.GradeYear), @Html.DisplayFor(m => m.ClassLetter))
+    </dd>
+    <dt>
+        Academic Year:
+    </dt>
+    <dd>
+        @string.Format(
+            "{0} - {1}",
+            @Html.DisplayFor(m => m.AcademicYearStartDate),
+            @Html.DisplayFor(m => m.AcademicYearEndDate))
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(m => m.SchoolThemeName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.SchoolThemeName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(m => m.StudentsNumber)
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.StudentsNumber)
+    </dd>
+</dl>
+
+@using (Html.BeginForm("Delete", "SchoolClasses", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger"})
+    
+    <div class="form-actions no-color">
+        <button type="submit" class="btn btn-danger btn-sm">
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>
+
+        @Html.ActionLinkWithSpanUsingSession(
+            "Details",
+            "Grades",
+             "redirectUrl",
+            new { @class = "btn btn-default btn-sm"},
+            new { @class = "glyphicon glyphicon-arrow-left"})
+    </div>
+}

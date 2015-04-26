@@ -15,8 +15,14 @@
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                name: "Administration_schoolclass_details",
-                url: "Administration/SchoolClasses/Details/{gradeYear}-{letter}-{startYear}",
+                name: "Administration_schoolclass_delete",
+                url: "Administration/SchoolClasses/Delete/{id}",
+                defaults: new { controller = "SchoolClasses", action = "Delete" },
+                namespaces: new string[] { "School.Web.Areas.Administration.Controllers" });
+
+            context.MapRoute(
+                name: "Administration_schoolclass_details_edit",
+                url: "Administration/SchoolClasses/{action}/{gradeYear}-{letter}-{startYear}",
                 defaults: new { controller = "SchoolClasses", action = "Details" },
                 namespaces: new string[] { "School.Web.Areas.Administration.Controllers" });
 

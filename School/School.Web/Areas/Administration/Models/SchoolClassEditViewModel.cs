@@ -1,9 +1,10 @@
 ﻿namespace School.Web.Areas.Administration.Models
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
 
-    public class SchoolClassListViewModel
+    public class SchoolClassEditViewModel
     {
         public Guid Id { get; set; }
 
@@ -11,11 +12,8 @@
 
         public int GradeYear { get; set; }
 
-        public DateTime AcademicYearStartDate { get; set; }
-
         public string SchoolThemeName { get; set; }
 
-        [Display(Name = "Students number")]
-        public int StudentsNumber { get; set; }
+        public IEnumerable<SelectListItem> Grades { get; set; }
     }
 }

@@ -18,14 +18,22 @@
 
     <dt>
         Academic Year:
-    </dt>   
+    </dt>
 
     <dd>
         @String.Format("{0} - {1}", @Model.AcademicYear.StartYear, @Model.AcademicYear.EndYear)
     </dd>
 
     <dt>
-        @Html.DisplayNameFor(m => m.StudentsNumber)
+        @Html.DisplayNameFor(m => m.SchoolThemeName) :
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(m => m.SchoolThemeName)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(m => m.StudentsNumber) :
     </dt>
 
     <dd>

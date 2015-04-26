@@ -21,9 +21,10 @@
 
         public AcademicYearListViewModel AcademicYear { get; set; }
 
+        [Display(Name = "School Theme")]
         public string SchoolThemeName { get; set; }
 
-        [Display(Name = "Students number:")]
+        [Display(Name = "Students number")]
         public int StudentsNumber { get; set; }
 
         public List<StudentListViewModel> Students
