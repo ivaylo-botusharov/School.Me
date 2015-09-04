@@ -13,17 +13,9 @@
         // Checks if AcademicYear with specified start year or end year exists in database
         public bool ExistsInDb(DateTime startDate, DateTime endDate)
         {
-            bool academicYearExists = false;
-
-            int academicYearsCount = this
+            bool academicYearExists = this
                 .All()
-                .Where(ay => ay.StartDate.Year == startDate.Year || ay.EndDate.Year == endDate.Year)
-                .Count();
-
-            if (academicYearsCount > 0)
-            {
-                academicYearExists = true;
-            }
+                .Any(ay => ay.StartDate.Year == startDate.Year || ay.EndDate.Year == endDate.Year);
 
             return academicYearExists;
         }

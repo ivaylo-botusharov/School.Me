@@ -6,8 +6,7 @@
     {
         private readonly IApplicationDbContext context;
 
-        public ApplicationUserRepository(IApplicationDbContext context)
-            : base(context)
+        public ApplicationUserRepository(IApplicationDbContext context) : base(context)
         {
             this.context = context;
         }
