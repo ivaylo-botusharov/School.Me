@@ -5,7 +5,8 @@
     using System.Linq;
     using School.Models;
 
-    public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T> where T : class, IDeletableEntity
+    public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T> where T : 
+        class, IDeletableEntity
     {
         public DeletableEntityRepository(IApplicationDbContext context) : base(context)
         {

@@ -9,7 +9,7 @@ namespace School.Data.Migrations
     using School.Common;
     using School.Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<School.Data.ApplicationDbContext>, IDisposable
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>, IDisposable
     {
         private const int HighestGrade = 12;
 
@@ -149,9 +149,9 @@ namespace School.Data.Migrations
                 Email = "superadmin@superadmin.com"
             };
 
-            string password = "111";
+            const string Password = "111";
 
-            this.SeedAdminApplicationUser(adminUser, password);
+            this.SeedAdminApplicationUser(adminUser, Password);
 
             adminProfile.ApplicationUser = adminUser;
 
@@ -169,7 +169,7 @@ namespace School.Data.Migrations
                 Email = "admin@admin.com"
             };
 
-            this.SeedAdminApplicationUser(adminUser, password);
+            this.SeedAdminApplicationUser(adminUser, Password);
 
             adminProfile.ApplicationUser = adminUser;
 
@@ -212,10 +212,11 @@ namespace School.Data.Migrations
                 return;
             }
 
-            var previousAcademicYear = new AcademicYear();
-
-            previousAcademicYear.StartDate = this.startDate;
-            previousAcademicYear.EndDate = this.endDate;
+            var previousAcademicYear = new AcademicYear()
+            {
+                StartDate = this.startDate,
+                EndDate = this.endDate
+            };
 
             for (int i = 0; i < academicYearsCount; i++)
             {
@@ -278,22 +279,21 @@ namespace School.Data.Migrations
             {
                 IList<Subject> previousYearCurrentGradeSubjects = new List<Subject>();
 
-                if (previousAcademicYearGrades.Any())
+                Grade previousAcademicYearCurrentGrade = previousAcademicYearGrades
+                    .FirstOrDefault(g => g.GradeYear == grade.GradeYear);
+
+                if (previousAcademicYearGrades.Any() && previousAcademicYearCurrentGrade != null)
                 {
-                    previousYearCurrentGradeSubjects = previousAcademicYearGrades
-                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
-                        .Subjects;
+                    previousYearCurrentGradeSubjects = previousAcademicYearCurrentGrade.Subjects;
                 }
 
                 this.SeedGradeSubjects(context, schoolThemes, grade, previousYearCurrentGradeSubjects);
 
                 IList<SchoolClass> previousYearCurrentGradeClasses = new List<SchoolClass>();
 
-                if (previousAcademicYearGrades.Any())
+                if (previousAcademicYearGrades.Any() && previousAcademicYearCurrentGrade != null)
                 {
-                    previousYearCurrentGradeClasses = previousAcademicYearGrades
-                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
-                        .SchoolClasses;
+                    previousYearCurrentGradeClasses = previousAcademicYearCurrentGrade.SchoolClasses;
                 }
 
                 if (previousAcademicYear.Grades.Any() && grade.GradeYear > 1)
@@ -312,11 +312,14 @@ namespace School.Data.Migrations
                 {
                     SchoolClass oldSchoolClass = new SchoolClass();
 
-                    if (previousAcademicYear.Grades.Any() && grade.GradeYear > 1)
+                    Grade previousAcademicYearPreviousGrade = previousAcademicYear
+                        .Grades
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear - 1);
+
+                    if (previousAcademicYear.Grades.Any() && grade.GradeYear > 1 
+                        && previousAcademicYearPreviousGrade != null)
                     {
-                        oldSchoolClass = previousAcademicYear
-                            .Grades
-                            .FirstOrDefault(g => g.GradeYear == grade.GradeYear - 1)
+                        oldSchoolClass = previousAcademicYearPreviousGrade
                             .SchoolClasses
                             .FirstOrDefault(sc => sc.ClassLetter == schoolClass.ClassLetter);
                     }
@@ -402,7 +405,8 @@ namespace School.Data.Migrations
             }
             else
             {
-                Grade grade = new Grade();
+                var grade = new Grade();
+
                 grade.GradeYear = 1;
                 grade.AcademicYear = currentAcademicYear;
 
@@ -591,32 +595,10 @@ namespace School.Data.Migrations
 
             return subjects;
         }
-
-        private List<SchoolClass> SeedGradeSchoolClasses(
-            ApplicationDbContext context, 
+        
+        private static List<SchoolClass> CopyClassesFromPreviousYearCurrentGrade(
+            ApplicationDbContext context,
             Grade grade,
-            IList<SchoolClass> previousYearCurrentGradeClasses,
-            int gradeClassesNumber, 
-            IList<SchoolTheme> schoolThemes)
-        {
-            List<SchoolClass> schoolClasses = new List<SchoolClass>();
-
-            if (previousYearCurrentGradeClasses != null && previousYearCurrentGradeClasses.Any())
-            {
-                schoolClasses = 
-                    this.CopyClassesFromPreviousYearCurrentGrade(context, grade, previousYearCurrentGradeClasses);
-            }
-            else
-            {
-                schoolClasses = this.CreateGradeNewSchoolClasses(context, grade, gradeClassesNumber, schoolThemes);
-            }
-
-            return schoolClasses;
-        }
-
-        private List<SchoolClass> CopyClassesFromPreviousYearCurrentGrade(
-            ApplicationDbContext context, 
-            Grade grade, 
             IList<SchoolClass> previousYearCurrentGradeClasses)
         {
             List<SchoolClass> schoolClasses = new List<SchoolClass>();
@@ -630,6 +612,28 @@ namespace School.Data.Migrations
 
                 context.SchoolClasses.AddOrUpdate(schoolClass);
                 schoolClasses.Add(schoolClass);
+            }
+
+            return schoolClasses;
+        }
+
+        private List<SchoolClass> SeedGradeSchoolClasses(
+            ApplicationDbContext context, 
+            Grade grade,
+            IList<SchoolClass> previousYearCurrentGradeClasses,
+            int gradeClassesNumber, 
+            IList<SchoolTheme> schoolThemes)
+        {
+            List<SchoolClass> schoolClasses = new List<SchoolClass>();
+
+            if (previousYearCurrentGradeClasses != null && previousYearCurrentGradeClasses.Any())
+            {
+                schoolClasses = 
+                    CopyClassesFromPreviousYearCurrentGrade(context, grade, previousYearCurrentGradeClasses);
+            }
+            else
+            {
+                schoolClasses = this.CreateGradeNewSchoolClasses(context, grade, gradeClassesNumber, schoolThemes);
             }
 
             return schoolClasses;
@@ -760,19 +764,21 @@ namespace School.Data.Migrations
             {
                 foreach (var subject in grade.Subjects)
                 {
-                    Subject previousAcademicYearGradeSubject = new Subject();
-                    Teacher teacherProfile = new Teacher();
+                    var previousAcademicYearGradeSubject = new Subject();
+                    var teacherProfile = new Teacher();
 
-                    if (previousAcademicYearGrades.Any())
+                    Grade previousAcademicYearCurrentGrade = previousAcademicYearGrades
+                        .FirstOrDefault(g => g.GradeYear == grade.GradeYear);
+
+                    if (previousAcademicYearGrades.Any() && previousAcademicYearCurrentGrade != null)
                     {
-                        previousAcademicYearGradeSubject = previousAcademicYearGrades
-                            .FirstOrDefault(g => g.GradeYear == grade.GradeYear)
+                        previousAcademicYearGradeSubject = previousAcademicYearCurrentGrade
                             .Subjects
                             .FirstOrDefault(s => s.Name == subject.Name);
 
                         if (previousAcademicYearGradeSubject != null)
                         {
-                            subject.Teachers.Add(previousAcademicYearGradeSubject.Teachers.First());
+                            subject.Teachers = previousAcademicYearGradeSubject.Teachers;
                             context.Subjects.AddOrUpdate(subject);
                         }
                         else
@@ -799,7 +805,7 @@ namespace School.Data.Migrations
         private Teacher CreateSingleTeacher()
         {
             var teacherProfile = new Teacher();
-            Random rand = new Random();
+            var rand = new Random();
             teacherProfile.Name = this.personNames[rand.Next(0, this.personNames.Count())];
 
             // Create Teacher Role if it does not exist
@@ -813,11 +819,11 @@ namespace School.Data.Migrations
             string counter = this.teacherCounter.ToString("D3");
             teacherUser.UserName = "teacher" + counter;
             teacherUser.Email = "t" + counter + "@t.com";
-            string password = "111";
+            const string Password = "111";
 
             this.teacherCounter++;
 
-            var result = this.userManager.Create(teacherUser, password);
+            var result = this.userManager.Create(teacherUser, Password);
 
             // Add Teacher User to Teacher Role
             if (result.Succeeded)

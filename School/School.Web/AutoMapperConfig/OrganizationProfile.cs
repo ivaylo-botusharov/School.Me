@@ -1,6 +1,4 @@
-﻿using School.Web.Areas.Administration.Models;
-
-namespace School.Web.AutoMapperConfig
+﻿namespace School.Web.AutoMapperConfig
 {
     using System.Linq;
     using AutoMapper;
@@ -115,9 +113,10 @@ namespace School.Web.AutoMapperConfig
                     opt => opt.MapFrom(src => src.Students.Where(s => s.IsDeleted == false)))
                 .ForMember(dest => dest.AcademicYear, opt => opt.MapFrom(src => src.Grade.AcademicYear));
 
-            Mapper.CreateMap<SchoolClass, SchoolClassEditViewModel>();
+            Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassEditViewModel>()
+                .ForMember(dest => dest.AcademicYearId, opt => opt.MapFrom(src => src.Grade.AcademicYearId));
 
-            Mapper.CreateMap<SchoolClassEditViewModel, SchoolClass>();
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.SchoolClassEditViewModel, SchoolClass>();
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassDeleteViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))

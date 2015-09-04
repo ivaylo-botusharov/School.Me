@@ -1,9 +1,8 @@
-﻿using System.Linq;
-
-namespace School.Web.Areas.Administration.Controllers
+﻿namespace School.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
     using System.Web.Routing;
     using AutoMapper;
@@ -70,7 +69,7 @@ namespace School.Web.Areas.Administration.Controllers
 
             if (schoolClass == null)
             {
-                ModelState.AddModelError("", "Such class does not exist");
+                ModelState.AddModelError(string.Empty, "Such class does not exist");
 
                 var redirectUrl = Session["redirectUrl"] as RedirectUrl;
 
@@ -84,8 +83,6 @@ namespace School.Web.Areas.Administration.Controllers
 
             var model = Mapper.Map<SchoolClass, SchoolClassEditViewModel>(schoolClass);
 
-            model.Grades = this.GetAcademicYearGrades(schoolClass.Grade.AcademicYear);
-
             return View(model);
         }
 
@@ -93,12 +90,12 @@ namespace School.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(SchoolClassEditViewModel model)
         {
+            SchoolClass schoolClass = this.schoolClassService.GetById(model.Id);
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            SchoolClass schoolClass = this.schoolClassService.GetById(model.Id);
 
             Mapper.Map<SchoolClassEditViewModel, SchoolClass>(model, schoolClass);
 
@@ -141,7 +138,7 @@ namespace School.Web.Areas.Administration.Controllers
             if (schoolClass.Grade.AcademicYear.StartDate < DateTime.Now)
             {
                 ModelState.AddModelError(
-                    "", 
+                    string.Empty, 
                     "Classes for already started / completed academic years cannot be deleted");
 
                 var model = Mapper.Map<SchoolClass, SchoolClassDeleteViewModel>(schoolClass);
@@ -158,23 +155,6 @@ namespace School.Web.Areas.Administration.Controllers
                 redirectUrl.RedirectActionName,
                 redirectUrl.RedirectControllerName,
                 redirectUrl.RedirectParameters);
-        }
-
-        private IEnumerable<SelectListItem> GetAcademicYearGrades(AcademicYear academicYear)
-        {
-            List<int> grades = this.gradeService
-                .All()
-                .Where(g => g.AcademicYearId == academicYear.Id)
-                .Select(g => g.GradeYear).ToList();
-
-            IEnumerable<SelectListItem> gradesList = grades.Select(
-                gradeYear => new SelectListItem
-                {
-                    Value = gradeYear.ToString(),
-                    Text = gradeYear.ToString()
-                });
-
-            return new SelectList(gradesList, "Value", "Text");
         }
     }
 }
