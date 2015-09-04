@@ -9,14 +9,22 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.ClassLetter)
+    @Html.HiddenFor(m => m.AcademicYearId)
     @Html.ValidationSummary(true, "", new { @class = "text-danger"})
 
     <div class="form-group">
         @Html.LabelFor(m => m.GradeYear, new {@class = "control-label col-md-2"})
         <div class="col-md-3">
-            @Html.DropDownListFor(m => m.GradeYear, Model.Grades, new {@class = "form-control"})
-            @Html.ValidationMessageFor(m => m.GradeYear, "", new {@class = "text-danger"})
+            @Html.DropDownListFor(m => m.GradeYear, Model.Grades, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.GradeYear, "", new { @class = "text-danger"})
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ClassLetter, new { @class = "control-label col-md-2"})
+        <div class="col-md-3">
+            @Html.EditorFor(m => m.ClassLetter, "", new {htmlAttributes = new { @class = "form-control" }})
+            @Html.ValidationMessageFor(m => m.ClassLetter, "", new { @class = "text-danger"})
         </div>
     </div>
 
@@ -26,3 +34,12 @@
         </div>
     </div>
 }
+
+<div>
+    @Html.ActionLinkWithSpanUsingSession(
+        "Index",
+        "AcademicYears",
+        "redirectUrl",
+        new { @class = "btn btn-default btn-small" },
+        new { @class = "glyphicon glyphicon-arrow-left" })
+</div>

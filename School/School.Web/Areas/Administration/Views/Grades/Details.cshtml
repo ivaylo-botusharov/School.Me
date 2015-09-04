@@ -1,4 +1,5 @@
-﻿@model School.Web.Areas.Administration.Models.GradeDetailsViewModel
+﻿@using School.Web.Infrastructure
+@model School.Web.Areas.Administration.Models.GradeDetailsViewModel
 @{
     ViewBag.Title = "Details";
 }
@@ -22,60 +23,77 @@
 
 <table class="table table-striped table-bordered">
     <thead>
-        <tr>
-            <th>School Classes</th>
-            <th>@Html.DisplayNameFor(m => m.SchoolClasses.FirstOrDefault().StudentsNumber)</th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>School Classes</th>
+        <th>@Html.DisplayNameFor(m => m.SchoolClasses.FirstOrDefault().StudentsNumber)</th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var schoolClass in Model.SchoolClasses)
-        {
-            <tr>
-                <td>
-                    @schoolClass.ClassLetter @(schoolClass.SchoolThemeName !=
-                                               "General" ? (", School theme: " + @schoolClass.SchoolThemeName) : "")
-                </td>
-                <td>@Html.DisplayFor(model => schoolClass.StudentsNumber)</td>
-                <td class="text-right">
-                    @Html.ActionLinkWithSpan(
-                        "",
-                        "Edit",
-                        "SchoolClasses",
-                        new
-                        {
-                            gradeYear = schoolClass.GradeYear,
-                            letter = schoolClass.ClassLetter,
-                            startYear = Model.AcademicYearStartDate.Year
-                        },
-                        new { @class = "btn btn-default btn-sm", title = "Edit class" },
-                        new { @class = "glyphicon glyphicon-pencil" })
-
-                    @Html.ActionLinkWithSpan(
-                        "",
-                        "Details",
-                        "SchoolClasses",
-                        new
-                        {
-                            gradeYear = schoolClass.GradeYear,
-                            letter = schoolClass.ClassLetter,
-                            startYear = Model.AcademicYearStartDate.Year
-                        },
-                        new { @class = "btn btn-default btn-sm", title = "Class details" },
-                        new { @class = "glyphicon glyphicon-list" })
-
-                    @if (schoolClass.AcademicYearStartDate >= DateTime.Now)
+    @foreach (var schoolClass in Model.SchoolClasses)
+    {
+        <tr>
+            <td>
+                @schoolClass.ClassLetter @(schoolClass.SchoolThemeName !=
+                                           "General" ? (", School theme: " + @schoolClass.SchoolThemeName) : "")
+            </td>
+            <td>@Html.DisplayFor(model => schoolClass.StudentsNumber)</td>
+            <td class="text-right">
+                @Html.ActionLinkWithSpan(
+                    "",
+                    "Edit",
+                    "SchoolClasses",
+                    new
                     {
-                        @Html.ActionLinkWithSpan(
+                        gradeYear = schoolClass.GradeYear,
+                        letter = schoolClass.ClassLetter,
+                        startYear = Model.AcademicYearStartDate.Year
+                    },
+                    new {@class = "btn btn-default btn-sm", title = "Edit class"},
+                    new {@class = "glyphicon glyphicon-pencil"})
+
+                @Html.ActionLinkWithSpan(
+                    "",
+                    "Details",
+                    "SchoolClasses",
+                    new
+                    {
+                        gradeYear = schoolClass.GradeYear,
+                        letter = schoolClass.ClassLetter,
+                        startYear = Model.AcademicYearStartDate.Year
+                    },
+                    new {@class = "btn btn-default btn-sm", title = "Class details"},
+                    new {@class = "glyphicon glyphicon-list"})
+
+                @if (schoolClass.AcademicYearStartDate >= DateTime.Now)
+                {
+                    @Html.ActionLinkWithSpan(
                         "",
                         "Delete",
                         "SchoolClasses",
-                        new { id = schoolClass.Id },
-                        new { @class = "btn btn-default btn-sm", title = "Delete class" },
-                        new { @class = "glyphicon glyphicon-trash" })
-                    }
-                </td>
-            </tr>
-        }
+                        new {id = schoolClass.Id},
+                        new {@class = "btn btn-default btn-sm", title = "Delete class"},
+                        new {@class = "glyphicon glyphicon-trash"})
+                }
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
+
+@{
+    var routeParams = new 
+    { 
+        startYear = (int)ViewBag.StartYear
+    };
+}
+
+<div>
+    @Html.ActionLinkWithSpan(
+        "",
+        "Details",
+        "AcademicYears",
+        routeParams,
+        new { @class = "btn btn-default btn-sm" },
+        new { @class = "glyphicon glyphicon-arrow-left" })
+</div>

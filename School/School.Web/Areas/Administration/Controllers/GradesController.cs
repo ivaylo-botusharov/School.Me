@@ -90,14 +90,7 @@
                     redirectUrl.RedirectParameters);
             }
 
-            var redirectParamaters = new RouteValueDictionary()
-            {
-                { "id", id }
-            };
-
-            redirectUrl = new RedirectUrl(this.ControllerContext, redirectParamaters);
-
-            Session["redirectUrl"] = redirectUrl;
+            ViewBag.StartYear = grade.AcademicYear.StartDate.Year;
 
             GradeDetailsViewModel model = Mapper.Map<Grade, GradeDetailsViewModel>(grade);
 

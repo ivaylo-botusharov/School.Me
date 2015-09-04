@@ -1,6 +1,6 @@
 ﻿namespace School.Common
 {
-    public class GlobalConstants
+    public static class GlobalConstants
     {
         public const string SuperAdministratorRoleName = "SuperAdministrator";
 
