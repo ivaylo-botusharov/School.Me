@@ -35,12 +35,12 @@
 
         public bool IsUserNameUniqueOnEdit(Teacher teacher, string username)
         {
-            bool isUserNameUnique = !this.AllWithDeleted()
+            bool usernameUnique = !this.AllWithDeleted()
                 .Any(
                 t => (t.ApplicationUser.UserName == username) &&
                     (t.ApplicationUserId != teacher.ApplicationUserId));
 
-            return isUserNameUnique;
+            return usernameUnique;
         }
     }
 }

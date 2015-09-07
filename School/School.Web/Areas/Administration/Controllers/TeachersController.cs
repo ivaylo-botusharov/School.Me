@@ -133,11 +133,11 @@
                 return View();
             }
 
-            bool isUserNameUnique = this.teacherService.IsUserNameUniqueOnEdit(
+            bool usernameUnique = this.teacherService.IsUserNameUniqueOnEdit(
                 teacher,
                 teacherModel.AccountDetailsEditModel.UserName);
 
-            if (!isUserNameUnique)
+            if (!usernameUnique)
             {
                 ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
                 return View();

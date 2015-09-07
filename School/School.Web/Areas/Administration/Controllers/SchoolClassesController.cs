@@ -11,7 +11,7 @@
     using School.Services.Interfaces;
     using School.Web.Areas.Administration.Models;
     using School.Web.Infrastructure;
-
+                                                                                                                                                                                 
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class SchoolClassesController : Controller
     {

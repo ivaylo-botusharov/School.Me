@@ -21,14 +21,14 @@
 
         public bool IsGradeUniqueOnEdit(Grade grade)
         {
-            bool isGradeUnique = !this.gradeRepository
+            bool gradeUnique = !this.gradeRepository
                 .All()
                 .Any(
                 g => (g.GradeYear == grade.GradeYear) &&
                     (g.AcademicYear.StartDate.Year == grade.AcademicYear.StartDate.Year) &&
                     (g.Id != grade.Id));
 
-            return isGradeUnique;
+            return gradeUnique;
         }
 
         public IQueryable<Grade> All()
