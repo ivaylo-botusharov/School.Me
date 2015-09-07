@@ -140,21 +140,21 @@
                 return View();
             }
 
-            bool isUserNameUnique = this.studentService.IsUserNameUniqueOnEdit(
+            bool usernameUnique = this.studentService.IsUserNameUniqueOnEdit(
                 student, 
                 studentModel.AccountDetailsEditModel.UserName);
 
-            bool isEmailUnique = this.studentService.IsEmailUniqueOnEdit(
+            bool emailUnique = this.studentService.IsEmailUniqueOnEdit(
                 student,
                 studentModel.AccountDetailsEditModel.Email);
 
-            if (!isUserNameUnique)
+            if (!usernameUnique)
             {
                 ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
                 return View();
             }
 
-            if (!isEmailUnique)
+            if (!emailUnique)
             {
                 ModelState.AddModelError("AccountDetailsEditModel.Email", "Duplicate emails are not allowed.");
                 return View();

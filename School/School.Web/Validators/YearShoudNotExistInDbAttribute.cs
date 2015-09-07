@@ -22,9 +22,10 @@
 
             IAcademicYearService academicYearService = DependencyResolver.Current.GetService<IAcademicYearService>();
 
-            bool isValid = academicYearService.AcademicYearExistsInDb(academicYear.StartDate, academicYear.EndDate) ? false : true;
+            bool academicYearValid = academicYearService
+                .AcademicYearExistsInDb(academicYear.StartDate, academicYear.EndDate) ? false : true;
 
-            return isValid;
+            return academicYearValid;
         }
     }
 }

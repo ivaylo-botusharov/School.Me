@@ -70,11 +70,11 @@
 
         public bool IsUserNameUniqueOnEdit(Administrator administrator, string username)
         {
-            bool isUserNameUnique = !this.administratorRepository.AllWithDeleted()
+            bool usernameUnique = !this.administratorRepository.AllWithDeleted()
                 .Any(a => (a.ApplicationUser.UserName == username) &&
                     (a.ApplicationUserId != administrator.ApplicationUserId));
 
-            return isUserNameUnique;
+            return usernameUnique;
         }
     }
 }
