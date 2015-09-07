@@ -41,22 +41,22 @@
 
         public bool IsUserNameUniqueOnEdit(Student student, string username)
         {
-            bool isUserNameUnique = !this.AllWithDeleted()
+            bool usernameUnique = !this.AllWithDeleted()
                 .Any(s => 
                     (s.ApplicationUser.UserName == username) &&
                     (s.ApplicationUserId != student.ApplicationUserId));
 
-            return isUserNameUnique;
+            return usernameUnique;
         }
 
         public bool IsEmailUniqueOnEdit(Student student, string email)
         {
-            bool isEmailUnique = !this.AllWithDeleted()
+            bool emailUnique = !this.AllWithDeleted()
                 .Any(s => 
                     (s.ApplicationUser.Email == email) &&
                     (s.ApplicationUserId != student.ApplicationUserId));
 
-            return isEmailUnique;
+            return emailUnique;
         }
     }
 }

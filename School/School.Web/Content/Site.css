@@ -30,6 +30,10 @@ body {
     background-repeat: repeat;
 }
 
+.btn {
+    margin-bottom: 10px;
+}
+
 .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
     margin-left: 0;
 }

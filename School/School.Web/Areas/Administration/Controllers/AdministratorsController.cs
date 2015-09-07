@@ -74,11 +74,11 @@
                 return View();
             }
 
-            bool isUserNameUnique = this.administratorService.IsUserNameUniqueOnEdit(
+            bool usernameUnique = this.administratorService.IsUserNameUniqueOnEdit(
                administrator,
                adminModel.AccountDetailsEditModel.UserName);
 
-            if (!isUserNameUnique)
+            if (!usernameUnique)
             {
                 ModelState.AddModelError("AccountDetailsEditModel.UserName", "Duplicate usernames are not allowed.");
                 return View();
