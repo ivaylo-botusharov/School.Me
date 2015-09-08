@@ -1,4 +1,6 @@
-﻿namespace School.Web.Areas.Administration.Controllers
+﻿using System.Threading.Tasks;
+
+namespace School.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Linq;
@@ -78,14 +80,14 @@
             return View(sortedStudents.ToPagedList(pageIndex, pageSize));
         }
 
-        public ActionResult Details(string username)
+        public async Task<ActionResult> Details(string username)
         {
             if (username == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Student student = this.studentService.GetByUserName(username);
+            Student student = await this.studentService.GetByUserName(username);
 
             if (student == null)
             {
@@ -99,7 +101,7 @@
             return View(model);
         }
 
-        public ActionResult Edit(string username)
+        public async Task<ActionResult> Edit(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -107,7 +109,7 @@
                 return View();
             }
 
-            Student student = this.studentService.GetByUserName(username);
+            Student student = await this.studentService.GetByUserName(username);
 
             if (student == null)
             {
