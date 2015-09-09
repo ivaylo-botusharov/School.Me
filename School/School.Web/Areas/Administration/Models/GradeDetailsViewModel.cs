@@ -22,6 +22,8 @@
 
         public DateTime AcademicYearEndDate { get; set; }
 
+        public bool AcademicYearIsActive { get; set; }
+
         public int SchoolClassesCount { get; set; }
 
         public ICollection<SchoolClassListViewModel> SchoolClasses
