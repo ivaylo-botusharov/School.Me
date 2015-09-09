@@ -2,10 +2,12 @@
 {
     using System.Linq;
     using School.Models;
+    using System.Threading.Tasks;
+
 
     public interface IStudentRepository : IDeletableEntityRepository<Student>
     {
-        Student GetByUserName(string username);
+        Task<Student> GetByUserName(string username);
 
         IQueryable<Student> SearchByName(string searchString);
 

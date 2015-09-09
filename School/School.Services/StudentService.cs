@@ -1,4 +1,6 @@
-﻿namespace School.Services
+﻿using System.Threading.Tasks;
+
+namespace School.Services
 {
     using System.Linq;
     using School.Data.Repositories;
@@ -32,7 +34,7 @@
             return this.studentRepository.GetById(id);
         }
 
-        public Student GetByUserName(string username)
+        public Task<Student> GetByUserName(string username)
         {
             return this.studentRepository.GetByUserName(username);
         }

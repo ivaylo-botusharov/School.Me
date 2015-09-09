@@ -21,6 +21,12 @@
                 namespaces: new string[] { "School.Web.Areas.Administration.Controllers" });
 
             context.MapRoute(
+                name: "Administration_schoolclass_create",
+                url: "Administration/AcademicYears/{startYear}-{endYear}/Grades/{gradeYear}/SchoolClasses/{action}",
+                defaults: new { controller = "SchoolClasses", action = "Details" },
+                namespaces: new string[] { "School.Web.Areas.Administration.Controllers" });
+
+            context.MapRoute(
                 name: "Administration_schoolclass_details_edit",
                 url: "Administration/SchoolClasses/{action}/{gradeYear}-{letter}-{startYear}",
                 defaults: new { controller = "SchoolClasses", action = "Details" },

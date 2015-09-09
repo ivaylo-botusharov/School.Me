@@ -96,4 +96,20 @@
         routeParams,
         new { @class = "btn btn-default btn-sm" },
         new { @class = "glyphicon glyphicon-arrow-left" })
+
+    @if (Model.AcademicYearIsActive)
+    {
+        @Html.ActionLinkWithSpan(
+        "Add class",
+        "Create",
+        "SchoolClasses",
+        new
+        {
+            startYear = Model.AcademicYearStartDate.Year,
+            endYear = Model.AcademicYearEndDate.Year,
+            gradeYear = Model.GradeYear
+        },
+        new { @class = "btn btn-default" },
+        new { @class = "glyphicon glyphicon-plus" })
+    }
 </div>

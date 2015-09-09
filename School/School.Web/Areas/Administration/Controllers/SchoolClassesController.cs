@@ -19,22 +19,56 @@
 
         private readonly IGradeService gradeService;
 
-        public SchoolClassesController(ISchoolClassService schoolClassService, IGradeService gradeService)
+        private readonly IAcademicYearService academicYearService;
+
+        public SchoolClassesController(
+            ISchoolClassService schoolClassService, 
+            IGradeService gradeService,
+            IAcademicYearService academicYearService)
         {
             this.schoolClassService = schoolClassService;
             this.gradeService = gradeService;
+            this.academicYearService = academicYearService;
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int startYear, int endYear, int gradeYear)
         {
-            return View();
+            SchoolClassCreateSubmitModel model = new SchoolClassCreateSubmitModel();
+
+            var academicYear = this.academicYearService.All().FirstOrDefault(ay =>
+                ay.StartDate.Year == startYear &&
+                ay.EndDate.Year == endYear) ?? new AcademicYear();
+
+            var grade = this.gradeService.All().FirstOrDefault(g => 
+                g.GradeYear == gradeYear &&
+                g.AcademicYearId == academicYear.Id) ?? new Grade();
+
+
+            if (!academicYear.IsActive)
+            {
+                return RedirectToAction("Details", "AcademicYears", new { startYear = academicYear.StartDate.Year});
+            }
+
+            model.AcademicYearId = academicYear.Id;
+            model.GradeId = grade.Id;
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(SchoolClassCreateSubmitModel model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(model);    
+            }
+
+            SchoolClass schoolClass = Mapper.Map<SchoolClassCreateSubmitModel, SchoolClass>(model);
+
+            this.schoolClassService.Add(schoolClass);
+
+            return RedirectToAction("Details", "Grades", new { id = schoolClass.GradeId });
         }
 
         public ActionResult Details(int gradeYear, string letter, int startYear)

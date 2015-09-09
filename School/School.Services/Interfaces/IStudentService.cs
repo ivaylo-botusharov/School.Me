@@ -1,9 +1,10 @@
 ﻿namespace School.Services.Interfaces
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using School.Data.Repositories;
     using School.Models;
-    
+
     public interface IStudentService : IRepositoryService<Student>
     {
         IApplicationUserRepository UserRepository { get; }
@@ -12,7 +13,7 @@
 
         IQueryable<Student> SearchByName(string searchString);
 
-        Student GetByUserName(string username);
+        Task<Student> GetByUserName(string username);
 
         bool IsUserNameUniqueOnEdit(Student student, string username);
 

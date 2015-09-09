@@ -90,6 +90,16 @@
                     redirectUrl.RedirectParameters);
             }
 
+            RouteValueDictionary routeParameters = new RouteValueDictionary
+            {
+               { "id", id }              
+            };
+
+            redirectUrl = new RedirectUrl(this.ControllerContext, routeParameters);
+
+            this.Session["redirectUrl"] = redirectUrl;
+            this.Session["academicYearId"] = grade.AcademicYearId;
+
             ViewBag.StartYear = grade.AcademicYear.StartDate.Year;
 
             GradeDetailsViewModel model = Mapper.Map<Grade, GradeDetailsViewModel>(grade);

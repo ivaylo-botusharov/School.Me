@@ -12,16 +12,16 @@
         public Guid Id { get; set; }
 
         [Required]
+        [Display(Name = "Class Letter")]
         [RegularExpression(@"[A-Za-z]", 
             ErrorMessage = "The selected class letter should be a single alphabet character")]
         public string ClassLetter { get; set; }
 
         [Required]
+        [Display(Name = "Grade Year")]
         public int GradeYear { get; set; }
         
         public Guid AcademicYearId { get; set; }
-
-        public string SchoolThemeName { get; set; }
 
         public IEnumerable<SelectListItem> Grades
         {
@@ -42,6 +42,36 @@
                     });
 
                 return gradesList;
+            }
+        }
+
+        [Required]
+        [Display(Name = "School Theme")]
+        public int SchoolThemeId { get; set; }
+
+        public IEnumerable<SelectListItem> SchoolThemes
+        {
+            get
+            {
+                ISchoolThemeService schoolThemeService = DependencyResolver.Current.GetService<ISchoolThemeService>();
+
+                var schoolThemes = schoolThemeService
+                    .All()
+                    .Select(st => new
+                    {
+                        st.Id,
+                        st.Name
+                    }
+                    ).ToList();
+
+                IEnumerable<SelectListItem> schoolThemesList = schoolThemes.Select(
+                    schoolTheme => new SelectListItem
+                    {
+                        Value = schoolTheme.Id.ToString(),
+                        Text = schoolTheme.Name.ToString()
+                    });
+
+                return schoolThemesList;
             }
         }
 
