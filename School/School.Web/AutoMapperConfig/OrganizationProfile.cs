@@ -87,6 +87,7 @@
             Mapper.CreateMap<Grade, School.Web.Areas.Administration.Models.GradeDetailsViewModel>()
                 .ForMember(dest => dest.AcademicYearStartDate, opt => opt.MapFrom(src => src.AcademicYear.StartDate))
                 .ForMember(dest => dest.AcademicYearEndDate, opt => opt.MapFrom(src => src.AcademicYear.EndDate))
+                .ForMember(dest => dest.AcademicYearIsActive, opt => opt.MapFrom(src => src.AcademicYear.IsActive))
                 .ForMember(dest => dest.SchoolClassesCount, opt => opt.MapFrom(src => src.SchoolClasses.Count()))
                 .ForMember(
                     dest => dest.SchoolClasses, 
@@ -117,6 +118,10 @@
                 .ForMember(dest => dest.AcademicYearId, opt => opt.MapFrom(src => src.Grade.AcademicYearId));
 
             Mapper.CreateMap<School.Web.Areas.Administration.Models.SchoolClassEditViewModel, SchoolClass>();
+
+            Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassCreateSubmitModel>();
+
+            Mapper.CreateMap<School.Web.Areas.Administration.Models.SchoolClassCreateSubmitModel, SchoolClass>();
 
             Mapper.CreateMap<SchoolClass, School.Web.Areas.Administration.Models.SchoolClassDeleteViewModel>()
                 .ForMember(dest => dest.GradeYear, opt => opt.MapFrom(src => src.Grade.GradeYear))
