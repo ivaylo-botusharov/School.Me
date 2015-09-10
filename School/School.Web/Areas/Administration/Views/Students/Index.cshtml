@@ -13,16 +13,14 @@
 
 @using (Html.BeginForm("Index", "Students", FormMethod.Get))
 {
-    
-    <div class="input-group col-md-5">
-        <span class="input-group-addon">
+    <div class="input-group">
+        @Html.TextBox(
+                "SearchString",
+                ViewBag.CurrentFilter as string,
+                new { @class = "form-control", placeholder = "Search" })
+
+        <span class="input-group-addon ">
             <span class="glyphicon glyphicon-search"></span>
-        </span>
-
-        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
-
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">Search</button>
         </span>
     </div>
 }
@@ -58,24 +56,24 @@
                 </td>
                 <td class="text-right">
                     @Html.ActionLinkWithSpan(
-                        "", 
-                        "Edit", 
-                        new { username = student.UserName }, 
-                        new { @class = "btn btn-default btn-sm", title = "Edit"}, 
+                        "",
+                        "Edit",
+                        new { username = student.UserName },
+                        new { @class = "btn btn-default btn-sm", title = "Edit" },
                         new { @class = "glyphicon glyphicon-pencil" })
 
                     @Html.ActionLinkWithSpan(
-                        "", 
-                        "Details", 
-                        new { username = student.UserName }, 
-                        new { @class = "btn btn-default btn-sm", title = "Details"}, 
+                        "",
+                        "Details",
+                        new { username = student.UserName },
+                        new { @class = "btn btn-default btn-sm", title = "Details" },
                         new { @class = "glyphicon glyphicon-list-alt" })
-                    
+
                     @Html.ActionLinkWithSpan(
-                        "", 
-                        "Delete", 
-                        new { id = student.Id }, 
-                        new { @class = "btn btn-default btn-sm", title = "Delete"}, 
+                        "",
+                        "Delete",
+                        new { id = student.Id },
+                        new { @class = "btn btn-default btn-sm", title = "Delete" },
                         new { @class = "glyphicon glyphicon-trash" })
                 </td>
             </tr>

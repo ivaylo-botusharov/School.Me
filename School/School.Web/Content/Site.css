@@ -42,13 +42,12 @@ body {
     margin: 15px 0;
 }
 
-.list-inline li {
-    margin-right: 40px;
+.search-field {
+    padding-left: 0;
 }
 
-.glyphicon {
-    display: inline-block;
-    margin: 0 2px;
+.list-inline li {
+    margin-right: 40px;
 }
 
 .carousel-inner h3 {
