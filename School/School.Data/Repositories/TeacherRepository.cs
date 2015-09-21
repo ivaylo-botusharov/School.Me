@@ -1,6 +1,7 @@
 ﻿namespace School.Data.Repositories
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using School.Models;
@@ -14,12 +15,12 @@
             this.context = context;
         }
 
-        public Teacher GetByUserName(string username)
+        public async Task<Teacher> GetByUserName(string username)
         {
             var store = new UserStore<ApplicationUser>((ApplicationDbContext)this.context);
             var userManager = new UserManager<ApplicationUser>(store);
 
-            ApplicationUser user = userManager.FindByNameAsync(username).Result;
+            ApplicationUser user = await userManager.FindByNameAsync(username);
             Teacher teacher = this.All().Where(t => t.ApplicationUserId == user.Id).FirstOrDefault();
 
             return teacher;

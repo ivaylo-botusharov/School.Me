@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using School.Data.Repositories;
     using School.Models;
 
@@ -13,7 +14,7 @@
 
         IQueryable<Teacher> SearchByName(string searchString);
 
-        Teacher GetByUserName(string username);
+        Task<Teacher> GetByUserName(string username);
 
         bool IsUserNameUniqueOnEdit(Teacher teacher, string username);
     }

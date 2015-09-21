@@ -1,8 +1,10 @@
 ﻿namespace School.Web.Areas.Administration.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
@@ -73,14 +75,14 @@
             return View(sortedTeachers.ToPagedList(pageIndex, pageSize));
         }
 
-        public ActionResult Details(string username)
+        public async Task<ActionResult> Details(string username)
         {
             if (username == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Teacher teacher = this.teacherService.GetByUserName(username);
+            Teacher teacher = await this.teacherService.GetByUserName(username);
 
             if (teacher == null)
             {
@@ -93,7 +95,7 @@
             return View(model);
         }
 
-        public ActionResult Edit(string username)
+        public async Task<ActionResult> Edit(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -101,7 +103,7 @@
                 return View();
             }
 
-            Teacher teacher = this.teacherService.GetByUserName(username);
+            Teacher teacher = await this.teacherService.GetByUserName(username);
 
             if (teacher == null)
             {
@@ -145,6 +147,36 @@
 
             Mapper.Map<TeacherDetailsEditModel, Teacher>(teacherModel, teacher);
             Mapper.Map<AccountDetailsEditModel, ApplicationUser>(teacherModel.AccountDetailsEditModel, teacher.ApplicationUser);
+
+            List<string> validImageTypes = new List<string>()
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
+
+            if (teacherModel.AccountDetailsEditModel.ImageUpload != null &&
+                    !validImageTypes.Contains(teacherModel.AccountDetailsEditModel.ImageUpload.ContentType))
+            {
+                ModelState.AddModelError("", "Please choose either a GIF, JPG or PNG image.");
+                return View(teacherModel);
+            }
+
+            var uploadDirectory = GlobalConstants.TeachersProfileImagesUploadDirectory;
+
+            teacherModel.UploadProfilePhoto(uploadDirectory);
+
+            if (teacherModel.AccountDetailsEditModel.ImageUpload == null ||
+                teacherModel.AccountDetailsEditModel.ImageUpload.ContentLength == 0)
+            {
+                teacher.ApplicationUser.ImageUrl = GlobalConstants.DefaultProfileImageUrl;
+            }
+            else
+            {
+                teacher.ApplicationUser.ImageUrl = teacherModel.AccountDetailsEditModel.ImageUrl;
+            }
+
             this.teacherService.Update(teacher);
 
             return RedirectToAction("Index", "Teachers");

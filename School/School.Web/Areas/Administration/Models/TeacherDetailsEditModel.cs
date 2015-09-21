@@ -2,6 +2,8 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
+    using System.Web;
 
     public class TeacherDetailsEditModel
     {
@@ -15,5 +17,28 @@
         public int? Age { get; set; }
 
         public AccountDetailsEditModel AccountDetailsEditModel { get; set; }
+
+        public void UploadProfilePhoto(string uploadDirectory)
+        {
+            if (this.AccountDetailsEditModel.ImageUpload != null && this.AccountDetailsEditModel.ImageUpload.ContentLength > 0)
+            {
+                //string imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
+
+                string extension = Path.GetExtension(this.AccountDetailsEditModel.ImageUpload.FileName);
+
+                string imageFileName = string.Format(
+                    "{0}-{1}{2}",
+                    this.AccountDetailsEditModel.UserName,
+                    DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), extension);
+
+                string fullDirectoryPath = HttpContext.Current.Server.MapPath(uploadDirectory);
+
+                DirectoryInfo directory = Directory.CreateDirectory(fullDirectoryPath);
+
+                string imagePath = Path.Combine(HttpContext.Current.Server.MapPath(uploadDirectory), imageFileName);
+                this.AccountDetailsEditModel.ImageUrl = uploadDirectory + "/" + imageFileName;
+                this.AccountDetailsEditModel.ImageUpload.SaveAs(imagePath);
+            }
+        }
     }
 }
