@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace School.Web.Areas.Administration.Controllers
+﻿namespace School.Web.Areas.Administration.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
@@ -165,7 +165,36 @@ namespace School.Web.Areas.Administration.Controllers
             Mapper.Map<StudentDetailsEditModel, Student>(studentModel, student);
             Mapper.Map<AccountDetailsEditModel, ApplicationUser>(
                 studentModel.AccountDetailsEditModel, student.ApplicationUser);
-            
+
+            List<string> validImageTypes = new List<string>()
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
+
+            if (studentModel.AccountDetailsEditModel.ImageUpload != null &&
+                    !validImageTypes.Contains(studentModel.AccountDetailsEditModel.ImageUpload.ContentType))
+            {
+                ModelState.AddModelError("", "Please choose either a GIF, JPG or PNG image.");
+                return View(studentModel);
+            }
+
+            var uploadDirectory = GlobalConstants.StudentsProfileImagesUploadDirectory;
+
+            studentModel.UploadProfilePhoto(uploadDirectory);
+
+            if (studentModel.AccountDetailsEditModel.ImageUpload == null ||
+                studentModel.AccountDetailsEditModel.ImageUpload.ContentLength == 0)
+            {
+                student.ApplicationUser.ImageUrl = GlobalConstants.DefaultProfileImageUrl;
+            }
+            else
+            {
+                student.ApplicationUser.ImageUrl = studentModel.AccountDetailsEditModel.ImageUrl;
+            }
+
             this.studentService.Update(student);
 
             RedirectUrl redirectUrl = Session["redirectUrl"] as RedirectUrl;

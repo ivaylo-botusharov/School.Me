@@ -11,19 +11,19 @@
 
 <h3>Students list</h3>
 
-@using (Html.BeginForm("Index", "Students", FormMethod.Get))
+@using (Html.BeginForm("Index", "Students", FormMethod.Get, new { @class = "form-horizontal" }))
 {
-    <div class="input-group">
+    <div class="col-xs-4 search-field">
         @Html.TextBox(
-                "SearchString",
-                ViewBag.CurrentFilter as string,
-                new { @class = "form-control", placeholder = "Search" })
-
-        <span class="input-group-addon ">
-            <span class="glyphicon glyphicon-search"></span>
-        </span>
+            "SearchString",
+            ViewBag.CurrentFilter as string,
+            new {@class = "form-control", placeholder = "Search"})
     </div>
+
+    <button class="btn btn-info glyphicon glyphicon-search" type="submit"></button>
 }
+
+@Html.ActionLink("Add Student", "Register", "Account", new { area = "Students" }, new { @class = "btn btn-default pull-right" })
 
 <div class="table-list">
     <table class="table table-striped table-students">

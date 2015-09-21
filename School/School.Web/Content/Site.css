@@ -42,6 +42,10 @@ body {
     margin: 15px 0;
 }
 
+.form-horizontal {
+    display: inline;
+}
+
 .search-field {
     padding-left: 0;
 }

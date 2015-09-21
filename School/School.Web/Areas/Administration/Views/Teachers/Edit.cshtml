@@ -7,7 +7,7 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Teachers", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -16,6 +16,28 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
+
+        <!-- Using Jasny Bootstrap - Image upload widget: http://jasny.github.io/bootstrap/javascript/ -->
+        <div class="fileinput fileinput-new" data-provides="fileinput" style="margin-left: 208px">
+
+            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                <img src="@Model.AccountDetailsEditModel.ImageUrl" alt="profile photo">
+            </div>
+
+            <div class="fileinput-preview fileinput-exists thumbnail" style="width: 200px; height: 150px;"></div>
+            <div>
+                <span class="btn btn-default btn-file">
+                    <span class="fileinput-new">
+                        Select image
+                    </span>
+                    <span class="fileinput-exists">
+                        Change
+                    </span>
+                    <input type="file" id="AccountDetailsEditModel_ImageUpload" name="AccountDetailsEditModel.ImageUpload">
+                </span>
+                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.AccountDetailsEditModel.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
