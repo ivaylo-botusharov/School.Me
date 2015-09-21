@@ -19,6 +19,9 @@ namespace School.Data.Migrations
 
         private const int GradeClassesNumber = 5;
 
+        private const string DefaultProfileImageUrl = 
+            "/Content/Images/Profile_Images/Default/default-profile-image.png";
+
         private readonly List<string> personNames = new List<string>()
         {
             "Teddy Ferrara",
@@ -731,15 +734,18 @@ namespace School.Data.Migrations
             }
 
             // Create Student User with password
-            var studentUser = new ApplicationUser();
+            var studentUser = new ApplicationUser()
+            {
+                UserName = "student" + this.studentCounter.ToString("D4"),
+                Email = "s" + this.studentCounter.ToString("D4") + "@s.com",
+                ImageUrl = DefaultProfileImageUrl
+            };
 
-            studentUser.UserName = "student" + this.studentCounter.ToString("D4");
-            studentUser.Email = "s" + this.studentCounter.ToString("D4") + "@s.com";
             this.studentCounter++;
 
-            string password = "111";
+            const string Password = "111";
 
-            var result = this.userManager.Create(studentUser, password);
+            var result = this.userManager.Create(studentUser, Password);
 
             // Add Student User to Student Role
             if (result.Succeeded)
@@ -814,11 +820,16 @@ namespace School.Data.Migrations
                 this.roleManager.Create(new IdentityRole(GlobalConstants.TeacherRoleName));
             }
 
+            var counter = this.teacherCounter.ToString("D3");
+
             // Create Teacher User with password
-            var teacherUser = new ApplicationUser();
-            string counter = this.teacherCounter.ToString("D3");
-            teacherUser.UserName = "teacher" + counter;
-            teacherUser.Email = "t" + counter + "@t.com";
+            var teacherUser = new ApplicationUser()
+            {
+                UserName = "teacher" + counter,
+                Email = "t" + counter + "@t.com",
+                ImageUrl = DefaultProfileImageUrl
+            };
+
             const string Password = "111";
 
             this.teacherCounter++;

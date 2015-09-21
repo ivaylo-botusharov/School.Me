@@ -1,5 +1,10 @@
-﻿namespace School.Web.Areas.Students.Controllers
+﻿using System;
+using System.IO;
+using School.Web.Areas.Students.Models.AccountViewModels;
+
+namespace School.Web.Areas.Students.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -56,21 +61,60 @@
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            if (!User.IsInRole(GlobalConstants.AdministratorRoleName))
+            {
+                return RedirectToAction("Index", "Home", new { area = string.Empty});                
+            }
+
+            StudentRegisterSubmitModel model = new StudentRegisterSubmitModel();
+
+            model.RegisterViewModel = new RegisterViewModel
+            {
+                ImageUrl = GlobalConstants.DefaultProfileImageUrl
+            };
+
+            return View(model);
         }
 
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [OverrideAuthorization]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(StudentRegisterSubmitModel model)
         {
+            List<string> validImageTypes = new List<string>()
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
+
             if (ModelState.IsValid)
             {
+                if (model.RegisterViewModel.ImageUpload != null && 
+                    !validImageTypes.Contains(model.RegisterViewModel.ImageUpload.ContentType))
+                {
+                    ModelState.AddModelError("", "Please choose either a GIF, JPG or PNG image.");
+                    return View(model);
+                }
+
+                var uploadDirectory = GlobalConstants.StudentsProfileImagesUploadDirectory;
+
+                model.UploadProfilePhoto(uploadDirectory);
+
+                if (model.RegisterViewModel.ImageUpload == null ||
+                model.RegisterViewModel.ImageUpload.ContentLength == 0)
+                {
+                    model.RegisterViewModel.ImageUrl = GlobalConstants.DefaultProfileImageUrl;
+                }
+
                 var user = new ApplicationUser()
                 {
                     UserName = model.RegisterViewModel.UserName,
-                    Email = model.RegisterViewModel.Email
+                    Email = model.RegisterViewModel.Email,
+                    ImageUrl = model.RegisterViewModel.ImageUrl
                 };
 
                 IdentityResult result = await this.UserManager.CreateAsync(user, model.RegisterViewModel.Password);
@@ -82,11 +126,12 @@
                     Student student = new Student();
                     student.ApplicationUserId = user.Id;
                     Mapper.Map<StudentRegisterSubmitModel, Student>(model, student);
+
                     this.studentService.Add(student);
 
-                    await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //await this.SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home", new { area = string.Empty });
+                    return RedirectToAction("Index", "Students", new { area = "Administration" });
                 }
                 else
                 {

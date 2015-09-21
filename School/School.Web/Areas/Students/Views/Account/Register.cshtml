@@ -5,18 +5,44 @@
 
 <h2>Student register.</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm(
+    "Register", 
+    "Account", 
+    FormMethod.Post, 
+    new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <h4>Create a new account.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    
+
+    <!-- Using Jasny Bootstrap - Image upload widget: http://jasny.github.io/bootstrap/javascript/ -->
+    <div class="fileinput fileinput-new" data-provides="fileinput" style="margin-left: 208px">
+
+        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+            <img src="@Model.RegisterViewModel.ImageUrl" alt="profile photo">
+        </div>
+
+        <div class="fileinput-preview fileinput-exists thumbnail" style="width: 200px; height: 150px;"></div>
+        <div>
+            <span class="btn btn-default btn-file">
+                <span class="fileinput-new">
+                    Select image
+                </span>
+                <span class="fileinput-exists">
+                    Change
+                </span>
+                <input type="file" id="RegisterViewModel_ImageUpload" name="RegisterViewModel.ImageUpload">
+            </span>
+            <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+        </div>
+    </div>
+
     <div class="form-group">
-        @Html.LabelFor(model => model.RegisterViewModel.UserName, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(model => model.RegisterViewModel.UserName, new {@class = "col-md-2 control-label"})
         <div class="col-md-3">
-            @Html.TextBoxFor(model => model.RegisterViewModel.UserName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.RegisterViewModel.UserName, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(model => model.RegisterViewModel.UserName, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.RegisterViewModel.UserName, "", new {@class = "text-danger"})
         </div>
     </div>
     <div class="form-group">

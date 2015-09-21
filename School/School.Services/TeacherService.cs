@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using School.Data.Repositories;
     using School.Models;
     using School.Services.Interfaces;
@@ -33,7 +34,7 @@
             return this.teacherRepository.GetById(id);
         }
 
-        public Teacher GetByUserName(string username)
+        public Task<Teacher> GetByUserName(string username)
         {
             return this.teacherRepository.GetByUserName(username);
         }

@@ -1,7 +1,7 @@
 ﻿namespace School.Web.Areas.Students.Models.AccountViewModels
 {
     using System.ComponentModel.DataAnnotations;
-
+    using System.Web;
     public class RegisterViewModel
     {
         [Required]
@@ -24,5 +24,10 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase ImageUpload { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

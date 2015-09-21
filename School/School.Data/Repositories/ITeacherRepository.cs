@@ -1,11 +1,12 @@
 ﻿namespace School.Data.Repositories
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using School.Models;
 
     public interface ITeacherRepository : IDeletableEntityRepository<Teacher>
     {
-        Teacher GetByUserName(string username);
+        Task<Teacher> GetByUserName(string username);
 
         IQueryable<Teacher> SearchByName(string searchString);
 

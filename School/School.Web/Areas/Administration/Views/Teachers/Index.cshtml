@@ -11,19 +11,19 @@
 
 <h3>@ViewBag.Title</h3>
 
-@using (Html.BeginForm("Index", "Teachers", FormMethod.Get))
+@using (Html.BeginForm("Index", "Teachers", FormMethod.Get, new { @class = "form-horizontal"}))
 {
-    <div class="form-group">
-        <div class="col-xs-4 search-field">
-            @Html.TextBox(
-                "SearchString",
-                ViewBag.CurrentFilter as string,
-                new { @class = "form-control", placeholder = "Search" })
-        </div>
+    <div class="col-xs-4 search-field">
+        @Html.TextBox(
+            "SearchString",
+            ViewBag.CurrentFilter as string,
+            new { @class = "form-control", placeholder = "Search"})
     </div>
 
     <button class="btn btn-info glyphicon glyphicon-search" type="submit"></button>
 }
+
+@Html.ActionLink("Add Teacher", "Register", "Account", new { area = "Teachers" }, new { @class = "btn btn-default pull-right" })
 
 <div class="table-list">
     <table class="table table-striped">

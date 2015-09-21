@@ -8,7 +8,12 @@
 
 <div>
     <h4>Teacher</h4>
-    <hr />
+    <hr/>
+
+    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+        <img src="@Model.AccountDetailsEditModel.ImageUrl" alt="profile photo" style="width: 120px; height: 140px;">
+    </div>
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.AccountDetailsEditModel.UserName)
